@@ -1,17 +1,18 @@
 /**
  * @file nameCollector.cpp
  *
- * Currently: Takes srcML input (with --position) of a file (C++)
+ * Takes srcML input (with --position) of a file (C++)
  *  Gets a vector<identifier> which contains name, category, and position
  *  of all the user defined identifiers in the file
  *
  *
- * Need to have installed: libxml2
- * Need to build srcSAX:
+ * Need to have installed: libxml2 and srcml
+ * Need to build and install srcSAX:
  *  In srcSAX folder:
  *    cmake CMakeLists.txt
  *    make
  *    sudo make install
+ *
 */
 
 #include "identifierName.hpp"

@@ -37,4 +37,4 @@ include_directories(/usr/local/include/srcsax)
 link_directories(/usr/local/lib)
 
 add_executable(nameCollector nameCollector.cpp nameCollectorHandler.hpp identifierName.hpp)
-target_link_libraries(nameCheck srcsax xml2)
+target_link_libraries(nameCollector srcsax xml2)
