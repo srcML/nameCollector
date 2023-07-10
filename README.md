@@ -3,7 +3,18 @@ A tool for getting all user defined identifier names.
 
 Works for C, C++, C#, and Java
 
-# Identifier Types
+Results in a list of identifier names, syntactic type, position.
+
+Example:
+
+| Name            | Type | Position |
+| --------------- | -------------- |---|
+|foo| function| 10:5 |
+|x| parameter| 10:15|
+|i| local| 12:10|
+
+
+# Identifier Types Supported
 
 | Type            | Description |
 | --------------- | -------------- |
@@ -36,8 +47,10 @@ Works for C, C++, C#, and Java
 - Need srcSAX built and installed
 
 `cmake CMakeList.txt -B build`
-cd build
-make`
+
+`cd build`
+
+`make`
 
 
 # To run:
