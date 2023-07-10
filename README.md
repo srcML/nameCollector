@@ -37,7 +37,9 @@ Works for C, C++, C#, and Java
 
 `
 cmake CMakeList.txt -B build
+
 cd build
+
 make
 `
 
