@@ -31,16 +31,13 @@ Works for C, C++, C#, and Java
 
 
 # To build:
--Need libxml2 installed
+- Need libxml2 installed
+- Need srcml (develop) installed
+- Need srcSAX built and installed
 
--Need srcml (develop) installed
-
--Need srcSAX built and installed
-
-`cmake CMakeList.txt -B build
-
+`
+cmake CMakeList.txt -B build
 cd build
-
 make
 `
 
