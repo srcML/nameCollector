@@ -32,11 +32,15 @@ Works for C, C++, C#, and Java
 
 # To build:
 -Need libxml2 installed
+
 -Need srcml (develop) installed
+
 -Need srcSAX built and installed
 
 `cmake CMakeList.txt -B build
+
 cd build
+
 make
 `
 
@@ -48,6 +52,7 @@ It takes a single file in srcML using --position option.
 
 `
 srcml foo.cpp --position -o foo.cpp.xml
+
 ./nameCollector foo.cpp.xml
 `
 
