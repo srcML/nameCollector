@@ -62,5 +62,11 @@ It takes a single file in srcML using --position option.
 
 `./nameCollector foo.cpp.xml`
 
+`./nameCollector --help`
+
+# Output
+
+Output is in CVS with -c option or plain text report.  An output file can be specified with -o option.
+
 
 
