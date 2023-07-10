@@ -35,13 +35,9 @@ Works for C, C++, C#, and Java
 - Need srcml (develop) installed
 - Need srcSAX built and installed
 
-`
-cmake CMakeList.txt -B build
-
-cd build
-
-make
-`
+`cmake CMakeList.txt -B build`
+`cd build`
+`make`
 
 
 # To run:
@@ -49,10 +45,9 @@ make
 Prints out all the user defined identifier names, the syntactic category, and position in file.
 It takes a single file in srcML using --position option.
 
-`
-srcml foo.cpp --position -o foo.cpp.xml
+`srcml foo.cpp --position -o foo.cpp.xml`
 
-./nameCollector foo.cpp.xml
-`
+`./nameCollector foo.cpp.xml`
+
 
 
