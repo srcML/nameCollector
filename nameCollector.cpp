@@ -15,10 +15,31 @@
  *
 */
 
-#include "identifierName.hpp"
-#include "nameCollectorHandler.hpp"
 #include <srcSAXController.hpp>
 #include <iostream>
+#include "CLI11.hpp"
+#include "identifierName.hpp"
+#include "nameCollectorHandler.hpp"
+
+bool           DEBUG = false;                     // Debug flag from CLI option
+
+void printCSV(std::ostream& out, std::vector<identifier>& identifiers, const std::string& inputFile) {
+    out << inputFile << ", ," << std::endl;
+    out << "NAME" << ", TYPE" << ", POSTION" << std::endl;
+    for (unsigned int i = 0; i<identifiers.size(); ++i)
+        out << identifiers[i] << std::endl;
+}
+
+void printReport(std::ostream& out, std::vector<identifier>& identifiers, const std::string& inputFile) {
+    out << "In file: " << inputFile
+        << " the following " << identifiers.size() << " user defined identifiers occur: " << std::endl;
+    for (unsigned int i = 0; i<identifiers.size(); ++i) {
+        out << identifiers[i].getName() <<
+            " at " << identifiers[i].getPosition() <<
+            " is a " << identifiers[i].getCategory() <<std::endl;
+    }
+}
+
 
 /**
  * main
@@ -29,24 +50,45 @@
  * output file.
  */
 int main(int argc, char * argv[]) {
-    if(argc < 2) {
-        std::cerr << "Useage: nameCollector input_file.xml\n";
-        exit(1);
-    }
 
-    std::vector<identifier> identifiers;
-    srcSAXController     control(argv[1]);
-    nameCollectorHandler handler;
+    std::string inputFile  = "";
+    std::string outputFile = "";
+    bool outputCSV      = false; //True is CSV output, false is plain text
+
+    CLI::App app{"nameCollector: Finds all user defined identifier names"};
+
+    app.add_option("input-file", inputFile,  "Filename of srcML file with --position option")->required();
+    app.add_option("-o,--output-file", outputFile, "Filename of output");
+    app.add_flag  ("-c,--csv",  outputCSV, "CSV output (default is plain text report)");
+    app.add_flag  ("-d,--debug",  DEBUG, "Turn on debug mode (off by default)");
+
+    CLI11_PARSE(app, argc, argv);
+
+    srcSAXController        control(inputFile.c_str());
+    nameCollectorHandler    handler;
+    std::vector<identifier> identifiers; //Results
 
     control.parse(&handler);
     identifiers = handler.getIdentifiers();
 
-    std::cout << "In file: " << argv[1]
-              << " the following user defined identifiers occur: " << std::endl;
-    for (int i = 0; i<identifiers.size(); ++i) {
-        std::cout << identifiers[i] << std::endl;
-    }
+    if (outputCSV) {
+        if (outputFile == "")
+            printCSV(std::cout, identifiers, inputFile);
+        else {
+            std::ofstream out(outputFile);
+            printCSV(out, identifiers, inputFile);
+            out.close();
+        }
 
-    std::cout << std::endl;
+    } else {
+        if (outputFile == "")
+            printReport(std::cout, identifiers, inputFile);
+        else {
+            std::ofstream out(outputFile);
+            printReport(out, identifiers, inputFile);
+            out.close();
+        }
+    }
+    
     return 0;
 }

@@ -9,6 +9,8 @@
 #include <vector>
 #include <string>
 
+extern bool DEBUG;
+
 //
 //The syntactic category types for user defined identifiers.
 //
@@ -79,7 +81,7 @@ const std::vector<std::string> USER_DEFINED_TAGS = {
 //Does this tag contain a user defined name?
 //
 bool isUserDefinedIdentifier(const std::string category) {
-    for (int i=0; i<USER_DEFINED_TAGS.size(); ++i)
+    for (unsigned int i=0; i<USER_DEFINED_TAGS.size(); ++i)
         if (category == USER_DEFINED_TAGS[i]) return true;
     return false;
 }
@@ -107,14 +109,11 @@ protected:
     std::string position;    //line:column
 };
 
+//CSV output
 std::ostream& operator<<(std::ostream& out, const identifier& id) {
-    out << id.getName() << " at " << id.getPosition()
-    << " is a " << id.getCategory();
+    out << id.getName() << ", " << id.getCategory() << ", " << id.getPosition();
     return out;
 }
-
-
-
 
 
 #endif

@@ -17,7 +17,7 @@
 
 #include "identifierName.hpp"
 
-const bool NH_DEBUG = false;
+extern bool DEBUG;
 
 /**
  * nameCollectorHandler
@@ -217,7 +217,7 @@ public:
                 }
                 identifiers.push_back(identifier(content, category, position));
 
-                if (NH_DEBUG) {  //For Debugging
+                if (DEBUG) {  //For Debugging
                     std::cout << "Identifier: " << content << std::endl;
                     std::cout << "Category: " << category << std::endl;
                     std::cout << "Position: " << position << std::endl;
