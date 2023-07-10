@@ -36,8 +36,8 @@ Works for C, C++, C#, and Java
 - Need srcSAX built and installed
 
 `cmake CMakeList.txt -B build`
-`cd build`
-`make`
+cd build
+make`
 
 
 # To run:
