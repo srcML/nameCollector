@@ -58,10 +58,10 @@ int main(int argc, char * argv[]) {
     std::string outputFile = "";
     bool outputCSV      = false; //True is CSV output, false is plain text
 
-    CLI::App app{"nameCollector: Finds all user defined identifier names"};
+    CLI::App app{"nameCollector: Finds all user defined identifier names in a source code file.  "};
 
-    app.add_option("input-file", inputFile,  "Filename of srcML file with --position option")->required();
-    app.add_option("-o,--output-file", outputFile, "Filename of output");
+    app.add_option("input", inputFile,  "Name of srcML file of source code with --position option")->required();
+    app.add_option("-o,--output", outputFile, "Name of output file");
     app.add_flag  ("-c,--csv",  outputCSV, "CSV output (default is plain text report)");
     app.add_flag  ("-d,--debug",  DEBUG, "Turn on debug mode (off by default)");
 
