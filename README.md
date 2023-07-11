@@ -1,11 +1,17 @@
 # nameCollector
-A tool for getting all user defined identifier names.  
+A tool for collecting all user defined identifier names from a source code file.  
 
 Works for C, C++, C#, and Java
 
-Results in a list of identifier names, syntactic type, position.
+Input: srcML of a source code file with --position option 
+
+Output: the name of the file and how many identifiers are found. This is followed by a list of identifier names, 
+their syntactic type, and position (line:column) the identifier occurs (declared) in the file.
 
 Example:
+
+| FILENAME:      |  foo.cpp  |  3  |
+| --------------- | ---------- |---|
 
 | Name            | Type | Position |
 | --------------- | -------------- |---|
@@ -14,7 +20,7 @@ Example:
 |i| local| 12:10|
 
 
-# Identifier Types Supported
+# Identifier Types Supported C, C++, C#, Java
 
 | Type            | Description |
 | --------------- | -------------- |
@@ -55,16 +61,13 @@ Example:
 
 # To run:
 
-Prints out all the user defined identifier names, the syntactic category, and position in file.
-It takes a single file in srcML using --position option.
+Generate the srcML for the given source code file using the --position option.  Then run nameCollector.
 
 `srcml foo.cpp --position -o foo.cpp.xml`
 
-`./nameCollector foo.cpp.xml`
+`./nameCollector foo.cpp.xml -c -o results.csv`
 
 `./nameCollector --help`
-
-# Output
 
 Output is in CVS with -c option or plain text report.  An output file can be specified with -o option.
 
