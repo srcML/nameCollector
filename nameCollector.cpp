@@ -1,5 +1,13 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /**
  * @file nameCollector.cpp
+ *
+ * @copyright Copyright (C) 2023 srcML, LLC. (www.srcML.org)
+ *
+ * This file is part of the nameCollector application.
+ */
+
+/**
  *
  * Takes srcML input (with --position) of a file (C++)
  *  Gets a vector<identifier> which contains name, category, and position

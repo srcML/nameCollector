@@ -1,5 +1,12 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /**
  * @file identifierName.hpp
+ *
+ * @copyright Copyright (C) 2023 srcML, LLC. (www.srcML.org)
+ *
+ * This file is part of the nameCollector application.
+ */
+/**
  * Created by Maletic on 6/28/23.
  */
 #ifndef IDENTIFIER_NAME_HPP

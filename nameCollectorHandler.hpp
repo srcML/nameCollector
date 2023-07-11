@@ -1,7 +1,14 @@
+// SPDX-License-Identifier: GPL-3.0-only
 /**
- * @file nameColloctorHandler.hpp
- * Modified by Maletic on July 2023.
+ * @file nameCollectorHandler.cpp
+ *
+ * @copyright Copyright (C) 2013-2023 srcML, LLC. (www.srcML.org)
+ *
+ * This file is part of the nameCollector application.
+ */
 
+/** Modified by MaleticJuly 2023.
+ *
  *  Collects all user defined names in a given C, C++, C#, Java file
  *
  */
