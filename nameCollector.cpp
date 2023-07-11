@@ -23,15 +23,18 @@
 
 bool           DEBUG = false;                     // Debug flag from CLI option
 
-void printCSV(std::ostream& out, std::vector<identifier>& identifiers, const std::string& inputFile) {
-    out << inputFile << ", ," << std::endl;
-    out << "NAME" << ", TYPE" << ", POSTION" << std::endl;
+// Print out coma separated output (CSV)
+// Filename, heading, results.
+void printCSV(std::ostream& out, const std::vector<identifier>& identifiers, const std::string& fname) {
+    out << "FILENAME:, " << fname << ", " << identifiers.size() << std::endl;
+    out << "IDENTIFIER" << ", TYPE" << ", POSTION" << std::endl;
     for (unsigned int i = 0; i<identifiers.size(); ++i)
         out << identifiers[i] << std::endl;
 }
 
-void printReport(std::ostream& out, std::vector<identifier>& identifiers, const std::string& inputFile) {
-    out << "In file: " << inputFile
+//Print out simple report
+void printReport(std::ostream& out, const std::vector<identifier>& identifiers, const std::string& fname) {
+    out << "In file: " << fname
         << " the following " << identifiers.size() << " user defined identifiers occur: " << std::endl;
     for (unsigned int i = 0; i<identifiers.size(); ++i) {
         out << identifiers[i].getName() <<
@@ -70,25 +73,21 @@ int main(int argc, char * argv[]) {
 
     control.parse(&handler);
     identifiers = handler.getIdentifiers();
+    std::string srcName = handler.getsrcFileName();
 
-    if (outputCSV) {
-        if (outputFile == "")
-            printCSV(std::cout, identifiers, inputFile);
-        else {
-            std::ofstream out(outputFile);
-            printCSV(out, identifiers, inputFile);
-            out.close();
-        }
-
+    if (outputFile != "") {
+        std::ofstream out(outputFile);
+        if (outputCSV)
+            printCSV(out, identifiers, srcName);
+        else
+            printReport(out, identifiers, srcName);
+        out.close();
     } else {
-        if (outputFile == "")
-            printReport(std::cout, identifiers, inputFile);
-        else {
-            std::ofstream out(outputFile);
-            printReport(out, identifiers, inputFile);
-            out.close();
-        }
+        if (outputCSV)
+            printCSV(std::cout, identifiers, srcName);
+        else
+            printReport(std::cout, identifiers, srcName);
     }
-    
+
     return 0;
 }

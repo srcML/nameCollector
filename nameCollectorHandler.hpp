@@ -100,7 +100,16 @@ public:
                            int numNamespaces, const struct srcsax_namespace * namespaces, int numAttributes,
                            const struct srcsax_attribute * attributes) {
 
-      elementStack.push_back(localname);
+        if (DEBUG) {  //Print out attributes on <unit>
+            std::cout << "Attributes on UNIT: " << std::endl;
+            for (int i=0; i<numAttributes; ++i)
+                std::cout << attributes[i].value << std::endl;
+        }
+        srcFileName = "unknown";
+        if (numAttributes >= 2)
+            srcFileName = attributes[2].value;
+
+        elementStack.push_back(localname);
     }
 
     /**
@@ -298,6 +307,7 @@ public:
 #pragma GCC diagnostic pop
 
     std::vector<identifier> getIdentifiers() const { return identifiers; }
+    std::string getsrcFileName() const { return srcFileName; }
 
 private:
 
@@ -344,6 +354,7 @@ private:
     std::string              content;          //Content collected
     std::string              position;         //The position of content
     std::vector<std::string> elementStack;     //Stack of srcML tags
+    std::string              srcFileName;      //Source code file name (vs xml)
     std::vector<identifier>  identifiers;      //Identifiers found (results)
 };
 
