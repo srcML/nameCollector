@@ -21,10 +21,12 @@
  *    make
  *    sudo make install
  *
+ *  cmake finds/downloads CLI11.hpp
 */
 
 #include <srcSAXController.hpp>
 #include <iostream>
+#include <stdlib.h>
 #include "CLI11.hpp"
 #include "identifierName.hpp"
 #include "nameCollectorHandler.hpp"
@@ -75,27 +77,31 @@ int main(int argc, char * argv[]) {
 
     CLI11_PARSE(app, argc, argv);
 
-    srcSAXController        control(inputFile.c_str());
-    nameCollectorHandler    handler;
-    std::vector<identifier> identifiers; //Results
+    try {
+        srcSAXController        control(inputFile.c_str());
+        nameCollectorHandler    handler;
+        control.parse(&handler);
+        //Results
+        std::vector<identifier> identifiers = handler.getIdentifiers();
+        std::string             srcName     = handler.getsrcFileName();
 
-    control.parse(&handler);
-    identifiers = handler.getIdentifiers();
-    std::string srcName = handler.getsrcFileName();
-
-    if (outputFile != "") {
-        std::ofstream out(outputFile);
-        if (outputCSV)
-            printCSV(out, identifiers, srcName);
-        else
-            printReport(out, identifiers, srcName);
-        out.close();
-    } else {
-        if (outputCSV)
-            printCSV(std::cout, identifiers, srcName);
-        else
-            printReport(std::cout, identifiers, srcName);
+        if (outputFile != "") {
+            std::ofstream out(outputFile);
+            if (!out.is_open()) {
+                std::cerr << "Error: can not open file: " << outputFile << " for writing."<< std::endl;
+                exit(1);
+            }
+            if (outputCSV) printCSV(out, identifiers, srcName);
+            else           printReport(out, identifiers, srcName);
+            out.close();
+        } else {
+            if (outputCSV) printCSV(std::cout, identifiers, srcName);
+            else           printReport(std::cout, identifiers, srcName);
+        }
+    } catch(std::string& e) {
+        std::cerr << e << std::endl;
     }
+
 
     return 0;
 }
