@@ -64,16 +64,18 @@ void printReport(std::ostream& out, const std::vector<identifier>& identifiers, 
  */
 int main(int argc, char * argv[]) {
 
-    std::string inputFile  = "";
-    std::string outputFile = "";
-    bool outputCSV      = false; //True is CSV output, false is plain text
+    std::string inputFile    = "";
+    std::string outputFile   = "";
+    std::string outputFormat = "";
+    bool        outputCSV    = false; //True is CSV, false is text
 
     CLI::App app{"nameCollector: Finds all user defined identifier names in a source code file.  "};
 
-    app.add_option("input", inputFile,  "Name of srcML file of source code with --position option")->required();
-    app.add_option("-o,--output", outputFile, "Name of output file");
-    app.add_flag  ("-c,--csv",  outputCSV, "CSV output (default is plain text report)");
-    app.add_flag  ("-d,--debug",  DEBUG, "Turn on debug mode (off by default)");
+    app.add_option("input",        inputFile,    "Name of srcML file of source code with --position option")->required();
+    app.add_option("-o, --output", outputFile,   "Name of output file");
+    app.add_option("-f, --format", outputFormat, "The output format (text by default): csv, text"); //To support other output options
+    app.add_flag  ("-c, --csv",    outputCSV,    "Short for: --format csv");
+    app.add_flag  ("-d, --debug",  DEBUG,        "Turn on debug mode (off by default)");
 
     CLI11_PARSE(app, argc, argv);
 
@@ -85,6 +87,9 @@ int main(int argc, char * argv[]) {
         std::vector<identifier> identifiers = handler.getIdentifiers();
         std::string             srcName     = handler.getsrcFileName();
 
+        //Output format is text by default outputCSV == false
+        if (outputFormat == "text") outputCSV = false;
+        if (outputFormat == "csv")  outputCSV = true;
         if (outputFile != "") {
             std::ofstream out(outputFile);
             if (!out.is_open()) {
