@@ -20,7 +20,7 @@ Example:
 |i| local| 12:10|
 
 
-# Identifier Types Supported C, C++, C#, Java
+## Identifier Types Supported C, C++, C#, Java:
 
 | Type            | Description |
 | --------------- | -------------- |
@@ -47,7 +47,7 @@ Example:
 | annotation       | Name of an annotation in Java |
 
 
-# To build:
+## To build:
 - Need libxml2 installed
 - Need srcml (develop) installed
 - Need srcSAX built and installed
@@ -59,7 +59,7 @@ Example:
 `make`
 
 
-# To run:
+## To run:
 
 Generate the srcML for the given source code file using the --position option.  Then run nameCollector.
 
@@ -72,4 +72,12 @@ Generate the srcML for the given source code file using the --position option.  
 Output is in CVS with -c option or plain text report.  An output file can be specified with -o option.
 
 
+## Developer Notes:
 
+The initial version of the application was developed by Decker from the srcSAX examples in June 2023.   This was extended to 
+collect the different types of names by Maletic.  Maletic added the CLI11 interface and made the first public release (July 2023). 
+
+Developers of nameCollector:
+
+- Micheal Decker
+- Jonathan Maletic
