@@ -26,7 +26,6 @@
 
 #include <srcSAXController.hpp>
 #include <iostream>
-#include <stdlib.h>
 #include "CLI11.hpp"
 #include "identifierName.hpp"
 #include "nameCollectorHandler.hpp"
@@ -87,15 +86,13 @@ int main(int argc, char * argv[]) {
         std::vector<identifier> identifiers = handler.getIdentifiers();
         std::string             srcName     = handler.getsrcFileName();
 
-        //Output format is text by default outputCSV == false
+        //Output format is text by default: outputCSV == false
         if (outputFormat == "text") outputCSV = false;
         if (outputFormat == "csv")  outputCSV = true;
         if (outputFile != "") {
             std::ofstream out(outputFile);
-            if (!out.is_open()) {
-                std::cerr << "Error: can not open file: " << outputFile << " for writing."<< std::endl;
-                exit(1);
-            }
+            if (!out.is_open())
+                throw std::string("Error: can not open file: " + outputFile + " for writing.");
             if (outputCSV) printCSV(out, identifiers, srcName);
             else           printReport(out, identifiers, srcName);
             out.close();
@@ -103,10 +100,9 @@ int main(int argc, char * argv[]) {
             if (outputCSV) printCSV(std::cout, identifiers, srcName);
             else           printReport(std::cout, identifiers, srcName);
         }
-    } catch(std::string& e) {
-        std::cerr << e << std::endl;
+    } catch (std::string& error) {
+        std::cerr << error << std::endl;
     }
-
 
     return 0;
 }
