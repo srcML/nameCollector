@@ -5,19 +5,15 @@ Works for C, C++, C#, and Java
 
 Input: srcML of a source code file with --position option 
 
-Output: the name of the file and how many identifiers are found. This is followed by a list of identifier names, 
-their syntactic type, and position (line:column) the identifier occurs (declared) in the file.
+Output: A list of identifier names,  their syntactic type, position (line:column) the identifier occurs (declared), and the file name.  No header is generated.
 
 Example:
 
-| FILENAME:      |  foo.cpp  |  3  |
-| --------------- | ---------- |---|
-
-| Name            | Type | Position |
-| --------------- | -------------- |---|
-|foo| function| 10:5 |
-|x| parameter| 10:15|
-|i| local| 12:10|
+| Name            | Type | Position | File |
+| --------------- | -------------- |---|---|
+|foo| function| 10:5 | foo.cpp |
+|x| parameter| 10:15| foo.cpp |
+|i| local| 12:10| foo.cpp |
 
 
 ## Identifier Types Supported C, C++, C#, Java:
@@ -69,13 +65,12 @@ Generate the srcML for the given source code file using the --position option.  
 
 `./nameCollector --help`
 
-Output is plain text by default.  Use -f csv or --csv for comma separated output.  An output file can be specified with -o option.
+Output is plain text by default.  Use -f csv or --csv for comma separated output.  An output file can be specified with -o option.  The --append option will append output to an existing file rather than overwrite the file.
 
 
 ## Developer Notes:
 
-The initial version of the application was developed by Decker from the srcSAX examples in June 2023.   This was extended to 
-collect the different types of names by Maletic.  Maletic added the CLI11 interface and made the first public release (July 2023). 
+The initial version of the application was developed by Decker from the srcSAX examples in June 2023.   This was extended to collect the different types of names by Maletic.  Maletic added the CLI11 interface and made the first public release (July 2023). 
 
 Developers of nameCollector:
 
