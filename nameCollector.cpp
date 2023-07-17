@@ -26,19 +26,19 @@
 
 #include <srcSAXController.hpp>
 #include <iostream>
+#include <fstream>
 #include "CLI11.hpp"
 #include "identifierName.hpp"
 #include "nameCollectorHandler.hpp"
 
 bool           DEBUG = false;                     // Debug flag from CLI option
 
-// Print out coma separated output (CSV)
-// Filename, heading, results.
+// Print out coma separated output (CSV) - no header
+// identifier, type, position, filename
 void printCSV(std::ostream& out, const std::vector<identifier>& identifiers, const std::string& fname) {
-    out << "FILENAME:, " << fname << ", " << identifiers.size() << std::endl;
-    out << "IDENTIFIER" << ", TYPE" << ", POSTION" << std::endl;
+    //out << "IDENTIFIER" << ", TYPE" << ", POSTION" << ", FILENAME" <<std::endl;
     for (unsigned int i = 0; i<identifiers.size(); ++i)
-        out << identifiers[i] << std::endl;
+        out << identifiers[i] << ", " << fname << std::endl;
 }
 
 //Print out simple report
@@ -67,12 +67,14 @@ int main(int argc, char * argv[]) {
     std::string outputFile   = "";
     std::string outputFormat = "";
     bool        outputCSV    = false; //True is CSV, false is text
+    bool        appendOutput = false;
 
     CLI::App app{"nameCollector: Finds all user defined identifier names in a source code file.  "};
 
     app.add_option("input",        inputFile,    "Name of srcML file of source code with --position option")->required();
     app.add_option("-o, --output", outputFile,   "Name of output file");
     app.add_option("-f, --format", outputFormat, "The output format (text by default): csv, text"); //To support other output options
+    app.add_flag  ("-a, --append", appendOutput, "Output will be appended to end of file");
     app.add_flag  ("-c, --csv",    outputCSV,    "Short for: --format csv");
     app.add_flag  ("-d, --debug",  DEBUG,        "Turn on debug mode (off by default)");
 
@@ -90,7 +92,9 @@ int main(int argc, char * argv[]) {
         if (outputFormat == "text") outputCSV = false;
         if (outputFormat == "csv")  outputCSV = true;
         if (outputFile != "") {
-            std::ofstream out(outputFile);
+            std::ofstream out;
+            if (appendOutput) out.open(outputFile, std::ios::app);
+            else              out.open(outputFile);
             if (!out.is_open())
                 throw std::string("Error: can not open file: " + outputFile + " for writing.");
             if (outputCSV) printCSV(out, identifiers, srcName);
