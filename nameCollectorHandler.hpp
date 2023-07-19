@@ -30,11 +30,14 @@ extern bool DEBUG;
  * nameCollectorHandler
  * Base class that provides hooks for SAX processing
  *
- * This handler collect all the names in a single file (in srcML).
- * It creates a stack so the syntactic category of the name can be
- *  determined.
- *  Constructs a vector of (name, syntactic type, pos)
- *  ("foo", "function", "10:6") A function foo at line 10, column 6
+ * This handler works on srcML input - single unit or multi-unit archive.
+ * It collects all the names in the archive.
+ *
+ * It creates a stack so the syntactic category of the name can be determined.
+ *  Constructs a vector of (name, syntactic type, pos, file)
+ *
+ *  ("foo", "function", "10:6", foo.cpp)
+ *  A function foo at line 10, column 6 in foo.cpp
  *  
  */
 class nameCollectorHandler : public srcSAXHandler {
@@ -231,7 +234,7 @@ public:
                     else if (isLocal()) category = "local";
                     else if (isField()) category = "field";
                 }
-                identifiers.push_back(identifier(content, category, position));
+                identifiers.push_back(identifier(content, category, position, srcFileName));
 
                 if (DEBUG) {  //For Debugging
                     std::cout << "Identifier: " << content << std::endl;
@@ -314,7 +317,6 @@ public:
 #pragma GCC diagnostic pop
 
     std::vector<identifier> getIdentifiers() const { return identifiers; }
-    std::string getsrcFileName() const { return srcFileName; }
 
 private:
 
@@ -361,7 +363,7 @@ private:
     std::string              content;          //Content collected
     std::string              position;         //The position of content
     std::vector<std::string> elementStack;     //Stack of srcML tags
-    std::string              srcFileName;      //Source code file name (vs xml)
+    std::string              srcFileName;      //Current source code file name (vs xml)
     std::vector<identifier>  identifiers;      //Identifiers found (results)
 };
 

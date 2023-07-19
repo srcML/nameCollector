@@ -95,30 +95,35 @@ bool isUserDefinedIdentifier(const std::string category) {
 
 
 
-// Class to represent user defined identifier names
+// A user defined identifier and info
 class identifier {
 public:
     identifier() {};
     identifier(const std::string& nm,
                const std::string& cat,
-               const std::string& pos) {
+               const std::string& pos,
+               const std::string& fname) {
         name = nm;
         category = cat;
         position = pos;
+        filename = fname;
     };
     std::string getName() const {return name;};
     std::string getCategory() const {return category;};
     std::string getPosition() const {return position;};
+    std::string getFilename() const {return filename;};
 
 protected:
     std::string name;        //The identifier name
     std::string category;    //Label from IDENTIFIER_TYPES
     std::string position;    //line:column
+    std::string filename;    //File the identifier occurs
 };
 
 //CSV output
 std::ostream& operator<<(std::ostream& out, const identifier& id) {
-    out << id.getName() << ", " << id.getCategory() << ", " << id.getPosition();
+    out << id.getName()     << ", " << id.getCategory() << ", "
+        << id.getPosition() << ", " << id.getFilename();
     return out;
 }
 

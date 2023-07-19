@@ -9,9 +9,11 @@
 
 /**
  *
- * Takes srcML input (with --position) of a file (C++)
+ * Takes srcML input (with --position) of a source code file(s)
  *  Gets a vector<identifier> which contains name, category, and position
  *  of all the user defined identifiers in the file
+ *
+ * Works for srcML single unit or archives.
  *
  *
  * Need to have installed: libxml2 and srcml
@@ -35,20 +37,21 @@ bool           DEBUG = false;                     // Debug flag from CLI option
 
 // Print out coma separated output (CSV) - no header
 // identifier, type, position, filename
-void printCSV(std::ostream& out, const std::vector<identifier>& identifiers, const std::string& fname) {
+void printCSV(std::ostream& out, const std::vector<identifier>& identifiers) {
     //out << "IDENTIFIER" << ", TYPE" << ", POSTION" << ", FILENAME" <<std::endl;
     for (unsigned int i = 0; i<identifiers.size(); ++i)
-        out << identifiers[i] << ", " << fname << std::endl;
+        out << identifiers[i] << std::endl;
 }
 
 //Print out simple report
-void printReport(std::ostream& out, const std::vector<identifier>& identifiers, const std::string& fname) {
-    out << "In file: " << fname
-        << " the following " << identifiers.size() << " user defined identifiers occur: " << std::endl;
+void printReport(std::ostream& out, const std::vector<identifier>& identifiers) {
+    out << "The following " << identifiers.size() << " user defined identifiers occur: " << std::endl;
     for (unsigned int i = 0; i<identifiers.size(); ++i) {
-        out << identifiers[i].getName() <<
-            " at " << identifiers[i].getPosition() <<
-            " is a " << identifiers[i].getCategory() <<std::endl;
+        out << identifiers[i].getName()
+            << " is a "     << identifiers[i].getCategory()
+            << " in file: " << identifiers[i].getFilename()
+            << " at "       << identifiers[i].getPosition()
+            << std::endl;
     }
 }
 
@@ -57,9 +60,7 @@ void printReport(std::ostream& out, const std::vector<identifier>& identifiers, 
  * main
  * @param argc number of arguments
  * @param argv the provided arguments (array of C strings)
- * 
- * Invoke srcSAX handler to copy the supplied srcML document and into the given
- * output file.
+ *
  */
 int main(int argc, char * argv[]) {
 
@@ -86,7 +87,6 @@ int main(int argc, char * argv[]) {
         control.parse(&handler);
         //Results
         std::vector<identifier> identifiers = handler.getIdentifiers();
-        std::string             srcName     = handler.getsrcFileName();
 
         //Output format is text by default: outputCSV == false
         if (outputFormat == "text") outputCSV = false;
@@ -97,12 +97,12 @@ int main(int argc, char * argv[]) {
             else              out.open(outputFile);
             if (!out.is_open())
                 throw std::string("Error: can not open file: " + outputFile + " for writing.");
-            if (outputCSV) printCSV(out, identifiers, srcName);
-            else           printReport(out, identifiers, srcName);
+            if (outputCSV) printCSV(out, identifiers);
+            else           printReport(out, identifiers);
             out.close();
         } else {
-            if (outputCSV) printCSV(std::cout, identifiers, srcName);
-            else           printReport(std::cout, identifiers, srcName);
+            if (outputCSV) printCSV(std::cout, identifiers);
+            else           printReport(std::cout, identifiers);
         }
     } catch (std::string& error) {
         std::cerr << error << std::endl;
