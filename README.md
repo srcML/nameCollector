@@ -3,9 +3,9 @@ A tool for collecting all user-defined identifier names from a source code file.
 
 Works for C, C++, C#, and Java
 
-Input: srcML of a source code file with --position option 
+Input: A srcML file of source code with --position option.  srcML file can be a single unit (one source code file) or an archive (multiple source code files).
 
-Output: A list of identifier names,  their syntactic type, position (line:column) the identifier occurs (declared), and the file name.  No header is generated.
+Output: A list of identifier names,  their syntactic type, position (line:column) the identifier occurs (declared), and the file name.  Output is plain text (default) or csv (with no header).
 
 Example:
 
