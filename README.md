@@ -72,7 +72,8 @@ Output is plain text by default.  Use -f csv or --csv for comma separated output
 
 The initial version of the application was developed by Decker from the srcSAX examples in June 2023.   This was extended to collect the different types of names by Maletic.  Maletic added the CLI11 interface and made the first public release (July 2023). 
 
-Developers of nameCollector:
+nameCollector is a good simple example of how to use srcSAX to build fast and scalable tools for collecting analysis information.
 
+Developers of nameCollector:
 - Micheal Decker
 - Jonathan Maletic
