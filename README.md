@@ -1,5 +1,5 @@
 # nameCollector
-A tool for collecting all user defined identifier names from a source code file.  
+A tool for collecting all user-defined identifier names from a source code file.  
 
 Works for C, C++, C#, and Java
 
