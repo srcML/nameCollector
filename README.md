@@ -45,8 +45,8 @@ Example:
 
 ## To build:
 - Need libxml2 installed
-- Need srcml (develop) installed
-- Need srcSAX built and installed
+- Need [srcML](https://srcML.org) develop installed
+- Need [srcSAX](https://github.com/srcML/srcSAX)  built and installed  
 
 `cmake CMakeList.txt -B build`
 
@@ -75,5 +75,6 @@ The initial version of the application was developed by Decker from the srcSAX e
 nameCollector is a good simple example of how to use srcSAX to build fast and scalable tools for collecting analysis information.
 
 Developers of nameCollector:
+- Micheal Collard
 - Micheal Decker
 - Jonathan Maletic
