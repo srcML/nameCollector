@@ -75,6 +75,6 @@ The initial version of the application was developed by Decker from the srcSAX e
 nameCollector is a good simple example of how to use srcSAX to build fast and scalable tools for collecting analysis information.
 
 Developers of nameCollector:
-- Micheal Collard
-- Micheal Decker
+- Michael Collard
+- Michael Decker
 - Jonathan Maletic
