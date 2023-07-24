@@ -5,15 +5,15 @@ Works for C, C++, C#, and Java
 
 Input: A srcML file of source code with --position option.  srcML file can be a single unit (one source code file) or an archive (multiple source code files).
 
-Output: A list of identifier names,  their syntactic type, position (line:column) the identifier occurs (declared), and the file name.  Output is plain text (default) or csv (with no header).
+Output: A list of identifier names,  their syntactic type, the file name, and position (line:column) the identifier occurs (declared).  Output is plain text (default) or csv (with no header).
 
 Example:
 
-| Name            | Type | Position | File |
+| Name            | Type | File | Position |
 | --------------- | -------------- |---|---|
-|foo| function| 10:5 | foo.cpp |
-|x| parameter| 10:15| foo.cpp |
-|i| local| 12:10| foo.cpp |
+|foo| function| foo.cpp | 10:5 |
+|x| parameter| foo.cpp | 10:15|
+|i| local| foo.cpp | 12:10|
 
 
 ## Identifier Types Supported C, C++, C#, Java:
@@ -22,7 +22,7 @@ Example:
 | --------------- | -------------- |
 | function        | Function name |
 | constructor     | Constructor name |
-| destructor      |  Destructor name |
+| destructor      | Destructor name |
 | class           | Class name |
 | interface       | Interface name in Java |
 | typedef         | Typedef name |
@@ -33,14 +33,14 @@ Example:
 | label           | Name of a label (as in goto) |
 | local           | Local variable name (in a function) |
 | global          | Gobal variable name |
-| macro          | Macro name in C, C++ |
-| namespace          | User defined namespace in C, C# |
+| macro           | Macro name in C, C++ |
+| namespace       | User defined namespace in C, C# |
 | parameter       | Name of a parameter |
 | function-parameter  | Name of a parameter, that is a function | 
-| template-parameter       | Name of a template parameter |
-| property       | Property name in C# |
-| event       | Event name in C# |
-| annotation       | Name of an annotation in Java |
+| template-parameter  | Name of a template parameter |
+| property        | Property name in C# |
+| event           | Event name in C# |
+| annotation      | Name of an annotation in Java |
 
 
 ## To build:

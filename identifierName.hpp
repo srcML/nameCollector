@@ -120,10 +120,10 @@ protected:
     std::string filename;    //File the identifier occurs
 };
 
-//CSV output
+//CSV output name, category, filename, position
 std::ostream& operator<<(std::ostream& out, const identifier& id) {
     out << id.getName()     << ", " << id.getCategory() << ", "
-        << id.getPosition() << ", " << id.getFilename();
+        << id.getFilename() << ", " << id.getPosition();
     return out;
 }
 

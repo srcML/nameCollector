@@ -36,9 +36,9 @@
 bool           DEBUG = false;                     // Debug flag from CLI option
 
 // Print out coma separated output (CSV) - no header
-// identifier, type, position, filename
+// identifier, type, filename, position
 void printCSV(std::ostream& out, const std::vector<identifier>& identifiers) {
-    //out << "IDENTIFIER" << ", TYPE" << ", POSTION" << ", FILENAME" <<std::endl;
+    //out << "IDENTIFIER" << ", TYPE" << ", FILENAME" << ", POSITION" << std::endl;
     for (unsigned int i = 0; i<identifiers.size(); ++i)
         out << identifiers[i] << std::endl;
 }
@@ -96,7 +96,7 @@ int main(int argc, char * argv[]) {
             if (appendOutput) out.open(outputFile, std::ios::app);
             else              out.open(outputFile);
             if (!out.is_open())
-                throw std::string("Error: can not open file: " + outputFile + " for writing.");
+                throw std::string("Can not open file: " + outputFile + " for writing.");
             if (outputCSV) printCSV(out, identifiers);
             else           printReport(out, identifiers);
             out.close();
@@ -104,8 +104,12 @@ int main(int argc, char * argv[]) {
             if (outputCSV) printCSV(std::cout, identifiers);
             else           printReport(std::cout, identifiers);
         }
-    } catch (std::string& error) {
-        std::cerr << error << std::endl;
+    }
+    catch (std::string& error) {
+        std::cerr << "Error: " << error << std::endl;
+    }
+    catch (SAXError& error) {
+        std::cerr << "Error: " << error.message << " " << error.error_code << std::endl;
     }
 
     return 0;
