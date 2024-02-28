@@ -160,7 +160,21 @@ public:
                 position = attributes[0].value;
             }
         }
-
+        else if (std::string(localname) == "type") {
+            // Check if this is a type ref=prev
+            if (numAttributes >= 1 && std::string(attributes[0].value) == "prev") { } // ignore if it is
+            else {
+                typeInfo insertType;
+                // If parent tag is a decl, check if grandparent is decl_stmt.
+                // If so, make decl_stmt the associated tag
+                if (elementStack[elementStack.size()-2] == "decl" && elementStack[elementStack.size()-3] == "decl_stmt")
+                    insertType.associatedTag = "decl_stmt";
+                else
+                    insertType.associatedTag = elementStack[elementStack.size()-2];
+                insertType.gatherContent = true;
+                typeStack.push_back(insertType);
+            }
+        }
     }
 
     /**
@@ -220,7 +234,7 @@ public:
                 if (category == "constructor_decl") category = "constructor";
                 if (category == "destructor_decl")  category = "destructor";
                 if (category == "annotation_defn")  category = "annotation";
-               if (category == "function_decl") {
+                if (category == "function_decl") {
                     if (elementStack[elementStack.size()-3] == "parameter")
                         category = "function-parameter";
                     else
@@ -234,12 +248,16 @@ public:
                     else if (isLocal()) category = "local";
                     else if (isField()) category = "field";
                 }
-                identifiers.push_back(identifier(content, category, position, srcFileName));
+                std::string type = (isTypedCategory(category) && typeStack.size() != 0 ? typeStack[typeStack.size()-1].type : "");
+                replaceSubStringInPlace(type,",","&#44;");
+                replaceSubStringInPlace(type,"\n","");
+                identifiers.push_back(identifier(content, category, position, srcFileName, type));
 
                 if (DEBUG) {  //For Debugging
                     std::cout << "Identifier: " << content << std::endl;
                     std::cout << "Category: " << category << std::endl;
                     std::cout << "Position: " << position << std::endl;
+                    std::cout << "Type: " << type << std::endl;
                     //Print the stack
                     std::cout << "Stack: " ;
                     for (int i=elementStack.size()-1; i>=0; --i) {
@@ -252,8 +270,18 @@ public:
 
             content = "";
             position = "";
+            
             collectContent = false;
         }
+
+        else if (std::string(localname) == "type") {
+            typeStack[typeStack.size()-1].gatherContent = false;
+        }
+
+        else if (typeStack.size() != 0)
+            if (typeStack[typeStack.size()-1].associatedTag == localname)
+                typeStack.pop_back();
+
         elementStack.pop_back();
     }
 
@@ -301,6 +329,9 @@ public:
         if (collectContent) {
             content.append((const char *)ch, len);
         }
+        for (auto& type : typeStack)
+            if (type.gatherContent)
+                type.type.append((const char*)ch, len);
 
     }
 
@@ -359,12 +390,13 @@ private:
     }
 
 
-    bool                     collectContent;   //Flag to collect characters
-    std::string              content;          //Content collected
-    std::string              position;         //The position of content
-    std::vector<std::string> elementStack;     //Stack of srcML tags
-    std::string              srcFileName;      //Current source code file name (vs xml)
-    std::vector<identifier>  identifiers;      //Identifiers found (results)
+    bool                     collectContent;     //Flag to collect characters
+    std::string              content;            //Content collected
+    std::string              position;           //The position of content
+    std::vector<std::string> elementStack;       //Stack of srcML tags
+    std::string              srcFileName;        //Current source code file name (vs xml)
+    std::vector<identifier>  identifiers;        //Identifiers found (results)
+    std::vector<typeInfo>    typeStack;          //Stack of recent types
 };
 
 #endif

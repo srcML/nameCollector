@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include <vector>
+#include <unordered_set>
 #include <string>
 
 extern bool DEBUG;
@@ -23,7 +24,7 @@ extern bool DEBUG;
 //
 // These are the labels for names produced as output.
 //
-const std::vector<std::string> IDENTIFIER_TYPES = {
+const std::unordered_set<std::string> IDENTIFIER_TYPES = {
     "function",               //Function name
     "constructor",            //Constructor name
     "destructor",             //Destructor name
@@ -53,7 +54,7 @@ const std::vector<std::string> IDENTIFIER_TYPES = {
 // Need to add tag names here if you examine that syntactic category for
 //  a name.  When adding new languages or constructs
 //
-const std::vector<std::string> USER_DEFINED_TAGS = {
+const std::unordered_set<std::string> USER_DEFINED_TAGS = {
     "decl",   //For C, C++, C#, Java
     "label",
     "typedef",
@@ -83,17 +84,49 @@ const std::vector<std::string> USER_DEFINED_TAGS = {
     "annotation_defn" //Java only
 };
 
+//
+//srcML categories that have types AND are named
+//For C/C++, C#, and Java
+// Need to add categories here if they contain a top-level type tag
+//
+const std::unordered_set<std::string> TYPED_CATEGORIES = {
+    "local",
+    "global",
+    "field",
+    "typedef",
+    "parameter",
+    "function",
+    "function_decl",
+    "event", //C# only
+    "property" //C# only
+};
 
 
 //Does this tag contain a user defined name?
 //
-bool isUserDefinedIdentifier(const std::string category) {
-    for (unsigned int i=0; i<USER_DEFINED_TAGS.size(); ++i)
-        if (category == USER_DEFINED_TAGS[i]) return true;
-    return false;
+bool isUserDefinedIdentifier(const std::string& category) {
+    return USER_DEFINED_TAGS.find(category) != USER_DEFINED_TAGS.end();
 }
 
+// Does this tag contain a type?
+bool isTypedCategory(const std::string& category) {
+    return TYPED_CATEGORIES.find(category) != TYPED_CATEGORIES.end();
+}
 
+struct typeInfo {
+    std::string type;
+    std::string associatedTag;
+    bool gatherContent;
+};
+
+void replaceSubStringInPlace(std::string& subject, const std::string& search,
+                          const std::string& replace) {
+    size_t pos = 0;
+    while ((pos = subject.find(search, pos)) != std::string::npos) {
+         subject.replace(pos, search.length(), replace);
+         pos += replace.length();
+    }
+}
 
 // A user defined identifier and info
 class identifier {
@@ -102,28 +135,34 @@ public:
     identifier(const std::string& nm,
                const std::string& cat,
                const std::string& pos,
-               const std::string& fname) {
+               const std::string& fname,
+               const std::string& typ="") {
         name = nm;
         category = cat;
         position = pos;
         filename = fname;
+        type = typ;
+
     };
     std::string getName() const {return name;};
     std::string getCategory() const {return category;};
     std::string getPosition() const {return position;};
     std::string getFilename() const {return filename;};
+    std::string getType() const {return type;};
 
 protected:
     std::string name;        //The identifier name
     std::string category;    //Label from IDENTIFIER_TYPES
     std::string position;    //line:column
     std::string filename;    //File the identifier occurs
+    std::string type;        //Optional type for decls and functions
 };
 
 //CSV output name, category, filename, position
 std::ostream& operator<<(std::ostream& out, const identifier& id) {
-    out << id.getName()     << ", " << id.getCategory() << ", "
-        << id.getFilename() << ", " << id.getPosition();
+    out << id.getName()     << ", " << id.getType() << ", "
+        << id.getCategory() << ", " << id.getFilename() << ", "
+        << id.getPosition();
     return out;
 }
 
