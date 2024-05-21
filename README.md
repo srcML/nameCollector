@@ -5,20 +5,20 @@ Works for C, C++, C#, and Java
 
 Input: A srcML file of source code with --position option.  srcML file can be a single unit (one source code file) or an archive (multiple source code files).
 
-Output: A list of identifier names,  their syntactic type, the file name, and position (line:column) the identifier occurs (declared).  Output is plain text (default) or csv (with no header).
+Output: A list of identifier names,  their type (for declartions and functions), their syntactic category, the file name, and position (line:column) the identifier occurs (declared).  Output is plain text (default) or csv (with no header).
 
 Example:
 
-| Name            | Type | File | Position |
-| --------------- | -------------- |---|---|
-|foo| function| foo.cpp | 10:5 |
-|x| parameter| foo.cpp | 10:15|
-|i| local| foo.cpp | 12:10|
+| Name            | Type     | Category   | File   | Position |
+| --------------- | -------------- |---|---|---|
+|foo| char |function| foo.cpp | 10:5 |
+|x| double | parameter| foo.cpp | 10:15|
+|i| int | local| foo.cpp | 12:10|
 
 
-## Identifier Types Supported C, C++, C#, Java:
+## Identifier Syntactic Categories Supported C, C++, C#, Java:
 
-| Type            | Description |
+| Category        | Description |
 | --------------- | -------------- |
 | function        | Function name |
 | constructor     | Constructor name |
@@ -78,3 +78,4 @@ Developers of nameCollector:
 - Michael Collard
 - Michael Decker
 - Jonathan Maletic
+- Joshua Behler
