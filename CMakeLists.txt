@@ -41,14 +41,17 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+include_directories(/usr/local/include/srcsax)
+
+find_library(LIBSRCSAX NAMES libsrcsax.a srcsax PATHS /usr/local/lib REQUIRED)
+
 find_package(srcML REQUIRED)
 find_package(LibXml2 REQUIRED)
 
-include_directories(/usr/local/include/srcsax)
 link_directories(/usr/local/lib)
 
 add_executable(nameCollector nameCollector.cpp nameCollectorHandler.hpp identifierName.hpp)
-target_link_libraries(nameCollector srcsax srcML::LibsrcML LibXml2::LibXml2)
+target_link_libraries(nameCollector ${LIBSRCSAX} srcML::LibsrcML LibXml2::LibXml2)
 
 # Download the CLI11 parser into directory named "external".
 set(CMAKE_EXTERNAL_SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external) # Creates folder if doesn't exists.
