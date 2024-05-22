@@ -156,9 +156,8 @@ public:
 
         if (std::string(localname) == "name") {
             collectContent = true;
-            if (numAttributes >= 1) {
+            if (numAttributes >= 1)
                 position = attributes[0].value;
-            }
         }
         else if (std::string(localname) == "type") {
             // Check if this is a type ref=prev
@@ -276,6 +275,12 @@ public:
 
         else if (std::string(localname) == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
+        }
+
+        else if (std::string(localname) == "operator") {
+            if (elementStack.back() == "name2") {
+                identifiers.erase(identifiers.end() - 1);
+            }
         }
 
         else if (typeStack.size() != 0)
