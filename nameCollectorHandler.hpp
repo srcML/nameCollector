@@ -148,11 +148,32 @@ public:
 
 
           // this is adding all elements, so you might only want to push certain elements
+        std::string back = elementStack.back();
 
-        if (elementStack.back() == "name")
-            elementStack.push_back("name2");
-        else
+        // Top-level Names
+        if (back == "name" && std::string(localname) == "name")
+            elementStack.push_back("name_2");
+
+        // Sub-names in complex names
+        else if (back.find("name_") == 0 && std::string(localname) == "name") {
+            int depth = std::stoi(back.substr(5));
+            elementStack.push_back("name_" + std::to_string(depth+1));
+        }
+
+        // Operators in top-level names
+        else if (back == "name" && std::string(localname) == "operator") 
+            elementStack.push_back("operator_name_2");
+
+        // Operators in sub-names
+        else if (back.find("name_") == 0 && std::string(localname) == "operator") {
+            int depth = std::stoi(back.substr(5));
+            elementStack.push_back("operator_name_" + std::to_string(depth+1));
+        }
+
+        // All other tags
+        else {
             elementStack.push_back(localname);
+        }
 
         if (std::string(localname) == "name") {
             collectContent = true;
@@ -219,10 +240,12 @@ public:
     virtual void endElement(const char* localname, const char* prefix, const char* URI) {
         if ((std::string(localname) == "name") && (content != ""))  {
             std::string category;
-            if (elementStack.back() == "name2")
-                category = elementStack[elementStack.size()-3];// <name> <name>
-            else
+            if (elementStack.back() == "name")
                 category = elementStack[elementStack.size()-2]; //Normal name
+            else {
+                int depth = std::stoi(elementStack.back().substr(5));
+                category = elementStack[elementStack.size()-(depth+1)];
+            }
 
             //Only interested in user defined identifiers
             if (isUserDefinedIdentifier(category)) {
@@ -266,6 +289,15 @@ public:
                     std::cout <<  "------------------------" << std::endl;
                 }
             }
+            else {
+                std::cout << "SPECIAL NAME " << category << "|" << content << std::endl;
+                std::cout << "Stack: " ;
+                for (int i=elementStack.size()-1; i>=0; --i) {
+                    std::cout << elementStack[i] << " | ";
+                }
+                std::cout << std::endl;
+                std::cout <<  "------------------------" << std::endl;
+            }
 
             content = "";
             position = "";
@@ -278,8 +310,25 @@ public:
         }
 
         else if (std::string(localname) == "operator") {
-            if (elementStack.back() == "name2") {
-                identifiers.erase(identifiers.end() - 1);
+            if (elementStack.back().find("operator_name_") == 0) {
+                int depth = std::stoi(elementStack.back().substr(14));
+                if(isUserDefinedIdentifier(elementStack[elementStack.size()-(depth+1)])) {
+                    if(DEBUG) {
+                        std::cout << "DELETEING" << std::endl;
+                        std::cout << "Stack Before: " << std::endl;
+                        for(int i = 0; i < identifiers.size(); ++i) {
+                            std::cout << i << ": " << identifiers[i] << std::endl;
+                        }
+                    }
+                    identifiers.erase(identifiers.end() - 1);
+                    if(DEBUG) {
+                        std::cout << "Stack After: " << std::endl;
+                        for(int i = 0; i < identifiers.size(); ++i) {
+                            std::cout << i << ": " << identifiers[i] << std::endl;
+                        }
+                        std::cout <<  "------------------------" << std::endl;
+                    }
+                }
             }
         }
 
