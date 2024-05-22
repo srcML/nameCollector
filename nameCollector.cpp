@@ -36,9 +36,9 @@
 bool           DEBUG = false;                     // Debug flag from CLI option
 
 // Print out coma separated output (CSV) - no header
-// identifier, type, filename, position
+// identifier, type, category, filename, position
 void printCSV(std::ostream& out, const std::vector<identifier>& identifiers) {
-    //out << "IDENTIFIER" << ", TYPE" << ", FILENAME" << ", POSITION" << std::endl;
+    //out << "IDENTIFIER" << ", TYPE" << ", CATEGORY" << ", FILENAME" << ", POSITION" << std::endl;
     for (unsigned int i = 0; i<identifiers.size(); ++i)
         out << identifiers[i] << std::endl;
 }
