@@ -39,7 +39,7 @@ bool           DEBUG = false;                     // Debug flag from CLI option
 // identifier, type, filename, position
 void printCSV(std::ostream& out, const std::vector<identifier>& identifiers) {
     //out << "IDENTIFIER" << ", TYPE" << ", FILENAME" << ", POSITION" << std::endl;
-    for (unsigned int i = 0; i<identifiers.size(); ++i)
+    for (unsigned int i = 0; i < identifiers.size(); ++i)
         out << identifiers[i] << std::endl;
 }
 
@@ -48,9 +48,10 @@ void printReport(std::ostream& out, const std::vector<identifier>& identifiers) 
     out << "The following " << identifiers.size() << " user defined identifiers occur: " << std::endl;
     for (unsigned int i = 0; i<identifiers.size(); ++i) {
         out << identifiers[i].getName()
-            << " is a "     << identifiers[i].getCategory()
+            << " is a " << identifiers[i].getType()
+            << (identifiers[i].getType() != "" ? " " : "") << identifiers[i].getCategory()
             << " in file: " << identifiers[i].getFilename()
-            << " at "       << identifiers[i].getPosition()
+            << (identifiers[i].getPosition() != "" ? " at " : "") <<  identifiers[i].getPosition()
             << std::endl;
     }
 }
