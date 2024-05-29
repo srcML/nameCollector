@@ -289,15 +289,6 @@ public:
                     std::cout <<  "------------------------" << std::endl;
                 }
             }
-            else {
-                std::cout << "SPECIAL NAME " << category << "|" << content << std::endl;
-                std::cout << "Stack: " ;
-                for (int i=elementStack.size()-1; i>=0; --i) {
-                    std::cout << elementStack[i] << " | ";
-                }
-                std::cout << std::endl;
-                std::cout <<  "------------------------" << std::endl;
-            }
 
             content = "";
             position = "";
@@ -309,25 +300,20 @@ public:
             typeStack[typeStack.size()-1].gatherContent = false;
         }
 
+        // If an operator (::) is found in a signifigant name, delete previous name
         else if (std::string(localname) == "operator") {
             if (elementStack.back().find("operator_name_") == 0) {
                 int depth = std::stoi(elementStack.back().substr(14));
                 if(isUserDefinedIdentifier(elementStack[elementStack.size()-(depth+1)])) {
+
                     if(DEBUG) {
-                        std::cout << "DELETEING" << std::endl;
-                        std::cout << "Stack Before: " << std::endl;
-                        for(int i = 0; i < identifiers.size(); ++i) {
-                            std::cout << i << ": " << identifiers[i] << std::endl;
-                        }
-                    }
-                    identifiers.erase(identifiers.end() - 1);
-                    if(DEBUG) {
-                        std::cout << "Stack After: " << std::endl;
-                        for(int i = 0; i < identifiers.size(); ++i) {
-                            std::cout << i << ": " << identifiers[i] << std::endl;
-                        }
+                        std::cout << "Removing " << identifiers[identifiers.size() - 1] << " from stack" << std::endl;
                         std::cout <<  "------------------------" << std::endl;
                     }
+
+                    identifiers.erase(identifiers.end() - 1);
+
+                    
                 }
             }
         }
