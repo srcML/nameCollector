@@ -38,7 +38,7 @@ bool           DEBUG = false;                     // Debug flag from CLI option
 // Print out coma separated output (CSV) - no header
 // identifier, type, category, filename, position
 void printCSV(std::ostream& out, const std::vector<identifier>& identifiers) {
-    //out << "IDENTIFIER" << ", TYPE" << ", CATEGORY" << ", FILENAME" << ", POSITION" << std::endl;
+    //out << "IDENTIFIER" << ", TYPE" << ", CATEGORY" << ", FILENAME" << ", POSITION" << ", LANGUAGE" << std::endl;
     for (unsigned int i = 0; i < identifiers.size(); ++i)
         out << identifiers[i] << std::endl;
 }
@@ -50,12 +50,11 @@ void printReport(std::ostream& out, const std::vector<identifier>& identifiers) 
         out << identifiers[i].getName()
             << " is a " << identifiers[i].getType()
             << (identifiers[i].getType() != "" ? " " : "") << identifiers[i].getCategory()
-            << " in file: " << identifiers[i].getFilename()
+            << " in " << identifiers[i].getLanguage() << " file: " << identifiers[i].getFilename()
             << (identifiers[i].getPosition() != "" ? " at " : "") <<  identifiers[i].getPosition()
             << std::endl;
     }
 }
-
 
 /**
  * main

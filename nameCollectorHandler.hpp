@@ -115,6 +115,11 @@ public:
             for (int i=0; i<numAttributes; ++i)
                 std::cout << attributes[i].value << std::endl;
         }
+
+        srcFileLanguage = "unknown";
+        if (numAttributes >= 1)
+            srcFileLanguage = attributes[1].value;
+
         srcFileName = "unknown";
         if (numAttributes >= 2)
             srcFileName = attributes[2].value;
@@ -273,7 +278,7 @@ public:
                 std::string type = (isTypedCategory(category) && typeStack.size() != 0 ? typeStack[typeStack.size()-1].type : "");
                 replaceSubStringInPlace(type,",","&#44;");
                 replaceSubStringInPlace(type,"\n","");
-                identifiers.push_back(identifier(content, category, position, srcFileName, type));
+                identifiers.push_back(identifier(content, category, position, srcFileName, srcFileLanguage, type));
 
                 if (DEBUG) {  //For Debugging
                     std::cout << "Identifier: " << content << std::endl;
@@ -435,6 +440,7 @@ private:
     std::string              position;           //The position of content
     std::vector<std::string> elementStack;       //Stack of srcML tags
     std::string              srcFileName;        //Current source code file name (vs xml)
+    std::string              srcFileLanguage;    //Current source code language
     std::vector<identifier>  identifiers;        //Identifiers found (results)
     std::vector<typeInfo>    typeStack;          //Stack of recent types
 };

@@ -136,11 +136,13 @@ public:
                const std::string& cat,
                const std::string& pos,
                const std::string& fname,
+               const std::string& flang,
                const std::string& typ="") {
         name = nm;
         category = cat;
         position = pos;
         filename = fname;
+        language = flang;
         type = typ;
 
     };
@@ -148,21 +150,23 @@ public:
     std::string getCategory() const {return category;};
     std::string getPosition() const {return position;};
     std::string getFilename() const {return filename;};
+    std::string getLanguage() const {return language;};
     std::string getType() const {return type;};
-
+    
 protected:
     std::string name;        //The identifier name
     std::string category;    //Label from IDENTIFIER_TYPES
     std::string position;    //line:column
     std::string filename;    //File the identifier occurs
+    std::string language;    //The programming language the name was in
     std::string type;        //Optional type for decls and functions
 };
 
 //CSV output name, category, filename, position
 std::ostream& operator<<(std::ostream& out, const identifier& id) {
-    out << id.getName()     << ", " << id.getType() << ", "
+    out << id.getName()     << ", " << id.getType()     << ", "
         << id.getCategory() << ", " << id.getFilename() << ", "
-        << id.getPosition();
+        << id.getPosition() << ", " << id.getLanguage();
     return out;
 }
 
