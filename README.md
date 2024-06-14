@@ -9,11 +9,11 @@ Output: A list of identifier names,  their type (for declartions and functions),
 
 Example:
 
-| Name            | Type     | Category   | File   | Position |
-| --------------- | -------------- |---|---|---|
-|foo| char |function| foo.cpp | 10:5 |
-|x| double | parameter| foo.cpp | 10:15|
-|i| int | local| foo.cpp | 12:10|
+| Name            | Type     | Category   | File   | Position | Language |
+| --------------- | -------------- |---|---|---|---|
+|foo| char |function| foo.cpp | 10:5 | C++ |
+|x| double | parameter| foo.cpp | 10:15| C++ |
+|i| int | local| foo.cpp | 12:10| C++ |
 
 
 ## Identifier Syntactic Categories Supported C, C++, C#, Java:
