@@ -72,7 +72,7 @@ int main(int argc, char * argv[]) {
 
     CLI::App app{"nameCollector: Finds all user defined identifier names in a source code file.  "};
 
-    app.add_option("input",        inputFile,    "Name of srcML file of source code with --position option")->required();
+    app.add_option("-i, --input",  inputFile,    "Name of srcML file of source code with --position option");
     app.add_option("-o, --output", outputFile,   "Name of output file");
     app.add_option("-f, --format", outputFormat, "The output format (text by default): csv, text"); //To support other output options
     app.add_flag  ("-a, --append", appendOutput, "Output will be appended to end of file");
@@ -82,9 +82,24 @@ int main(int argc, char * argv[]) {
     CLI11_PARSE(app, argc, argv);
 
     try {
-        srcSAXController        control(inputFile.c_str());
+
         nameCollectorHandler    handler;
-        control.parse(&handler);
+
+        // srcSAXController        control(inputFile.c_str());
+        if (inputFile != "") {
+            srcSAXController control (inputFile.c_str());
+            control.parse(&handler);
+        }
+        else {
+            std::string input = "";
+            std::string line;
+            while (std::getline(std::cin, line)) {
+                input += line + '\n';
+            }
+            srcSAXController control (input);
+            control.parse(&handler);
+        }
+
         //Results
         std::vector<identifier> identifiers = handler.getIdentifiers();
 

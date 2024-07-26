@@ -61,11 +61,11 @@ Generate the srcML for the given source code file using the --position option.  
 
 `srcml foo.cpp --position -o foo.cpp.xml`
 
-`./nameCollector foo.cpp.xml -f csv -o results.csv`
+`./nameCollector -i foo.cpp.xml --csv -o results.csv`
 
 `./nameCollector --help`
 
-Output is plain text by default.  Use -f csv or --csv for comma separated output.  An output file can be specified with -o option.  The --append option will append output to an existing file rather than overwrite the file.
+Output is plain text by default.  Use -f csv or --csv for comma separated output.  An output file can be specified with -o option. Takes standard input by default, and an input file can be specified with -i.  The --append option will append output to an existing file rather than overwrite the file.
 
 
 ## Developer Notes:
