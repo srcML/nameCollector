@@ -180,11 +180,17 @@ public:
             elementStack.push_back(localname);
         }
 
+
         if (std::string(localname) == "name") {
             collectContent = true;
-            if (numAttributes >= 1)
-                position = attributes[0].value;
+            for(int i = 0; i < numAttributes; ++i) {
+                if (attributes[i].prefix == "pos" && attributes[i].localname == "start") {
+                    position = attributes[i].value;
+                    break;
+                }
+            }
         }
+
         else if (std::string(localname) == "type") {
             // Check if this is a type ref=prev
             if (numAttributes >= 1 && std::string(attributes[0].value) == "prev") { } // ignore if it is
@@ -198,6 +204,17 @@ public:
                     insertType.associatedTag = elementStack[elementStack.size()-2];
                 insertType.gatherContent = true;
                 typeStack.push_back(insertType);
+            }
+        }
+
+        else if (std::string(localname) == "function" || std::string(localname) == "class") {
+            // Check for stereotype information from stereocode
+            for (int i = 0; i < numAttributes; ++i) {
+                // std::cout << attributes[i].prefix << attributes[i].localname << ":" << attributes[i].value << std::endl;
+                if (attributes[i].prefix == "st" && attributes[i].localname == "stereotype") {
+                    stereotype = attributes[i].value;
+                    break;
+                }
             }
         }
     }
@@ -278,12 +295,13 @@ public:
                 std::string type = (isTypedCategory(category) && typeStack.size() != 0 ? typeStack[typeStack.size()-1].type : "");
                 replaceSubStringInPlace(type,",","&#44;");
                 replaceSubStringInPlace(type,"\n","");
-                identifiers.push_back(identifier(content, category, position, srcFileName, srcFileLanguage, type));
+                identifiers.push_back(identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
 
                 if (DEBUG) {  //For Debugging
                     std::cout << "Identifier: " << content << std::endl;
                     std::cout << "Category: " << category << std::endl;
                     std::cout << "Position: " << position << std::endl;
+                    std::cout << "Stereotype: " << stereotype << std::endl;
                     std::cout << "Type: " << type << std::endl;
                     //Print the stack
                     std::cout << "Stack: " ;
@@ -438,6 +456,7 @@ private:
     bool                     collectContent;     //Flag to collect characters
     std::string              content;            //Content collected
     std::string              position;           //The position of content
+    std::string              stereotype;         //Optional stereotype info of funcs/classes
     std::vector<std::string> elementStack;       //Stack of srcML tags
     std::string              srcFileName;        //Current source code file name (vs xml)
     std::string              srcFileLanguage;    //Current source code language

@@ -48,8 +48,9 @@ void printReport(std::ostream& out, const std::vector<identifier>& identifiers) 
     out << "The following " << identifiers.size() << " user defined identifiers occur: " << std::endl;
     for (unsigned int i = 0; i<identifiers.size(); ++i) {
         out << identifiers[i].getName()
-            << " is a " << identifiers[i].getType()
-            << (identifiers[i].getType() != "" ? " " : "") << identifiers[i].getCategory()
+            << " is a " << identifiers[i].getStereotype() << (identifiers[i].getStereotype() != "" ? " " : "")
+            << identifiers[i].getType() << (identifiers[i].getType() != "" ? " " : "")
+            << identifiers[i].getCategory()
             << " in " << identifiers[i].getLanguage() << " file: " << identifiers[i].getFilename()
             << (identifiers[i].getPosition() != "" ? " at " : "") <<  identifiers[i].getPosition()
             << std::endl;
