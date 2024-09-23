@@ -5,16 +5,16 @@ Works for C, C++, C#, and Java
 
 Input: A srcML file of source code with --position option.  srcML file can be a single unit (one source code file) or an archive (multiple source code files).
 
-Output: A list of identifier names,  their type (for declartions and functions), their syntactic category, the file name, and position (line:column) the identifier occurs (declared), and the programming langauge.  Output is plain text (default) or csv (with no header).
+Output: A list of identifier names,  their type (for declartions and functions), their stereotype (from [stereocode](https://github.com/srcML/stereocode) - optional), their syntactic category, the file name, and position (line:column) the identifier occurs (declared), and the programming langauge.  Output is plain text (default) or csv (with no header).
 
 Example:
 
-| Name            | Type     | Category   | File   | Position | Language |
-| --------------- | -------------- |---|---|---|---|
-|foo| char |function| foo.cpp | 10:5 | C++ |
-|x| double | parameter| foo.cpp | 10:15| C++ |
-|i| int | local| foo.cpp | 12:10| C++ |
-|stack|   | class | foo.cpp | 15:7| C++ |
+| Name            | Type     | Stereotype    | Category   | File   | Position | Language |
+| --------------- | -------------- | -------- |---|---|---|---|
+|foo| char |function| get | foo.cpp | 10:5 | C++ |
+|x| double | parameter| | foo.cpp | 10:15| C++ |
+|i| int | local| | foo.cpp | 12:10| C++ |
+|stack|   | class | small-class | foo.cpp | 15:7| C++ |
 
 ## Identifier Syntactic Categories Supported C, C++, C#, Java:
 
