@@ -101,6 +101,16 @@ const std::unordered_set<std::string> TYPED_CATEGORIES = {
     "property" //C# only
 };
 
+const std::unordered_set<std::string> STEREOTYPED_CATEGORIES = {
+    "function",
+    "class",
+    "struct",
+    "constructor",
+    "destructor",
+    "interface", // Java only
+    "union"
+};
+
 
 //Does this tag contain a user defined name?
 //
@@ -111,6 +121,11 @@ bool isUserDefinedIdentifier(const std::string& category) {
 // Does this tag contain a type?
 bool isTypedCategory(const std::string& category) {
     return TYPED_CATEGORIES.find(category) != TYPED_CATEGORIES.end();
+}
+
+// Is this tag stereotypable?
+bool isStereotypableCategory(const std::string& category) {
+    return STEREOTYPED_CATEGORIES.find(category) != STEREOTYPED_CATEGORIES.end();
 }
 
 struct typeInfo {
@@ -168,10 +183,10 @@ protected:
 
 //CSV output name, category, filename, position
 std::ostream& operator<<(std::ostream& out, const identifier& id) {
-    out << id.getName()       << ", " << id.getType()     << ", "
-        << id.getStereotype() << ", " << id.getCategory() << ", "
-        << id.getFilename()   << ", " << id.getPosition()
-        << ", " << id.getLanguage();
+    out << id.getName()       << "," << id.getType()     << ","
+        << id.getStereotype() << "," << id.getCategory() << ","
+        << id.getFilename()   << "," << id.getPosition()
+        << "," << id.getLanguage();
     return out;
 }
 
