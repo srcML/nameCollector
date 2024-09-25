@@ -193,7 +193,13 @@ public:
 
         else if (std::string(localname) == "type") {
             // Check if this is a type ref=prev
-            if (numAttributes >= 1 && std::string(attributes[0].value) == "prev") { } // ignore if it is
+            bool isPrevType = false;
+            for (int i = 0; i < numAttributes; ++i) {
+                if (std::string(attributes[i].localname) == "prev") {
+                    isPrevType = true;
+                }
+            }
+            if (isPrevType) { } // ignore if it is
             else {
                 typeInfo insertType;
                 // If parent tag is a decl, check if grandparent is decl_stmt.
@@ -210,7 +216,7 @@ public:
         else if (isStereotypableCategory(localname)) {
             // Check for stereotype information from stereocode
             for (int i = 0; i < numAttributes; ++i) {
-                if (std::string(attributes[i].prefix) == "st" && std::string(attributes[i].localname) == "stereotype") {
+                if (attributes[i].prefix != 0 && std::string(attributes[i].prefix) == "st" && std::string(attributes[i].localname) == "stereotype") {
                     stereotypeStack.push_back(attributes[i].value);
                     break;
                 }
