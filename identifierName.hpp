@@ -183,10 +183,10 @@ protected:
 
 //CSV output name, category, filename, position
 std::ostream& operator<<(std::ostream& out, const identifier& id) {
-    out << id.getName()       << "," << id.getType()     << ","
-        << id.getStereotype() << "," << id.getCategory() << ","
-        << id.getFilename()   << "," << id.getPosition()
-        << "," << id.getLanguage();
+    out        << id.getName()        << "," << id.getType()
+        << "," << id.getCategory()    << "," << id.getFilename()
+        << "," << id.getPosition()    << "," << id.getLanguage()
+        << "," << id.getStereotype();
     return out;
 }
 
