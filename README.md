@@ -5,7 +5,7 @@ Works for C, C++, C#, and Java
 
 Input: A srcML file of source code with --position option.  srcML file can be a single unit (one source code file) or an archive (multiple source code files).
 
-Output: A list of identifier names,  their type (for declartions and functions), their syntactic category, the file name, and position (line:column) the identifier occurs (declared), the programming langauge, and for methods and classes their stereotype (from [stereocode](https://github.com/srcML/stereocode) l) if it is in the srcML.  Output is plain text (default) or csv (with no header).
+Output: A list of identifier names,  their type (for declartions and functions), their syntactic category, the file name, and position (line:column) the identifier occurs (declared), the programming langauge, and for methods and classes their stereotype, from [stereocode](https://github.com/srcML/stereocode), if it is in the srcML.  Output is plain text (default) or csv (with no header).
 
 Example:
 
