@@ -11,10 +11,10 @@ Example:
 
 | Name            | Type     | Category   | File   | Position | Language | Stereotype    |
 | --------------- | -------------- | -------- |---|---|---|---|
-|foo| char | function | get | foo.cpp | 10:5 | C++ | get |
-|x| double | parameter | foo.cpp | 10:15| C++ | | 
+|foo| char | function | foo.cpp | 10:5 | C++ | get |
+|x| double | parameter | foo.cpp | 10:15| C++ |  | 
 |i| int | local | foo.cpp | 12:10 | C++ | | 
-|stack|   | class | small-class | foo.cpp | 15:7| C++ | small-class |
+|stack|   | class | foo.cpp | 15:7| C++ | small-class |
 
 ## Identifier Syntactic Categories Supported C, C++, C#, Java:
 
