@@ -180,14 +180,26 @@ public:
             elementStack.push_back(localname);
         }
 
+
         if (std::string(localname) == "name") {
             collectContent = true;
-            if (numAttributes >= 1)
-                position = attributes[0].value;
+            for(int i = 0; i < numAttributes; ++i) {
+                if (std::string(attributes[i].prefix) == "pos" && std::string(attributes[i].localname) == "start") {
+                    position = attributes[i].value;
+                    break;
+                }
+            }
         }
+
         else if (std::string(localname) == "type") {
             // Check if this is a type ref=prev
-            if (numAttributes >= 1 && std::string(attributes[0].value) == "prev") { } // ignore if it is
+            bool isPrevType = false;
+            for (int i = 0; i < numAttributes; ++i) {
+                if (std::string(attributes[i].localname) == "prev") {
+                    isPrevType = true;
+                }
+            }
+            if (isPrevType) { } // ignore if it is
             else {
                 typeInfo insertType;
                 // If parent tag is a decl, check if grandparent is decl_stmt.
@@ -198,6 +210,16 @@ public:
                     insertType.associatedTag = elementStack[elementStack.size()-2];
                 insertType.gatherContent = true;
                 typeStack.push_back(insertType);
+            }
+        }
+
+        else if (isStereotypableCategory(localname)) {
+            // Check for stereotype information from stereocode
+            for (int i = 0; i < numAttributes; ++i) {
+                if (attributes[i].prefix != 0 && std::string(attributes[i].prefix) == "st" && std::string(attributes[i].localname) == "stereotype") {
+                    stereotypeStack.push_back(attributes[i].value);
+                    break;
+                }
             }
         }
     }
@@ -275,15 +297,21 @@ public:
                     else if (isLocal()) category = "local";
                     else if (isField()) category = "field";
                 }
+                
                 std::string type = (isTypedCategory(category) && typeStack.size() != 0 ? typeStack[typeStack.size()-1].type : "");
                 replaceSubStringInPlace(type,",","&#44;");
                 replaceSubStringInPlace(type,"\n","");
-                identifiers.push_back(identifier(content, category, position, srcFileName, srcFileLanguage, type));
+
+                std::string stereotype = (isStereotypableCategory(category) && stereotypeStack.size() != 0 ? stereotypeStack[stereotypeStack.size() - 1] : "");
+                if (stereotypeStack.size() != 0) stereotypeStack.pop_back();
+
+                identifiers.push_back(identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
 
                 if (DEBUG) {  //For Debugging
                     std::cout << "Identifier: " << content << std::endl;
                     std::cout << "Category: " << category << std::endl;
                     std::cout << "Position: " << position << std::endl;
+                    std::cout << "Stereotype: " << stereotype << std::endl;
                     std::cout << "Type: " << type << std::endl;
                     //Print the stack
                     std::cout << "Stack: " ;
@@ -438,6 +466,7 @@ private:
     bool                     collectContent;     //Flag to collect characters
     std::string              content;            //Content collected
     std::string              position;           //The position of content
+    std::vector<std::string> stereotypeStack;    //Optional stereotype info of funcs/classes
     std::vector<std::string> elementStack;       //Stack of srcML tags
     std::string              srcFileName;        //Current source code file name (vs xml)
     std::string              srcFileLanguage;    //Current source code language

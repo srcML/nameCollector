@@ -101,6 +101,16 @@ const std::unordered_set<std::string> TYPED_CATEGORIES = {
     "property" //C# only
 };
 
+const std::unordered_set<std::string> STEREOTYPED_CATEGORIES = {
+    "function",
+    "class",
+    "struct",
+    "constructor",
+    "destructor",
+    "interface", // Java only
+    "union"
+};
+
 
 //Does this tag contain a user defined name?
 //
@@ -111,6 +121,11 @@ bool isUserDefinedIdentifier(const std::string& category) {
 // Does this tag contain a type?
 bool isTypedCategory(const std::string& category) {
     return TYPED_CATEGORIES.find(category) != TYPED_CATEGORIES.end();
+}
+
+// Is this tag stereotypable?
+bool isStereotypableCategory(const std::string& category) {
+    return STEREOTYPED_CATEGORIES.find(category) != STEREOTYPED_CATEGORIES.end();
 }
 
 struct typeInfo {
@@ -135,12 +150,14 @@ public:
     identifier(const std::string& nm,
                const std::string& cat,
                const std::string& pos,
+               const std::string& st,
                const std::string& fname,
                const std::string& flang,
                const std::string& typ="") {
         name = nm;
         category = cat;
         position = pos;
+        stereotype = st;
         filename = fname;
         language = flang;
         type = typ;
@@ -149,6 +166,7 @@ public:
     std::string getName() const {return name;};
     std::string getCategory() const {return category;};
     std::string getPosition() const {return position;};
+    std::string getStereotype() const {return stereotype;};
     std::string getFilename() const {return filename;};
     std::string getLanguage() const {return language;};
     std::string getType() const {return type;};
@@ -157,6 +175,7 @@ protected:
     std::string name;        //The identifier name
     std::string category;    //Label from IDENTIFIER_TYPES
     std::string position;    //line:column
+    std::string stereotype;  //Space separated list of stereotypes
     std::string filename;    //File the identifier occurs
     std::string language;    //The programming language the name was in
     std::string type;        //Optional type for decls and functions
@@ -164,9 +183,10 @@ protected:
 
 //CSV output name, category, filename, position
 std::ostream& operator<<(std::ostream& out, const identifier& id) {
-    out << id.getName()     << ", " << id.getType()     << ", "
-        << id.getCategory() << ", " << id.getFilename() << ", "
-        << id.getPosition() << ", " << id.getLanguage();
+    out        << id.getName()        << "," << id.getType()
+        << "," << id.getCategory()    << "," << id.getFilename()
+        << "," << id.getPosition()    << "," << id.getLanguage()
+        << "," << id.getStereotype();
     return out;
 }
 
