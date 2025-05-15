@@ -305,7 +305,14 @@ public:
                 std::string stereotype = (isStereotypableCategory(category) && stereotypeStack.size() != 0 ? stereotypeStack[stereotypeStack.size() - 1] : "");
                 if (stereotypeStack.size() != 0) stereotypeStack.pop_back();
 
-                identifiers.push_back(identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
+                if (isComplexFunctionName()) {  //Do not push the first name of a complex name (function) ex. String::length
+                    ++complexCount;
+                    if (complexCount == 2) {
+                        identifiers.push_back(identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
+                        complexCount = 0;
+                    }
+                } else
+                    identifiers.push_back(identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
 
                 if (DEBUG) {  //For Debugging
                     std::cout << "Identifier: " << content << std::endl;
@@ -313,7 +320,8 @@ public:
                     std::cout << "Position: " << position << std::endl;
                     std::cout << "Stereotype: " << stereotype << std::endl;
                     std::cout << "Type: " << type << std::endl;
-                    //Print the stack
+                    std::cout << "Complex Count: " << complexCount << std::endl;
+                   //Print the stack
                     std::cout << "Stack: " ;
                     for (int i=elementStack.size()-1; i>=0; --i) {
                         std::cout << elementStack[i] << " | ";
@@ -332,7 +340,7 @@ public:
         else if (std::string(localname) == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
         }
-
+/*
         // If an operator (::) is found in a signifigant name, delete previous name
         else if (std::string(localname) == "operator") {
             if (elementStack.back().find("operator_name_") == 0) {
@@ -340,7 +348,7 @@ public:
                 if(isUserDefinedIdentifier(elementStack[elementStack.size()-(depth+1)])) {
 
                     if(DEBUG) {
-                        std::cout << "Removing " << identifiers[identifiers.size() - 1] << " from stack" << std::endl;
+                        std::cout << "Removing " << identifiers[identifiers.size() - 1] << " from results" << std::endl;
                         std::cout <<  "------------------------" << std::endl;
                     }
 
@@ -350,7 +358,7 @@ public:
                 }
             }
         }
-
+*/
         else if (typeStack.size() != 0)
             if (typeStack[typeStack.size()-1].associatedTag == localname)
                 typeStack.pop_back();
@@ -462,8 +470,21 @@ private:
         return false;
     }
 
+    bool isComplexFunctionName() const {
+        int i=elementStack.size()-1;
+        if (elementStack[i] == "name_2") {
+            if (elementStack[i-1] == "name" && elementStack[i-2] == "function") return true;
+            if (elementStack[i-1] == "name" && elementStack[i-2] == "constructor") return true;
+            if (elementStack[i-1] == "name" && elementStack[i-2] == "destructor") return true;
+        }
+        if (elementStack[i] == "name_3")
+            if (elementStack[i-1] == "name_2" && elementStack[i-2] == "name" && elementStack[i-3] == "function") return true;
+        return false;
+    }
+
 
     bool                     collectContent;     //Flag to collect characters
+    int                      complexCount = 0;   //Complex name counter string::length
     std::string              content;            //Content collected
     std::string              position;           //The position of content
     std::vector<std::string> stereotypeStack;    //Optional stereotype info of funcs/classes
