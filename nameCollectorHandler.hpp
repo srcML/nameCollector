@@ -111,9 +111,9 @@ public:
                            const struct srcsax_attribute * attributes) {
 
         if (DEBUG) {  //Print out attributes on <unit>
-            std::cout << "Attributes on UNIT: " << std::endl;
+            std::cerr << "Attributes on UNIT: " << std::endl;
             for (int i=0; i<numAttributes; ++i)
-                std::cout << attributes[i].value << std::endl;
+                std::cerr << attributes[i].value << std::endl;
         }
 
         srcFileLanguage = "unknown";
@@ -155,31 +155,20 @@ public:
           // this is adding all elements, so you might only want to push certain elements
         std::string back = elementStack.back();
 
-        // Top-level Names
-        if (back == "name" && std::string(localname) == "name")
-            elementStack.push_back("name_2");
 
-        // Sub-names in complex names
-        else if (back.find("name_") == 0 && std::string(localname) == "name") {
+        if (back == "name" && std::string(localname) == "name")                 // Top-level Names
+            elementStack.push_back("name_2");
+        else if (back.find("name_") == 0 && std::string(localname) == "name") { // Sub-names in complex names
             int depth = std::stoi(back.substr(5));
             elementStack.push_back("name_" + std::to_string(depth+1));
-        }
-
-        // Operators in top-level names
-        else if (back == "name" && std::string(localname) == "operator") 
+        } else if (back == "name" && std::string(localname) == "operator")      // Operators in top-level names
             elementStack.push_back("operator_name_2");
-
-        // Operators in sub-names
-        else if (back.find("name_") == 0 && std::string(localname) == "operator") {
+        else if (back.find("name_")==0 && std::string(localname)=="operator") { // Operators in sub-names
             int depth = std::stoi(back.substr(5));
             elementStack.push_back("operator_name_" + std::to_string(depth+1));
-        }
-
-        // All other tags
-        else {
+        } else {                                                                // All other tags
             elementStack.push_back(localname);
         }
-
 
         if (std::string(localname) == "name") {
             collectContent = true;
@@ -189,9 +178,7 @@ public:
                     break;
                 }
             }
-        }
-
-        else if (std::string(localname) == "type") {
+        } else if (std::string(localname) == "type") {
             // Check if this is a type ref=prev
             bool isPrevType = false;
             for (int i = 0; i < numAttributes; ++i) {
@@ -211,9 +198,7 @@ public:
                 insertType.gatherContent = true;
                 typeStack.push_back(insertType);
             }
-        }
-
-        else if (isStereotypableCategory(localname)) {
+        } else if (isStereotypableCategory(localname)) {
             // Check for stereotype information from stereocode
             for (int i = 0; i < numAttributes; ++i) {
                 if (attributes[i].prefix != 0 && std::string(attributes[i].prefix) == "st" && std::string(attributes[i].localname) == "stereotype") {
@@ -235,8 +220,7 @@ public:
      *
      * Overide for desired behaviour.
      */
-    virtual void endRoot(const char* localname, const char* prefix, const char* URI) {
-    }
+    virtual void endRoot(const char* localname, const char* prefix, const char* URI) { }
 
     /**
      * endUnit
@@ -321,18 +305,18 @@ public:
                 identifiers.push_back(identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
 
                 if (DEBUG) {  //For Debugging
-                    std::cout << "Identifier: " << content << std::endl;
-                    std::cout << "Category: " << category << std::endl;
-                    std::cout << "Position: " << position << std::endl;
-                    std::cout << "Stereotype: " << stereotype << std::endl;
-                    std::cout << "Type: " << type << std::endl;
+                    std::cerr << "Identifier: " << content << std::endl;
+                    std::cerr << "Category: " << category << std::endl;
+                    std::cerr << "Position: " << position << std::endl;
+                    std::cerr << "Stereotype: " << stereotype << std::endl;
+                    std::cerr << "Type: " << type << std::endl;
                    //Print the stack
-                    std::cout << "Stack: " ;
+                    std::cerr << "Stack: " ;
                     for (int i=elementStack.size()-1; i>=0; --i) {
-                        std::cout << elementStack[i] << " | ";
+                        std::cerr << elementStack[i] << " | ";
                     }
-                    std::cout << std::endl;
-                    std::cout <<  "------------------------" << std::endl;
+                    std::cerr << std::endl;
+                    std::cerr <<  "------------------------" << std::endl;
                 }
             }
 
@@ -340,12 +324,9 @@ public:
             position = "";
             
             collectContent = false;
-        }
-
-        else if (std::string(localname) == "type") {
+        } else if (std::string(localname) == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
-        }
-        else if (typeStack.size() != 0)
+        } else if (typeStack.size() != 0)
             if (typeStack[typeStack.size()-1].associatedTag == localname)
                 typeStack.pop_back();
 
@@ -367,8 +348,7 @@ public:
      *
      * Overide for desired behaviour.
      */
-    virtual void charactersRoot(const char* ch, int len) {
-    }
+    virtual void charactersRoot(const char* ch, int len) { }
 
     /**
      * charactersUnit
@@ -386,9 +366,7 @@ public:
      * Overide for desired behaviour.
      */
     virtual void charactersUnit(const char* ch, int len) {
-
-        /*
-            Characters may be called multiple times in succession
+        /*  Characters may be called multiple times in succession
             in some cases the text may need to be gathered all at once
             before output. Both methods are shown here although the delayed
             output is used.
@@ -426,6 +404,7 @@ private:
         }
         return false;
     }
+
     bool isTemplateParameter() const {
         int i=elementStack.size()-1;
         while (i > 0) {
@@ -456,7 +435,6 @@ private:
         return false;
     }
 
-
     bool                     collectContent;     //Flag to collect characters
     std::string              content;            //Content collected
     std::string              position;           //The position of content
@@ -464,8 +442,9 @@ private:
     std::vector<std::string> elementStack;       //Stack of srcML tags
     std::string              srcFileName;        //Current source code file name (vs xml)
     std::string              srcFileLanguage;    //Current source code language
-    std::vector<identifier>  identifiers;        //Identifiers found (results)
     std::vector<typeInfo>    typeStack;          //Stack of recent types
+
+    std::vector<identifier>  identifiers;        //Identifiers found (results)
 };
 
 #endif
