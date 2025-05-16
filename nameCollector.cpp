@@ -71,7 +71,7 @@ int main(int argc, char * argv[]) {
     bool        outputCSV    = false; //True is CSV, false is text
     bool        appendOutput = false;
 
-    CLI::App app{"nameCollector: Finds all user defined identifier names in a source code file.  "};
+    CLI::App app{"nameCollector: Finds all user defined identifier names in a srcML archive (one or more source code files).  "};
 
     app.add_option("-i, --input",  inputFile,    "Name of srcML file of source code with --position option");
     app.add_option("-o, --output", outputFile,   "Name of output file");
@@ -90,8 +90,7 @@ int main(int argc, char * argv[]) {
         if (inputFile != "") {
             srcSAXController control (inputFile.c_str());
             control.parse(&handler);
-        }
-        else {
+        } else {
             std::string input = "";
             std::string line;
             while (std::getline(std::cin, line)) {
@@ -127,6 +126,5 @@ int main(int argc, char * argv[]) {
     catch (SAXError& error) {
         std::cerr << "Error: " << error.message << " " << error.error_code << std::endl;
     }
-
     return 0;
 }
