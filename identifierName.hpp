@@ -163,14 +163,14 @@ public:
         type = typ;
 
     };
-    std::string getName() const {return name;};
-    std::string getCategory() const {return category;};
-    std::string getPosition() const {return position;};
+    std::string getName()       const {return name;};
+    std::string getCategory()   const {return category;};
+    std::string getPosition()   const {return position;};
     std::string getStereotype() const {return stereotype;};
-    std::string getFilename() const {return filename;};
-    std::string getLanguage() const {return language;};
-    std::string getType() const {return type;};
-    
+    std::string getFilename()   const {return filename;};
+    std::string getLanguage()   const {return language;};
+    std::string getType()       const {return type;};
+
 protected:
     std::string name;        //The identifier name
     std::string category;    //Label from IDENTIFIER_TYPES
@@ -183,12 +183,25 @@ protected:
 
 //CSV output name, category, filename, position
 std::ostream& operator<<(std::ostream& out, const identifier& id) {
-    out        << id.getName()        << "," << id.getType()
-        << "," << id.getCategory()    << "," << id.getFilename()
-        << "," << id.getPosition()    << "," << id.getLanguage()
-        << "," << id.getStereotype();
+    out << id.getName()      << "," << id.getType()     << ","
+        << id.getCategory()  << "," << id.getFilename() << ","
+        << id.getPosition()  << "," << id.getLanguage() << ","
+        << id.getStereotype()
+        << std::endl;
     return out;
 }
+
+//Print out simple report
+void printReport(std::ostream& out, const identifier& id) {
+    out << id.getName()
+        << " is a " << id.getStereotype() << (id.getStereotype() != "" ? " " : "")
+        << id.getType() << (id.getType() != "" ? " " : "")
+        << id.getCategory()
+        << " in " << id.getLanguage() << " file: " << id.getFilename()
+        << (id.getPosition() != "" ? " at " : "")  << id.getPosition()
+        << std::endl;
+}
+
 
 
 #endif

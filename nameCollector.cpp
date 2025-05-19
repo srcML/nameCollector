@@ -35,28 +35,6 @@
 
 bool           DEBUG = false;                     // Debug flag from CLI option
 
-// Print out coma separated output (CSV) - no header
-// identifier, type, category, filename, position
-void printCSV(std::ostream& out, const std::vector<identifier>& identifiers) {
-    //out << "IDENTIFIER" << ", TYPE" << ", CATEGORY" << ", FILENAME" << ", POSITION" << ", LANGUAGE" << ", STEREOTYPE" << std::endl;
-    for (unsigned int i = 0; i < identifiers.size(); ++i)
-        out << identifiers[i] << std::endl;
-}
-
-//Print out simple report
-void printReport(std::ostream& out, const std::vector<identifier>& identifiers) {
-    out << "The following " << identifiers.size() << " user defined identifiers occur: " << std::endl;
-    for (unsigned int i = 0; i<identifiers.size(); ++i) {
-        out << identifiers[i].getName()
-            << " is a " << identifiers[i].getStereotype() << (identifiers[i].getStereotype() != "" ? " " : "")
-            << identifiers[i].getType() << (identifiers[i].getType() != "" ? " " : "")
-            << identifiers[i].getCategory()
-            << " in " << identifiers[i].getLanguage() << " file: " << identifiers[i].getFilename()
-            << (identifiers[i].getPosition() != "" ? " at " : "") <<  identifiers[i].getPosition()
-            << std::endl;
-    }
-}
-
 /**
  * main
  * @param argc number of arguments
@@ -83,10 +61,26 @@ int main(int argc, char * argv[]) {
     CLI11_PARSE(app, argc, argv);
 
     try {
+        //Output format is text by default: outputCSV == false
+        if (outputFormat == "text") outputCSV = false;
+        if (outputFormat == "csv")  outputCSV = true;
 
-        nameCollectorHandler    handler;
+        //Set up output stream
+        std::ostream*  out;
+        std::ofstream* fileOut;
+        if (outputFile != "") {
+            if (appendOutput)
+                fileOut = new std::ofstream(outputFile, std::ios::app);
+            else
+                fileOut = new std::ofstream(outputFile);
+            if (!fileOut->is_open()) throw std::string("Can not open file: " + outputFile + " for writing.");
+            out = fileOut;
+        } else {
+            out = &std::cout; //Write to terminal
+        }
 
-        // srcSAXController        control(inputFile.c_str());
+        nameCollectorHandler handler(out, outputCSV); 
+
         if (inputFile != "") {
             srcSAXController control (inputFile.c_str());
             control.parse(&handler);
@@ -99,26 +93,8 @@ int main(int argc, char * argv[]) {
             srcSAXController control (input);
             control.parse(&handler);
         }
+        if (outputFile != "") fileOut->close();
 
-        //Results
-        std::vector<identifier> identifiers = handler.getIdentifiers();
-
-        //Output format is text by default: outputCSV == false
-        if (outputFormat == "text") outputCSV = false;
-        if (outputFormat == "csv")  outputCSV = true;
-        if (outputFile != "") {
-            std::ofstream out;
-            if (appendOutput) out.open(outputFile, std::ios::app);
-            else              out.open(outputFile);
-            if (!out.is_open())
-                throw std::string("Can not open file: " + outputFile + " for writing.");
-            if (outputCSV) printCSV(out, identifiers);
-            else           printReport(out, identifiers);
-            out.close();
-        } else {
-            if (outputCSV) printCSV(std::cout, identifiers);
-            else           printReport(std::cout, identifiers);
-        }
     }
     catch (std::string& error) {
         std::cerr << "Error: " << error << std::endl;

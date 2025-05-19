@@ -43,6 +43,7 @@ extern bool DEBUG;
 class nameCollectorHandler : public srcSAXHandler {
 public:
     nameCollectorHandler() : collectContent(false), content(), position() {};
+    nameCollectorHandler(std::ostream* ptr, bool csv) : collectContent(false), content(), position(), outPtr(ptr), outputCSV(csv) {};
     ~nameCollectorHandler() {};
 
 #pragma GCC diagnostic push
@@ -153,8 +154,8 @@ public:
 
 
           // this is adding all elements, so you might only want to push certain elements
-        std::string back = elementStack.back();
 
+        std::string back = elementStack.back();
 
         if (back == "name" && std::string(localname) == "name")                 // Top-level Names
             elementStack.push_back("name_2");
@@ -302,9 +303,13 @@ public:
                 if (content.find("::") != std::string::npos)
                     content = content.substr(content.find("::")+2, content.length()-1);
 
-                identifiers.push_back(identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
+                //Output results
+                if (outputCSV)
+                    *outPtr << identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type);
+                else
+                    printReport(*outPtr, identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
 
-                if (DEBUG) {  //For Debugging
+                if (DEBUG) {  //Print identifier and stack
                     std::cerr << "Identifier: " << content << std::endl;
                     std::cerr << "Category: " << category << std::endl;
                     std::cerr << "Position: " << position << std::endl;
@@ -392,8 +397,6 @@ public:
 
 #pragma GCC diagnostic pop
 
-    std::vector<identifier> getIdentifiers() const { return identifiers; }
-
 private:
 
     bool isParameter() const {
@@ -443,8 +446,8 @@ private:
     std::string              srcFileName;        //Current source code file name (vs xml)
     std::string              srcFileLanguage;    //Current source code language
     std::vector<typeInfo>    typeStack;          //Stack of recent types
-
-    std::vector<identifier>  identifiers;        //Identifiers found (results)
+    std::ostream*            outPtr;             //Pointer to the output stream
+    bool                     outputCSV;          //True is csv, False is report
 };
 
 #endif
