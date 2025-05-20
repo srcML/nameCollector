@@ -42,8 +42,8 @@ extern bool DEBUG;
  */
 class nameCollectorHandler : public srcSAXHandler {
 public:
-    nameCollectorHandler() : collectContent(false), content(), position() {};
-    nameCollectorHandler(std::ostream* ptr, bool csv) : collectContent(false), content(), position(), outPtr(ptr), outputCSV(csv) {};
+    nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false) {};
+    nameCollectorHandler(std::ostream* ptr, bool csv) : collectContent(false), content(), position(), usePreviousPosition(false), outPtr(ptr), outputCSV(csv) {};
     ~nameCollectorHandler() {};
 
 #pragma GCC diagnostic push
@@ -173,8 +173,11 @@ public:
 
         if (std::string(localname) == "name") {
             collectContent = true;
+
+            // Get position info if it exists
             for(int i = 0; i < numAttributes; ++i) {
                 if (std::string(attributes[i].prefix) == "pos" && std::string(attributes[i].localname) == "start") {
+                    previousPosition = position;
                     position = attributes[i].value;
                     break;
                 }
@@ -259,6 +262,8 @@ public:
                 category = elementStack[elementStack.size()-(depth+1)];
             }
 
+
+
             //Only interested in user defined identifiers
             if (isUserDefinedIdentifier(category)) {
                 if (category == "class_decl")       category = "class";
@@ -273,6 +278,10 @@ public:
                         category = "function-parameter";
                     else
                         category = "function";
+                }
+
+                if(content.find("operator") != std::string::npos && srcFileLanguage == "C++" && category == "function") {
+                    usePreviousPosition = true;
                 }
 
                 //Deal with complex function names
@@ -302,6 +311,11 @@ public:
                 //Remove any prefix String:: from context - for functions
                 if (content.find("::") != std::string::npos)
                     content = content.substr(content.find("::")+2, content.length()-1);
+
+                if(usePreviousPosition) {
+                    position = previousPosition;
+                    usePreviousPosition = false;
+                }
 
                 //Output results
                 if (outputCSV)
@@ -438,16 +452,19 @@ private:
         return false;
     }
 
-    bool                     collectContent;     //Flag to collect characters
-    std::string              content;            //Content collected
-    std::string              position;           //The position of content
-    std::vector<std::string> stereotypeStack;    //Optional stereotype info of funcs/classes
-    std::vector<std::string> elementStack;       //Stack of srcML tags
-    std::string              srcFileName;        //Current source code file name (vs xml)
-    std::string              srcFileLanguage;    //Current source code language
-    std::vector<typeInfo>    typeStack;          //Stack of recent types
-    std::ostream*            outPtr;             //Pointer to the output stream
-    bool                     outputCSV;          //True is csv, False is report
+    bool                     collectContent;       //Flag to collect characters
+    std::string              content;              //Content collected
+    std::string              position;             //The position of content
+    std::string              previousPosition;     //The last gathered position - important for operator functions
+    bool                     usePreviousPosition;  //A flag that specifies whether to use the previous position for output
+    std::vector<std::string> stereotypeStack;      //Optional stereotype info of funcs/classes
+    std::vector<std::string> elementStack;         //Stack of srcML tags
+    std::string              srcFileName;          //Current source code file name (vs xml)
+    std::string              srcFileLanguage;      //Current source code language
+    std::vector<typeInfo>    typeStack;            //Stack of recent types
+    std::ostream*            outPtr;               //Pointer to the output stream
+    bool                     outputCSV;            //True is csv, False is report
+
 };
 
 #endif
