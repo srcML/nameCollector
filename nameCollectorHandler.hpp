@@ -175,7 +175,7 @@ public:
             collectContent = true;
 
             // Get position info if it exists
-            for(int i = 0; i < numAttributes; ++i) {
+            for (int i = 0; i < numAttributes; ++i) {
                 if (std::string(attributes[i].prefix) == "pos" && std::string(attributes[i].localname) == "start") {
                     previousPosition = position;
                     position = attributes[i].value;
@@ -280,7 +280,7 @@ public:
                         category = "function";
                 }
 
-                if(content.find("operator") != std::string::npos && srcFileLanguage == "C++" && category == "function") {
+                if (content.find("operator") != std::string::npos && srcFileLanguage == "C++" && category == "function") {
                     usePreviousPosition = true;
                 }
 
@@ -312,7 +312,7 @@ public:
                 if (content.find("::") != std::string::npos)
                     content = content.substr(content.find("::")+2, content.length()-1);
 
-                if(usePreviousPosition) {
+                if (usePreviousPosition) {
                     position = previousPosition;
                     usePreviousPosition = false;
                 }
