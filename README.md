@@ -34,7 +34,7 @@ Example:
 | local           | Local variable name (in a function) |
 | global          | Gobal variable name |
 | macro           | Macro name in C, C++ |
-| namespace       | User defined namespace in C, C# |
+| namespace       | User defined namespace in C, C++ |
 | parameter       | Name of a parameter |
 | function-parameter  | Name of a parameter, that is a function | 
 | template-parameter  | Name of a template parameter |
