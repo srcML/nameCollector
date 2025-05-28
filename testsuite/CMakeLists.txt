@@ -14,7 +14,7 @@ foreach(TEST IN ITEMS ${TESTS})
 endforeach()
 
 # copy input files
-file(GLOB TESTFILES *.xml)
+file(GLOB TESTFILES *.xml *.cpp)
 message("!!!!!!!!!" ./${TESTFILE})
 foreach(TESTFILE IN ITEMS ${TESTFILES})
     get_filename_component(TESTFILE_NAME ${TESTFILE} NAME)
