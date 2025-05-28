@@ -67,14 +67,14 @@ int main(int argc, char * argv[]) {
 
         //Set up output stream
         std::ostream*  out;
-        std::ofstream* fileOut;
+        std::ofstream fileOut;
         if (outputFile != "") {
             if (appendOutput)
-                fileOut = new std::ofstream(outputFile, std::ios::app);
+                fileOut = std::ofstream(outputFile, std::ios::app);
             else
-                fileOut = new std::ofstream(outputFile);
-            if (!fileOut->is_open()) throw std::string("Can not open file: " + outputFile + " for writing.");
-            out = fileOut;
+                fileOut = std::ofstream(outputFile);
+            if (!fileOut.is_open()) throw std::string("Can not open file: " + outputFile + " for writing.");
+            out = &fileOut;
         } else {
             out = &std::cout; //Write to terminal
         }
@@ -93,7 +93,7 @@ int main(int argc, char * argv[]) {
             srcSAXController control (input);
             control.parse(&handler);
         }
-        if (outputFile != "") fileOut->close();
+        if (outputFile != "") fileOut.close();
 
     }
     catch (std::string& error) {
