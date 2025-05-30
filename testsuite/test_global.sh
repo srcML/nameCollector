@@ -15,7 +15,7 @@ global_float is a float global in C++ file: test_global.cpp
 global_char is a char global in C++ file: test_global.cpp"
 
 if [[ "$output" != "$expected" ]]; then
-    echo "Test failed!"
+    echo "Test test_global failed!"
     echo "Expected: '$expected'"
     echo "Got:      '$output'"
     exit 1

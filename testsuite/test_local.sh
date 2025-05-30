@@ -8,7 +8,7 @@ b is a int parameter in C++ file: test_local.cpp
 return_value is a int local in C++ file: test_local.cpp"
 
 if [[ "$output" != "$expected" ]]; then
-    echo "Test failed!"
+    echo "Test test_local failed!"
     echo "Expected: '$expected'"
     echo "Got:      '$output'"
     exit 1
