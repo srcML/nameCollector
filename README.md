@@ -67,6 +67,20 @@ Generate the srcML for the given source code file using the --position option.  
 
 Output is plain text by default.  Use -f csv or --csv for comma separated output.  An output file can be specified with -o option. Takes standard input by default, and an input file can be specified with -i.  The --append option will append output to an existing file rather than overwrite the file.
 
+## To Run Tests:
+From the source directory run the following commands to build nameCollector:
+
+`cmake CMakeList.txt -B build`
+
+`cd build`
+
+`make`
+
+To run the tests defined in the testsuite directory use the following command:
+
+`make test`
+
+Once the test command is run you can check out the results of the tests by navigating to the `/Testing` subdirectory in the build directory, from here you can access the `LastTest.log` and `LastTestsFailed.log` files to view the test results.
 
 ## Developer Notes:
 
@@ -79,3 +93,4 @@ Developers of nameCollector:
 - Michael Decker
 - Jonathan Maletic
 - Joshua Behler
+
