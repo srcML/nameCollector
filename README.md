@@ -70,7 +70,7 @@ Output is plain text by default.  Use -f csv or --csv for comma separated output
 ## To Run Tests:
 From the source directory run the following commands to build nameCollector:
 
-`cmake CMakeList.txt -B build`
+`cmake CMakeLists.txt -B build`
 
 `cd build`
 
