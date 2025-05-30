@@ -48,7 +48,7 @@ Example:
 - Need [srcML](https://srcML.org) develop installed
 - Need [srcSAX](https://github.com/srcML/srcSAX)  built and installed  
 
-`cmake CMakeList.txt -B build`
+`cmake CMakeLists.txt -B build`
 
 `cd build`
 
