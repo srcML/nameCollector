@@ -74,12 +74,12 @@ a is a Set local in C++ file: test_set_main.cpp
 EOF
 )
 if [[ "$output" != "$expected" ]]; then
-    echo "Test cli.sh--1 failed!"
+    echo "Test set failed!"
     echo "Expected: '$expected'"
     echo "Got:      '$output'"
     exit 1
 else 
-    echo "Test cli.sh--1 passed"
+    echo "Test set passed"
 fi
 
 
@@ -157,12 +157,12 @@ a is a Set local in C++ file: test_set_main.cpp at 16:9
 EOF
 )
 if [[ "$output" != "$expected" ]]; then
-    echo "Test  cli.sh--2 passed failed!"
+    echo "Test set_pos passed failed!"
     echo "Expected: '$expected'"
     echo "Got:      '$output'"
     exit 1
 else
-    echo "Test cli.sh--2 passed"
+    echo "Test set_pos passed"
 fi
 
 exit 0
