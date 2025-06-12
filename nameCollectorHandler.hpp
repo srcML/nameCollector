@@ -186,7 +186,7 @@ public:
             // Check if this is a type ref=prev
             bool isPrevType = false;
             for (int i = 0; i < numAttributes; ++i) {
-                if (std::string(attributes[i].localname) == "prev") {
+                if (std::string(attributes[i].localname) == "ref") {
                     isPrevType = true;
                 }
             }
