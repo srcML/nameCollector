@@ -24,7 +24,7 @@ Example:
 | constructor     | Constructor name |
 | destructor      | Destructor name |
 | class           | Class name |
-| interface       | Interface name in Java |
+| interface       | Interface name in C#, Java |
 | typedef         | Typedef name |
 | struct          | Struct name |
 | union           | Union name in C, C++|
@@ -34,7 +34,7 @@ Example:
 | local           | Local variable name (in a function) |
 | global          | Gobal variable name |
 | macro           | Macro name in C, C++ |
-| namespace       | User defined namespace in C, C++ |
+| namespace       | User defined namespace in C++, C# |
 | parameter       | Name of a parameter |
 | function-parameter  | Name of a parameter, that is a function | 
 | template-parameter  | Name of a template parameter |
@@ -48,7 +48,7 @@ Example:
 - Need [srcML](https://srcML.org) develop installed
 - Need [srcSAX](https://github.com/srcML/srcSAX)  built and installed  
 
-`cmake CMakeLists.txt -B build`
+`cmake . -B build`
 
 `cd build`
 
@@ -70,7 +70,7 @@ Output is plain text by default.  Use -f csv or --csv for comma separated output
 ## To Run Tests:
 From the source directory run the following commands to build nameCollector:
 
-`cmake CMakeLists.txt -B build`
+`cmake . -B build`
 
 `cd build`
 
