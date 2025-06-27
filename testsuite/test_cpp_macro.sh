@@ -2,68 +2,17 @@
 
 # tests the collection of class name, constructor, destructor, operator with and without space, class field, and multi file collection, and c++ macro
 
-cat <<EOF > test_class.hpp
+cat <<EOF > test_macro.hpp
 #ifndef TEST_CLASS_HPP
 #define TEST_CLASS_HPP
-
-class Counter{
-public:
-    Counter();
-    Counter(int value);
-    ~Counter();
-    Counter& operator++();
-    Counter& operator --();
-    void display();
-
-private:
-   int *counter_value;
-};
-
+// empty macro
 #endif
 
+#define MACRO 1800
+
 EOF
 
-cat <<EOF > test_class.cpp
-#include "tes_class.hpp"
-#include <iostream>
-
-Counter::Counter() : counter_value(new int(0)) {}
-
-Counter::Counter(int value) : counter_value(new int(value)) {}
-
-Counter::~Counter() {
-    if (counter_value) {
-        delete counter_value;
-        counter_value = nullptr;
-    }
-}
-
-Counter& Counter::operator++() {
-    ++(*counter_value);
-    return *this;
-}
-
-Counter& Counter::operator --() {
-    --(*counter_value);
-    return *this;
-}
-
-void Counter::display() {
-    std::cout << *counter_value << std::endl;
-}
-
-int main(){
-    Counter defaultCounter;
-    Counter seven(7);
-    --seven;
-    ++defaultCounter;
-    seven.display();
-    defaultCounter.display();
-    return 0;
-}
-EOF
-
-input=$(srcml test_class.hpp test_class.cpp --position)
+input=$(srcml test_macro.hpp --position)
 output=$(echo "$input" | ./nameCollector )
 expected="TEST_CLASS_HPP is a macro in C++ file: test_class.hpp at 2:9
 Counter is a class in C++ file: test_class.hpp at 4:7

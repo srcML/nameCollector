@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # tests the collection of class constructor, if any of the expected output lines for each constructor 
-# in each file are missing, test will fail
+# in each file are missing, test will fail, will also fail if ouput does not otherwise match expected
 
 cat <<EOF > test_class_constructor.hpp
 #ifndef TEST_CLASS_HPP
