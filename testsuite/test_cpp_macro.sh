@@ -9,13 +9,15 @@ cat <<EOF > test_macro.hpp
 #endif
 
 #define MACRO 1800
+#define FOO(x,y) x*y
 
 EOF
 
 input=$(srcml test_macro.hpp --position)
 output=$(echo "$input" | ./nameCollector )
 expected="TEST_CLASS_HPP is a macro in C++ file: test_macro.hpp at 2:9
-MACRO is a macro in C++ file: test_macro.hpp at 6:9"
+MACRO is a macro in C++ file: test_macro.hpp at 6:9
+FOO is a macro in C++ file: test_macro.hpp at 7:9"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_class failed!"
