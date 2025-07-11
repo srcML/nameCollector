@@ -32,7 +32,7 @@ Example:
 | field           | Name of a class/struct/union/enum field |
 | label           | Name of a label (as in goto) |
 | local           | Local variable name (in a function) |
-| global          | Gobal variable name |
+| global          | Global variable name |
 | macro           | Macro name in C, C++ |
 | namespace       | User defined namespace in C, C++ |
 | parameter       | Name of a parameter |
