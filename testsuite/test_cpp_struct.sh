@@ -78,7 +78,8 @@ for line in "${problem_with_SRCML_issue_2163[@]}"; do
   if echo "$output" | grep -Fq "$line"; then
     echo "Test test_cpp_struct failed due to SRCML error!"
     echo "Line for this struct object is incorrectly parsed as a field"  
-    echo "Got: '$line'"
+    echo "Line: '$line' appears in output"
+    echo "Got: '$output'"
     exit 1
   fi
 done
