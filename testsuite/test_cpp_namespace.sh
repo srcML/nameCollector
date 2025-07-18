@@ -25,9 +25,18 @@ EOF
 
 input=$(srcml test_namespace.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="int_vector is a vector<int> typedef in C++ file: test_namespace.cpp at 2:21
-char_array is a char* typedef in C++ file: test_namespace.cpp at 3:15
-functionPtr is a int function in C++ file: test_namespace.cpp at 4:15"
+expected="SimpleNSP is a namespace in C++ file: test_namespace.cpp at 1:11
+simpleMemberFunction is a void function in C++ file: test_namespace.cpp at 2:10
+InlineNamespace is a namespace in C++ file: test_namespace.cpp at 4:18
+OuterNamespace is a namespace in C++ file: test_namespace.cpp at 6:11
+OuterMemberClass is a class in C++ file: test_namespace.cpp at 7:11
+InnerNamespace is a namespace in C++ file: test_namespace.cpp at 11:15
+innerMember is a bool global in C++ file: test_namespace.cpp at 12:14
+ThirdNestedNSP is a namespace in C++ file: test_namespace.cpp at 13:19
+nsp is a namespace in C++ file: test_namespace.cpp at 17:11
+SimpleNSP is a namespace in C++ file: test_namespace.cpp at 17:17
+abc is a namespace in C++ file: test_namespace.cpp at 17:28
+xyc is a namespace in C++ file: test_namespace.cpp at 17:33"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_namespace failed!" 
