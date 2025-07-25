@@ -33,10 +33,7 @@ OuterMemberClass is a class in C++ file: test_namespace.cpp at 7:11
 InnerNamespace is a namespace in C++ file: test_namespace.cpp at 11:15
 innerMember is a bool global in C++ file: test_namespace.cpp at 12:14
 ThirdNestedNSP is a namespace in C++ file: test_namespace.cpp at 13:19
-nsp is a namespace in C++ file: test_namespace.cpp at 17:11
-SimpleNSP is a namespace in C++ file: test_namespace.cpp at 17:17
-abc is a namespace in C++ file: test_namespace.cpp at 17:28
-xyc is a namespace in C++ file: test_namespace.cpp at 17:33"
+nsp is a namespace in C++ file: test_namespace.cpp at 17:11"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_namespace failed!" 
