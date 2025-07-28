@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# tests the collection of class name, constructor, destructor, operator with and without space, class field, and multi file collection, and c++ macro
+# tests the collection of macro names in c++
 
 cat <<EOF > test_macro.hpp
 #ifndef TEST_CLASS_HPP
@@ -20,7 +20,7 @@ MACRO is a macro in C++ file: test_macro.hpp at 6:9
 FOO is a macro in C++ file: test_macro.hpp at 7:9"
 
 if [[ "$output" != "$expected" ]]; then
-    echo "Test test_cpp_class failed!"
+    echo "Test test_cpp_macro failed!"
     echo "Expected: '$expected'"
     echo "Got: '$output'"
     exit 1

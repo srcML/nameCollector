@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# tests the collection of public, private, and protected fields in a cpp class, fails if any field is collected incorrectly
-# also fails is output does not otherwise match expected, even if all fields are correct
+# tests the collection of class methods 
 
 cat <<EOF > test_class_method.hpp
 #ifndef TEST_CLASS_HPP

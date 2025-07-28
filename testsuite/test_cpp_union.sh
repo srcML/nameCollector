@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# test the collection of union names
+# test the collection of union names and union object names
+# NOTE 7/28/25: union objects created within the union definition are misidentified as fields instead of global struct objects
+# test will fail when this issue is fixed (issue #22), message will be "...output did not match expected!"
 
 cat <<EOF > test_union.cpp
 union StudentInfo {
@@ -37,7 +39,6 @@ int main(){
     union StudentInfo student2;
 
     employee1.hourly_rate = 11.80;
-    structObjectWithAnonymousNestedUnion.exists = 12.3;
 
     return 0;
 }
@@ -84,7 +85,7 @@ for union in "${expected_unions[@]}"; do
     exit 1
   fi
 done
-echo "Test test_cpp_union passed!" # all union collected correctly
+echo "Test test_cpp_union passed!" # all unions collected correctly
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_union output did not match expected!" 

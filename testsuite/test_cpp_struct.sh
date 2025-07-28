@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# test the collection of struct names
+# test the collection of struct names and struct object names
+# NOTE 7/28/25: struct objects created within the struct definition are misidentified as fields instead of global struct objects
+# test will fail when this issue is fixed (issue #22), message will be "...output did not match expected!"
+# output of struct within typedef definition includes some spacing issue and newline issue
 
 cat <<EOF > test_struct.cpp
 struct Cat{
@@ -70,6 +73,7 @@ expected_structs=(
 
 # test should fail until the issue with srcml parsing structs with immediate obj declarations is resolved
 # issue is that these struct objects are incorrectly parsed as fields by SRCML
+# issue #22
 problem_with_SRCML_issue_2163=(
     "person1 is a field in C++ file: test_struct.cpp at 13:3"
     "anonymousStructObject is a field in C++ file: test_struct.cpp at 18:3"
@@ -93,7 +97,7 @@ for struct in "${expected_structs[@]}"; do
     exit 1
   fi
 done
-echo "Test test_cpp_struct passed!" # all struct collected correctly
+echo "Test test_cpp_struct passed!" # all structs collected correctly
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_struct output did not match expected!" 

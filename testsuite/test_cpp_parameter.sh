@@ -101,7 +101,7 @@ expected_parameters=(
   "ex is a const std::exception& parameter in C++ file: test_parameter.cpp at 34:32"
 )
 
-# make sure contructors are collected correctly in both hpp and cpp files
+# make sure parameters are collected correctly in both hpp and cpp files
 for parameter in "${expected_parameters[@]}"; do
   if ! echo "$output" | grep -Fq "$parameter"; then
     echo "Test test_cpp_parameter failed!"
@@ -111,9 +111,9 @@ for parameter in "${expected_parameters[@]}"; do
     exit 1
   fi
 done
-echo "Test test_cpp_parameter passed!" # all constructor collected correctly
+echo "Test test_cpp_parameter passed!" # all parameters collected correctly
 
-# fail if output does not match expected, even if the constructors are collected correctly
+# fail if output does not match expected, even if the parameters are collected correctly
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_parameter output did not match expected!" 
     echo "Expected: '$expected'"

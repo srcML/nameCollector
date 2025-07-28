@@ -23,7 +23,7 @@ Counter is a class in C++ file: test_class_name.cpp at 5:7
 main is a int function in C++ file: test_class_name.cpp at 9:5"
 
 if [[ "$output" != "$expected" ]]; then
-    echo "Test test_cpp_class failed!"
+    echo "Test test_cpp_class_name failed!"
     echo "Expected: '$expected'"
     echo "Got: '$output'"
     exit 1

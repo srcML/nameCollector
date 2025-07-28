@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # test the collection of namespace names
+# NOTE 7/28/25: namespace aliases are collected, this is related to issue #21, when this issue is fixed test will fail with message:
+# "Test test_cpp_namespace failed!"
 
 cat <<EOF > test_namespace.cpp
 namespace SimpleNSP{
