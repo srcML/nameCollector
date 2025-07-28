@@ -37,7 +37,7 @@ int main(){
     union StudentInfo student2;
 
     employee1.hourly_rate = 11.80;
-    structObjectWithAnonymousNestedUnion.exists = true;
+    structObjectWithAnonymousNestedUnion.exists = 12.3;
 
     return 0;
 }
