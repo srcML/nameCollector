@@ -45,24 +45,24 @@ EOF
 
 input=$(srcml test_class_destructor.hpp test_class_destructor.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="TEST_CLASS_HPP is a macro in C++ file: test_class_destructor.hpp at 2:9
-Counter is a class in C++ file: test_class_destructor.hpp at 4:7
-Counter is a constructor in C++ file: test_class_destructor.hpp at 6:5
-Counter is a constructor in C++ file: test_class_destructor.hpp at 7:5
-value is a int parameter in C++ file: test_class_destructor.hpp at 7:17
-~Counter is a destructor in C++ file: test_class_destructor.hpp at 8:5
-counter_value is a int * field in C++ file: test_class_destructor.hpp at 10:9
-Counter is a constructor in C++ file: test_class_destructor.cpp at 4:10
-Counter is a constructor in C++ file: test_class_destructor.cpp at 6:10
-value is a int parameter in C++ file: test_class_destructor.cpp at 6:22
-~Counter is a destructor in C++ file: test_class_destructor.cpp at 8:10
-main is a int function in C++ file: test_class_destructor.cpp at 15:5
-defaultCounter is a Counter local in C++ file: test_class_destructor.cpp at 16:13
-seven is a Counter local in C++ file: test_class_destructor.cpp at 17:13"
+expected="TEST_CLASS_HPP is a macro in C++ file: test_class_destructor.hpp:2:9
+Counter is a class in C++ file: test_class_destructor.hpp:4:7
+Counter is a constructor in C++ file: test_class_destructor.hpp:6:5
+Counter is a constructor in C++ file: test_class_destructor.hpp:7:5
+value is a int parameter in C++ file: test_class_destructor.hpp:7:17
+~Counter is a destructor in C++ file: test_class_destructor.hpp:8:5
+counter_value is a int * field in C++ file: test_class_destructor.hpp:10:9
+Counter is a constructor in C++ file: test_class_destructor.cpp:4:10
+Counter is a constructor in C++ file: test_class_destructor.cpp:6:10
+value is a int parameter in C++ file: test_class_destructor.cpp:6:22
+~Counter is a destructor in C++ file: test_class_destructor.cpp:8:10
+main is a int function in C++ file: test_class_destructor.cpp:15:5
+defaultCounter is a Counter local in C++ file: test_class_destructor.cpp:16:13
+seven is a Counter local in C++ file: test_class_destructor.cpp:17:13"
 
 expected_destructors=(
-  "~Counter is a destructor in C++ file: test_class_destructor.hpp at 8:5"
-  "~Counter is a destructor in C++ file: test_class_destructor.cpp at 8:10"
+  "~Counter is a destructor in C++ file: test_class_destructor.hpp:8:5"
+  "~Counter is a destructor in C++ file: test_class_destructor.cpp:8:10"
 )
 
 # make sure destructors are collected correctly in both hpp and cpp files

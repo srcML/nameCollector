@@ -56,29 +56,29 @@ EOF
 
 input=$(srcml test_class_fields.hpp test_class_fields.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="TEST_CLASS_HPP is a macro in C++ file: test_class_fields.hpp at 2:9
-Counter is a class in C++ file: test_class_fields.hpp at 4:7
-Counter is a constructor in C++ file: test_class_fields.hpp at 6:5
-Counter is a constructor in C++ file: test_class_fields.hpp at 7:5
-value is a int parameter in C++ file: test_class_fields.hpp at 7:17
-~Counter is a destructor in C++ file: test_class_fields.hpp at 8:5
-operator -- is a Counter& function in C++ file: test_class_fields.hpp at 9:14
-public_field is a char field in C++ file: test_class_fields.hpp at 11:10
-counter_value is a int * field in C++ file: test_class_fields.hpp at 13:10
-protected_field is a float field in C++ file: test_class_fields.hpp at 16:11
-Counter is a constructor in C++ file: test_class_fields.cpp at 4:10
-Counter is a constructor in C++ file: test_class_fields.cpp at 6:10
-value is a int parameter in C++ file: test_class_fields.cpp at 6:22
-~Counter is a destructor in C++ file: test_class_fields.cpp at 8:10
-operator -- is a Counter& function in C++ file: test_class_fields.cpp at 15:19
-main is a int function in C++ file: test_class_fields.cpp at 20:5
-defaultCounter is a Counter local in C++ file: test_class_fields.cpp at 21:13
-seven is a Counter local in C++ file: test_class_fields.cpp at 22:13"
+expected="TEST_CLASS_HPP is a macro in C++ file: test_class_fields.hpp:2:9
+Counter is a class in C++ file: test_class_fields.hpp:4:7
+Counter is a constructor in C++ file: test_class_fields.hpp:6:5
+Counter is a constructor in C++ file: test_class_fields.hpp:7:5
+value is a int parameter in C++ file: test_class_fields.hpp:7:17
+~Counter is a destructor in C++ file: test_class_fields.hpp:8:5
+operator -- is a Counter& function in C++ file: test_class_fields.hpp:9:14
+public_field is a char field in C++ file: test_class_fields.hpp:11:10
+counter_value is a int * field in C++ file: test_class_fields.hpp:13:10
+protected_field is a float field in C++ file: test_class_fields.hpp:16:11
+Counter is a constructor in C++ file: test_class_fields.cpp:4:10
+Counter is a constructor in C++ file: test_class_fields.cpp:6:10
+value is a int parameter in C++ file: test_class_fields.cpp:6:22
+~Counter is a destructor in C++ file: test_class_fields.cpp:8:10
+operator -- is a Counter& function in C++ file: test_class_fields.cpp:15:19
+main is a int function in C++ file: test_class_fields.cpp:20:5
+defaultCounter is a Counter local in C++ file: test_class_fields.cpp:21:13
+seven is a Counter local in C++ file: test_class_fields.cpp:22:13"
 
 expected_fields=(
-  "public_field is a char field in C++ file: test_class_fields.hpp at 11:10"
-  "counter_value is a int * field in C++ file: test_class_fields.hpp at 13:10"
-  "protected_field is a float field in C++ file: test_class_fields.hpp at 16:11"
+  "public_field is a char field in C++ file: test_class_fields.hpp:11:10"
+  "counter_value is a int * field in C++ file: test_class_fields.hpp:13:10"
+  "protected_field is a float field in C++ file: test_class_fields.hpp:16:11"
 )
 
 # make sure fields are collected correctly in both hpp and cpp files

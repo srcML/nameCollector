@@ -30,21 +30,21 @@ EOF
 
 input=$(srcml test_local.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="multiply is a int function in C++ file: test_local.cpp at 2:5
-a is a int parameter in C++ file: test_local.cpp at 2:18
-b is a int parameter in C++ file: test_local.cpp at 2:25
-return_value is a int local in C++ file: test_local.cpp at 3:9
-main is a int function in C++ file: test_local.cpp at 7:5
-k is a int local in C++ file: test_local.cpp at 8:9
-j is a int local in C++ file: test_local.cpp at 8:16
-big_number is a int local in C++ file: test_local.cpp at 8:19
-product is a int local in C++ file: test_local.cpp at 9:9
-i is a int local in C++ file: test_local.cpp at 11:14
-next_one is a int local in C++ file: test_local.cpp at 12:13
-collection is a std::vector<int> local in C++ file: test_local.cpp at 16:22
-number is a auto local in C++ file: test_local.cpp at 17:14
-even is a bool local in C++ file: test_local.cpp at 18:33
-odd is a bool local in C++ file: test_local.cpp at 19:20"
+expected="multiply is a int function in C++ file: test_local.cpp:2:5
+a is a int parameter in C++ file: test_local.cpp:2:18
+b is a int parameter in C++ file: test_local.cpp:2:25
+return_value is a int local in C++ file: test_local.cpp:3:9
+main is a int function in C++ file: test_local.cpp:7:5
+k is a int local in C++ file: test_local.cpp:8:9
+j is a int local in C++ file: test_local.cpp:8:16
+big_number is a int local in C++ file: test_local.cpp:8:19
+product is a int local in C++ file: test_local.cpp:9:9
+i is a int local in C++ file: test_local.cpp:11:14
+next_one is a int local in C++ file: test_local.cpp:12:13
+collection is a std::vector<int> local in C++ file: test_local.cpp:16:22
+number is a auto local in C++ file: test_local.cpp:17:14
+even is a bool local in C++ file: test_local.cpp:18:33
+odd is a bool local in C++ file: test_local.cpp:19:20"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_local failed!"

@@ -52,26 +52,26 @@ EOF
 
 input=$(srcml test_operator_no_space.hpp test_operator_no_space.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="TEST_CLASS_HPP is a macro in C++ file: test_operator_no_space.hpp at 2:9
-Counter is a class in C++ file: test_operator_no_space.hpp at 4:7
-Counter is a constructor in C++ file: test_operator_no_space.hpp at 6:5
-Counter is a constructor in C++ file: test_operator_no_space.hpp at 7:5
-value is a int parameter in C++ file: test_operator_no_space.hpp at 7:17
-~Counter is a destructor in C++ file: test_operator_no_space.hpp at 8:5
-operator-- is a Counter& function in C++ file: test_operator_no_space.hpp at 9:14
-counter_value is a int * field in C++ file: test_operator_no_space.hpp at 12:9
-Counter is a constructor in C++ file: test_operator_no_space.cpp at 4:10
-Counter is a constructor in C++ file: test_operator_no_space.cpp at 6:10
-value is a int parameter in C++ file: test_operator_no_space.cpp at 6:22
-~Counter is a destructor in C++ file: test_operator_no_space.cpp at 8:10
-operator-- is a Counter& function in C++ file: test_operator_no_space.cpp at 15:19
-main is a int function in C++ file: test_operator_no_space.cpp at 20:5
-defaultCounter is a Counter local in C++ file: test_operator_no_space.cpp at 21:13
-seven is a Counter local in C++ file: test_operator_no_space.cpp at 22:13"
+expected="TEST_CLASS_HPP is a macro in C++ file: test_operator_no_space.hpp:2:9
+Counter is a class in C++ file: test_operator_no_space.hpp:4:7
+Counter is a constructor in C++ file: test_operator_no_space.hpp:6:5
+Counter is a constructor in C++ file: test_operator_no_space.hpp:7:5
+value is a int parameter in C++ file: test_operator_no_space.hpp:7:17
+~Counter is a destructor in C++ file: test_operator_no_space.hpp:8:5
+operator-- is a Counter& function in C++ file: test_operator_no_space.hpp:9:14
+counter_value is a int * field in C++ file: test_operator_no_space.hpp:12:9
+Counter is a constructor in C++ file: test_operator_no_space.cpp:4:10
+Counter is a constructor in C++ file: test_operator_no_space.cpp:6:10
+value is a int parameter in C++ file: test_operator_no_space.cpp:6:22
+~Counter is a destructor in C++ file: test_operator_no_space.cpp:8:10
+operator-- is a Counter& function in C++ file: test_operator_no_space.cpp:15:19
+main is a int function in C++ file: test_operator_no_space.cpp:20:5
+defaultCounter is a Counter local in C++ file: test_operator_no_space.cpp:21:13
+seven is a Counter local in C++ file: test_operator_no_space.cpp:22:13"
 
 expected_operators=(
-  "operator-- is a Counter& function in C++ file: test_operator_no_space.hpp at 9:14"
-  "operator-- is a Counter& function in C++ file: test_operator_no_space.cpp at 15:19"
+  "operator-- is a Counter& function in C++ file: test_operator_no_space.hpp:9:14"
+  "operator-- is a Counter& function in C++ file: test_operator_no_space.cpp:15:19"
 )
 
 # make sure operators with spaces are collected correctly in both hpp and cpp files

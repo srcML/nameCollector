@@ -198,7 +198,7 @@ void printReport(std::ostream& out, const identifier& id) {
         << id.getType() << (id.getType() != "" ? " " : "")
         << id.getCategory()
         << " in " << id.getLanguage() << " file: " << id.getFilename()
-        << (id.getPosition() != "" ? " at " : "")  << id.getPosition()
+        << (id.getPosition() != "" ? ":" : "")  << id.getPosition()
         << std::endl;
 }
 
