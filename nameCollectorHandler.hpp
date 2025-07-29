@@ -253,8 +253,8 @@ public:
      * Overide for desired behaviour.
      */
     virtual void endElement(const char* localname, const char* prefix, const char* URI) {
+        std::string category;
         if ((std::string(localname) == "name") && (content != ""))  {
-            std::string category;
             if (elementStack.back() == "name")
                 category = elementStack[elementStack.size()-2]; //Normal name
             else {
@@ -300,7 +300,7 @@ public:
                     else if (isLocal()) category = "local";
                     else if (isField()) category = "field";
                 }
-                
+
                 std::string type = (isTypedCategory(category) && typeStack.size() != 0 ? typeStack[typeStack.size()-1].type : "");
                 replaceSubStringInPlace(type,",","&#44;");
                 replaceSubStringInPlace(type,"\n","");
@@ -350,6 +350,17 @@ public:
                 typeStack.pop_back();
 
         elementStack.pop_back();
+
+        //Address namespace foo = x::y;
+        // Push an init on stack after first name.  Then make sure to
+        //  pop it off at end of </namespace>
+        if (category == "namespace") {
+            elementStack.push_back("init");  // Deal with namespace foo = x::y;
+        }
+        if (std::string(localname) == "namespace") {
+            elementStack.pop_back();  // Deal with namespace foo = x::y;
+        }
+
     }
 
     /**
