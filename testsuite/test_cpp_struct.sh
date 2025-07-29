@@ -2,7 +2,7 @@
 
 # test the collection of struct names and struct object names
 # NOTE 7/28/25: struct objects created within the struct definition are misidentified as fields instead of global struct objects
-# test will fail when this issue is fixed (issue #22), message will be "...output did not match expected!"
+# test will fail until this issue is fixed (issue #22)
 # output of struct within typedef definition includes some spacing issue and newline issue
 
 cat <<EOF > test_struct.cpp
@@ -49,9 +49,9 @@ ssn is a int field in C++ file: test_struct.cpp at 8:9
 name is a char* field in C++ file: test_struct.cpp at 10:11
 age is a int field in C++ file: test_struct.cpp at 11:9
 printAge is a void function in C++ file: test_struct.cpp at 12:10
-person1 is a field in C++ file: test_struct.cpp at 13:3
+person1 is a struct Person global in C++ file: test_struct.cpp at 13:3
 field is a float field in C++ file: test_struct.cpp at 17:11
-anonymousStructObject is a field in C++ file: test_struct.cpp at 18:3
+anonymousStructObject is a struct { float field; } global in C++ file: test_struct.cpp at 18:3
 outer is a struct in C++ file: test_struct.cpp at 21:8
 inner is a struct in C++ file: test_struct.cpp at 22:12
 a is a int field in C++ file: test_struct.cpp at 23:13
@@ -73,20 +73,22 @@ expected_structs=(
 
 # test should fail until the issue with srcml parsing structs with immediate obj declarations is resolved
 # issue is that these struct objects are incorrectly parsed as fields by SRCML
-# issue #22
-problem_with_SRCML_issue_2163=(
-    "person1 is a field in C++ file: test_struct.cpp at 13:3"
-    "anonymousStructObject is a field in C++ file: test_struct.cpp at 18:3"
-)
-for line in "${problem_with_SRCML_issue_2163[@]}"; do
-  if echo "$output" | grep -Fq "$line"; then
-    echo "Test test_cpp_struct failed due to SRCML error!"
-    echo "Line for this struct object is incorrectly parsed as a field"  
-    echo "Line: '$line' appears in output"
-    echo "Got: '$output'"
-    exit 1
-  fi
-done
+# issue #22, SRCML issue #2163
+# commented out because expected is updated to be the correct output
+
+# problem_with_SRCML_issue_2163=(
+#     "person1 is a field in C++ file: test_struct.cpp at 13:3"
+#     "anonymousStructObject is a field in C++ file: test_struct.cpp at 18:3"
+# )
+# for line in "${problem_with_SRCML_issue_2163[@]}"; do
+#   if echo "$output" | grep -Fq "$line"; then
+#     echo "Test test_cpp_struct failed due to SRCML error!"
+#     echo "Some global struct objects are incorrectly collected as fields!"
+#     echo "Expected: '$expected'"
+#     echo "Got: '$output'"
+#     exit 1
+#   fi
+# done
 
 for struct in "${expected_structs[@]}"; do
   if ! echo "$output" | grep -Fq "$struct"; then

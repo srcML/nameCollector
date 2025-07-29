@@ -2,7 +2,7 @@
 
 # test the collection of union names and union object names
 # NOTE 7/28/25: union objects created within the union definition are misidentified as fields instead of global struct objects
-# test will fail when this issue is fixed (issue #22), message will be "...output did not match expected!"
+# test will fail until this issue is fixed (issue #22), message will be "...output did not match expected!"
 
 cat <<EOF > test_union.cpp
 union StudentInfo {
@@ -60,10 +60,10 @@ section is a char field in C++ file: test_union.cpp at 13:10
 exists is a double field in C++ file: test_union.cpp at 17:12
 a is a float field in C++ file: test_union.cpp at 19:15
 b is a int field in C++ file: test_union.cpp at 20:13
-structObjectWithAnonymousNestedUnion is a field in C++ file: test_union.cpp at 22:3
+structObjectWithAnonymousNestedUnion is a struct { double exists; union { float a; int b; }; } global in C++ file: test_union.cpp at 22:3
 size is a int field in C++ file: test_union.cpp at 26:9
 print_character is a char field in C++ file: test_union.cpp at 27:10
-shape1 is a field in C++ file: test_union.cpp at 28:3
+shape1 is a union { int size; char print_character; } global in C++ file: test_union.cpp at 28:3
 main is a int function in C++ file: test_union.cpp at 30:5
 employee1 is a union EmployeeInfo local in C++ file: test_union.cpp at 31:24
 student2 is a union StudentInfo local in C++ file: test_union.cpp at 32:23"
