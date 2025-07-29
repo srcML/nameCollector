@@ -56,3 +56,6 @@ target_link_libraries(nameCollector ${LIBSRCSAX} LibXml2::LibXml2)
 set(CMAKE_EXTERNAL_SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/external) # Creates folder if doesn't exists.
 file(DOWNLOAD https://github.com/CLIUtils/CLI11/releases/download/v2.3.2/CLI11.hpp ${CMAKE_EXTERNAL_SOURCE_DIR}/CLI11.hpp) # Name of file is needed since content of file itself are being downloaded.
 target_include_directories(nameCollector PRIVATE ${CMAKE_EXTERNAL_SOURCE_DIR})
+
+
+add_subdirectory(testsuite)

@@ -24,7 +24,7 @@ Example:
 | constructor     | Constructor name |
 | destructor      | Destructor name |
 | class           | Class name |
-| interface       | Interface name in Java |
+| interface       | Interface name in C#, Java |
 | typedef         | Typedef name |
 | struct          | Struct name |
 | union           | Union name in C, C++|
@@ -34,7 +34,7 @@ Example:
 | local           | Local variable name (in a function) |
 | global          | Global variable name |
 | macro           | Macro name in C, C++ |
-| namespace       | User defined namespace in C, C++ |
+| namespace       | User defined namespace in C++, C# |
 | parameter       | Name of a parameter |
 | function-parameter  | Name of a parameter, that is a function | 
 | template-parameter  | Name of a template parameter |
@@ -48,7 +48,7 @@ Example:
 - Need [srcML](https://srcML.org) develop installed
 - Need [srcSAX](https://github.com/srcML/srcSAX)  built and installed  
 
-`cmake CMakeList.txt -B build`
+`cmake . -B build`
 
 `cd build`
 
@@ -67,6 +67,20 @@ Generate the srcML for the given source code file using the --position option.  
 
 Output is plain text by default.  Use -f csv or --csv for comma separated output.  An output file can be specified with -o option. Takes standard input by default, and an input file can be specified with -i.  The --append option will append output to an existing file rather than overwrite the file.
 
+## To Run Tests:
+From the source directory run the following commands to build nameCollector:
+
+`cmake . -B build`
+
+`cd build`
+
+`make`
+
+To run the tests defined in the testsuite directory use the following command:
+
+`make test`
+
+Once the test command is run you can check out the results of the tests by navigating to the `/Testing` subdirectory in the build directory, from here you can access the `LastTest.log` and `LastTestsFailed.log` files to view the test results.
 
 ## Developer Notes:
 
@@ -79,3 +93,4 @@ Developers of nameCollector:
 - Michael Decker
 - Jonathan Maletic
 - Joshua Behler
+
