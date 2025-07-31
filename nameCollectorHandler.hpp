@@ -442,15 +442,24 @@ private:
         return false;
     }
 
+    //Needs to check for name after struct/class/union/enum
+    // struct {int x;} foo;  -- this is not a field but a local/global
+    //
     bool isField() const {
-        int i=elementStack.size()-1;
-        while (i > 0) {
+        bool inStruct = false;
+        bool inBlock  = false;
+        int  i        = elementStack.size()-1;
+        while (i > 0) {  //Is it in a struct?
             if (elementStack[i] == "class" || elementStack[i] == "struct" ||
-                elementStack[i] == "union"|| elementStack[i] == "enum")
-                return true;
+                elementStack[i] == "union"|| elementStack[i] == "enum") {
+                inStruct = true;
+                break;  //Done with checking
+            }
+            if (elementStack[i] == "block")  //Is it also in the block of a struct
+                inBlock = true;
             --i;
         }
-        return false;
+        return inStruct && inBlock;
     }
 
     bool isLocal() const {
