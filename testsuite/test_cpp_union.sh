@@ -25,7 +25,7 @@ struct {
     union {
         float a;
         int b;
-    };
+    } internalUnionObject; //union field?
 } structObjectWithAnonymousNestedUnion;
 
 // anonymous union
@@ -60,10 +60,11 @@ section is a char field in C++ file: test_union.cpp:13:10
 exists is a double field in C++ file: test_union.cpp:17:12
 a is a float field in C++ file: test_union.cpp:19:15
 b is a int field in C++ file: test_union.cpp:20:13
-structObjectWithAnonymousNestedUnion is a struct { double exists; union { float a; int b; }; } global in C++ file: test_union.cpp:22:3
+internalUnionObject is a union global in C++ file: test_union.cpp:21:7
+structObjectWithAnonymousNestedUnion is a struct global in C++ file: test_union.cpp:22:3
 size is a int field in C++ file: test_union.cpp:26:9
 print_character is a char field in C++ file: test_union.cpp:27:10
-shape1 is a union { int size; char print_character; } global in C++ file: test_union.cpp:28:3
+shape1 is a union global in C++ file: test_union.cpp:28:3
 main is a int function in C++ file: test_union.cpp:30:5
 employee1 is a union EmployeeInfo local in C++ file: test_union.cpp:31:24
 student2 is a union StudentInfo local in C++ file: test_union.cpp:32:23"
