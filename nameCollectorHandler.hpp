@@ -182,7 +182,8 @@ public:
                     break;
                 }
             }
-        } else if (std::string(localname) == "type") {
+        } 
+        if (std::string(localname) == "type") {
             // Check if this is a type ref=prev
             bool isPrevType = false;
             for (int i = 0; i < numAttributes; ++i) {
@@ -202,7 +203,26 @@ public:
                 insertType.gatherContent = true;
                 typeStack.push_back(insertType);
             }
-        } else if (isStereotypableCategory(localname)) {
+        } 
+        
+        //Need to collect some type info for struct and anonymous struct 
+        // struct foo { } x;  // x has type foo
+        // struct { } x;      // x has type struct
+        if (isStruct(std::string(localname))) {
+            typeInfo insertType;
+            insertType.associatedTag = std::string(localname); //struct, class, enum, union
+            insertType.gatherContent = true;
+            typeStack.push_back(insertType);
+        } 
+        
+        //Stop gathering contents of structs when a block is encountered
+        if ((std::string(localname) == "block") && (typeStack.size() != 0)) {
+            if (isStruct(typeStack[typeStack.size()-1].associatedTag)) {
+                typeStack[typeStack.size()-1].gatherContent = false;
+            }
+        }
+        
+        if (isStereotypableCategory(localname)) {
             // Check for stereotype information from stereocode
             for (int i = 0; i < numAttributes; ++i) {
                 if (attributes[i].prefix != 0 && std::string(attributes[i].prefix) == "st" && std::string(attributes[i].localname) == "stereotype") {
@@ -303,9 +323,19 @@ public:
                     }  
                 }
 
-                std::string type = (isTypedCategory(category) && typeStack.size() != 0 ? typeStack[typeStack.size()-1].type : "");
-                replaceSubStringInPlace(type,",","&#44;");
-                replaceSubStringInPlace(type,"\n","");
+                //Get type from type stack of <type> and <struct>
+                std::string type = "";
+                if (isTypedCategory(category) && (typeStack.size() != 0)) {
+                    type = typeStack[typeStack.size()-1].type;
+                    replaceSubStringInPlace(type, ",", "&#44;");
+                    replaceSubStringInPlace(type, "\n", "");
+                    if (type == typeStack[typeStack.size()-1].associatedTag + " ")
+                        replaceSubStringInPlace(type, " ", ""); 
+                    if (isStruct(typeStack[typeStack.size()-1].associatedTag)) {
+                        replaceSubStringInPlace(type, typeStack[typeStack.size()-1].associatedTag + " ", "");
+                        replaceSubStringInPlace(type, " ", "");
+                    }
+                }
 
                 std::string stereotype = (isStereotypableCategory(category) && stereotypeStack.size() != 0 ? stereotypeStack[stereotypeStack.size() - 1] : "");
                 if (stereotypeStack.size() != 0) stereotypeStack.pop_back();
@@ -345,9 +375,12 @@ public:
             position = "";
             
             collectContent = false;
-        } else if (std::string(localname) == "type") {
+        } 
+        if (std::string(localname) == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
-        } else if (typeStack.size() != 0)
+        } 
+        // Note: struct gather content for typename turns off in endElement at block
+        if (typeStack.size() != 0)
             if (typeStack[typeStack.size()-1].associatedTag == localname)
                 typeStack.pop_back();
 
@@ -447,15 +480,12 @@ private:
     //Needs to check for name after struct/class/union/enum
     // struct {int x;} foo;  -- this is not a field but a local/global
     // Need to deal with nested structs as fields
+    // Fields have a "block | struct" someplace on stack
     bool isField() const {
         int  i        = elementStack.size()-1;
         while (i > 0) {  
-            if (elementStack[i] == "block")  {  //Fields are in block | struct | someplace
-                if (elementStack[i-1] == "class" || elementStack[i-1] == "struct" ||
-                    elementStack[i-1] == "union"|| elementStack[i-1] == "enum") {
+            if ((elementStack[i] == "block") &&  isStruct(elementStack[i-1])) 
                     return true;
-                }
-            }
             --i;
         }
         return false;
