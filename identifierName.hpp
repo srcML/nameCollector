@@ -128,6 +128,12 @@ bool isStereotypableCategory(const std::string& category) {
     return STEREOTYPED_CATEGORIES.find(category) != STEREOTYPED_CATEGORIES.end();
 }
 
+bool isStruct(const std::string& category) {
+    if (category == "class" || category == "struct" || category == "union"|| category == "enum") 
+        return true;
+    return false;
+}
+
 struct typeInfo {
     std::string type;
     std::string associatedTag;
