@@ -297,8 +297,10 @@ public:
                 if (category == "decl") { //Need additional checks
                     category = "global";
                     if (isParameter())  category = "parameter";
-                    else if (isLocal()) category = "local";
-                    else if (isField()) category = "field";
+                    else {
+                        if (isLocal()) category = "local";
+                        if (isField()) category = "field";
+                    }  
                 }
 
                 std::string type = (isTypedCategory(category) && typeStack.size() != 0 ? typeStack[typeStack.size()-1].type : "");
@@ -444,22 +446,19 @@ private:
 
     //Needs to check for name after struct/class/union/enum
     // struct {int x;} foo;  -- this is not a field but a local/global
-    //
+    // Need to deal with nested structs as fields
     bool isField() const {
-        bool inStruct = false;
-        bool inBlock  = false;
         int  i        = elementStack.size()-1;
-        while (i > 0) {  //Is it in a struct?
-            if (elementStack[i] == "class" || elementStack[i] == "struct" ||
-                elementStack[i] == "union"|| elementStack[i] == "enum") {
-                inStruct = true;
-                break;  //Done with checking
+        while (i > 0) {  
+            if (elementStack[i] == "block")  {  //Fields are in block | struct | someplace
+                if (elementStack[i-1] == "class" || elementStack[i-1] == "struct" ||
+                    elementStack[i-1] == "union"|| elementStack[i-1] == "enum") {
+                    return true;
+                }
             }
-            if (elementStack[i] == "block")  //Is it also in the block of a struct
-                inBlock = true;
             --i;
         }
-        return inStruct && inBlock;
+        return false;
     }
 
     bool isLocal() const {
