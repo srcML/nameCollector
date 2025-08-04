@@ -35,13 +35,18 @@ def test7(*args, **kwargs):
 def test8[T]():
     pass
 
+# Annotated parameters
+def test9(a:int, b:x, c:"Hello"):
+    pass
+
 # All function parameters
-def test9[T](a,/,b,c=2,*args,**kwargs):
+def test10[T](a,/,b:int,c=2,*args,**kwargs):
     pass
 
 # Class template parameters
 class CLS[T]:
     pass
+
 
 EOF
 
@@ -69,14 +74,18 @@ kwargs is a parameter in Python file: test_parameter.py:26:20
 test8 is a function in Python file: test_parameter.py:30:5
 T is a template-parameter in Python file: test_parameter.py:30:11
 test9 is a function in Python file: test_parameter.py:34:5
-T is a template-parameter in Python file: test_parameter.py:34:11
-a is a parameter in Python file: test_parameter.py:34:14
+a is a parameter in Python file: test_parameter.py:34:11
 b is a parameter in Python file: test_parameter.py:34:18
-c is a parameter in Python file: test_parameter.py:34:20
-args is a parameter in Python file: test_parameter.py:34:25
-kwargs is a parameter in Python file: test_parameter.py:34:32
-CLS is a class in Python file: test_parameter.py:38:7
-T is a template-parameter in Python file: test_parameter.py:38:11"
+c is a parameter in Python file: test_parameter.py:34:23
+test10 is a function in Python file: test_parameter.py:38:5
+T is a template-parameter in Python file: test_parameter.py:38:12
+a is a parameter in Python file: test_parameter.py:38:15
+b is a parameter in Python file: test_parameter.py:38:19
+c is a parameter in Python file: test_parameter.py:38:25
+args is a parameter in Python file: test_parameter.py:38:30
+kwargs is a parameter in Python file: test_parameter.py:38:37
+CLS is a class in Python file: test_parameter.py:42:7
+T is a template-parameter in Python file: test_parameter.py:42:11"
 
 expected_parameters=(
   "a is a parameter in Python file: test_parameter.py:6:11"
@@ -91,14 +100,20 @@ expected_parameters=(
   "c is a parameter in Python file: test_parameter.py:22:19"
   "args is a parameter in Python file: test_parameter.py:26:12"
   "kwargs is a parameter in Python file: test_parameter.py:26:20"
+  "test8 is a function in Python file: test_parameter.py:30:5"
   "T is a template-parameter in Python file: test_parameter.py:30:11"
-  "T is a template-parameter in Python file: test_parameter.py:34:11"
-  "a is a parameter in Python file: test_parameter.py:34:14"
+  "test9 is a function in Python file: test_parameter.py:34:5"
+  "a is a parameter in Python file: test_parameter.py:34:11"
   "b is a parameter in Python file: test_parameter.py:34:18"
-  "c is a parameter in Python file: test_parameter.py:34:20"
-  "args is a parameter in Python file: test_parameter.py:34:25"
-  "kwargs is a parameter in Python file: test_parameter.py:34:32"
-  "T is a template-parameter in Python file: test_parameter.py:38:11"
+  "c is a parameter in Python file: test_parameter.py:34:23"
+  "test10 is a function in Python file: test_parameter.py:38:5"
+  "T is a template-parameter in Python file: test_parameter.py:38:12"
+  "a is a parameter in Python file: test_parameter.py:38:15"
+  "b is a parameter in Python file: test_parameter.py:38:19"
+  "c is a parameter in Python file: test_parameter.py:38:25"
+  "args is a parameter in Python file: test_parameter.py:38:30"
+  "kwargs is a parameter in Python file: test_parameter.py:38:37"
+  "T is a template-parameter in Python file: test_parameter.py:42:11"
 )
 
 # make sure parameters are collected correctly in both hpp and cpp files

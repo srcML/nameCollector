@@ -43,7 +43,7 @@ if __name__ == "__main__":
     PYmain()
 EOF
 
-input=$(srcml test_cpp.cpp test_c.c test_cs.cs test_java.java test_py.py --position)
+input=$(srcml test_cpp.cpp test_c.c test_cs.cs test_java.java test_python.py --position)
 output=$(echo "$input" | ./nameCollector )
 expected="main is a int function in C++ file: test_cpp.cpp:2:5
 main is a int function in C file: test_c.c:2:5

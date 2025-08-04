@@ -12,7 +12,7 @@ input=$(srcml test_typedef.py --position)
 output=$(echo "$input" | ./nameCollector )
 expected="URL is a typedef in Python file: test_typedef.py:1:6
 IntList is a typedef in Python file: test_typedef.py:2:6
-ListOrSet[T] is a typedef in Python file: test_typedef.py:3:6
+ListOrSet is a typedef in Python file: test_typedef.py:3:6
 T is a template-parameter in Python file: test_typedef.py:3:16"
 
 if [[ "$output" != "$expected" ]]; then

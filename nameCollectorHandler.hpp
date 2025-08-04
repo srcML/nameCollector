@@ -167,6 +167,15 @@ public:
         else if (back.find("name_")==0 && std::string(localname)=="operator") { // Operators in sub-names
             int depth = std::stoi(back.substr(5));
             elementStack.push_back("operator_name_" + std::to_string(depth+1));
+        } else if(std::string(localname) == "parameter_list") {                              // Check parameter_list for type="generic"
+            bool add_generic = false;
+            for (int i = 0; i < numAttributes; ++i) {
+                if (std::string(attributes[i].localname) == "type" && std::string(attributes[i].value) == "generic") {
+                    add_generic = true;
+                    break;
+                }
+            }
+            elementStack.push_back(add_generic ? "generic_parameter_list" : localname);
         } else {                                                                // All other tags
             elementStack.push_back(localname);
         }
@@ -436,7 +445,7 @@ private:
     bool isTemplateParameter() const {
         int i=elementStack.size()-1;
         while (i > 0) {
-            if (elementStack[i] == "template") return true;
+            if (elementStack[i] == "template" || elementStack[i] == "generic_parameter_list") return true;
             --i;
         }
         return false;
