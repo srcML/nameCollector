@@ -56,7 +56,7 @@ outer is a struct in C++ file: test_struct.cpp:21:8
 inner is a struct in C++ file: test_struct.cpp:22:12
 a is a int field in C++ file: test_struct.cpp:23:13
 b is a int field in C++ file: test_struct.cpp:23:16
-in is a field in C++ file: test_struct.cpp:24:7
+in is a inner field in C++ file: test_struct.cpp:24:7
 q is a int field in C++ file: test_struct.cpp:25:9
 p is a int field in C++ file: test_struct.cpp:25:12
 Point is a struct in C++ file: test_struct.cpp:29:16
@@ -70,6 +70,9 @@ expected_structs=(
   "outer is a struct in C++ file: test_struct.cpp:21:8"
   "inner is a struct in C++ file: test_struct.cpp:22:12"
   "Point is a struct in C++ file: test_struct.cpp:29:16"
+  "person1 is a Person global in C++ file: test_struct.cpp:13:3"
+  "anonymousStructObject is a struct global in C++ file: test_struct.cpp:18:3"
+  "in is a inner field in C++ file: test_struct.cpp:24:7"
 )
 
 # test should fail until the issue with srcml parsing structs with immediate obj declarations is resolved
