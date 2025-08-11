@@ -84,13 +84,15 @@ Once the test command is run you can check out the results of the tests by navig
 
 ## Developer Notes:
 
-The initial version of the application was developed by Decker from the srcSAX examples in June 2023.   This was extended to collect the different types of names by Maletic.  Maletic added the CLI11 interface and made the first public release (July 2023). 
+The initial version of the application was developed by Decker from the srcSAX examples in June 2023.   This was extended to collect the different types of names by Maletic.  Maletic added the CLI11 interface and made the first public release (July 2023).  Testa added testing framework and testsuite in summer 2025.
 
 nameCollector is a good simple example of how to use srcSAX to build fast and scalable tools for collecting analysis information.
 
 Developers of nameCollector:
+- Joshua Behler
 - Michael Collard
 - Michael Decker
 - Jonathan Maletic
-- Joshua Behler
+- Sophia Testa 
+
 
