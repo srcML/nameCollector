@@ -58,7 +58,7 @@ To run test suite:
 
 `ctest -V`
 
-To run and individual test:
+To run individual test:
 
 `ctest -R test_cpp_function -V`
 
