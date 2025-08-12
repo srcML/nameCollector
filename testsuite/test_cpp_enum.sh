@@ -22,6 +22,9 @@ enum class Day { Sunday = 1, Monday, Tuesday, Wednesday, Thursday, Friday, Satur
 //enum class with immediate object declaration 
 enum class Week { Sunday = 1, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday } days;
 
+//test enum with type
+enum TypedWeek:size_t { S = 1, M, T, W };
+
 //anonymous enum with immediate object declaration 
 enum {ON = 1, OFF = 0} status = OFF; 
 
@@ -66,16 +69,21 @@ Thursday is a field in C++ file: test_enum.cpp:18:59
 Friday is a field in C++ file: test_enum.cpp:18:69
 Saturday is a field in C++ file: test_enum.cpp:18:77
 days is a Week global in C++ file: test_enum.cpp:18:88
-ON is a field in C++ file: test_enum.cpp:21:7
-OFF is a field in C++ file: test_enum.cpp:21:15
-status is a enum global in C++ file: test_enum.cpp:21:24
-main is a int function in C++ file: test_enum.cpp:23:5
-current_color is a Color local in C++ file: test_enum.cpp:25:11
-Fruit is a enum in C++ file: test_enum.cpp:27:10
-APPLE is a int local in C++ file: test_enum.cpp:27:18
-ORANGE is a int local in C++ file: test_enum.cpp:27:25
-PEACH is a int local in C++ file: test_enum.cpp:27:33
-fruits is a Fruit local in C++ file: test_enum.cpp:27:41"
+TypedWeek is a enum in C++ file: test_enum.cpp:21:6
+S is a size_t field in C++ file: test_enum.cpp:21:25
+M is a size_t field in C++ file: test_enum.cpp:21:32
+T is a size_t field in C++ file: test_enum.cpp:21:35
+W is a size_t field in C++ file: test_enum.cpp:21:38
+ON is a field in C++ file: test_enum.cpp:24:7
+OFF is a field in C++ file: test_enum.cpp:24:15
+status is a enum global in C++ file: test_enum.cpp:24:24
+main is a int function in C++ file: test_enum.cpp:26:5
+current_color is a Color local in C++ file: test_enum.cpp:28:11
+Fruit is a enum in C++ file: test_enum.cpp:30:10
+APPLE is a int local in C++ file: test_enum.cpp:30:18
+ORANGE is a int local in C++ file: test_enum.cpp:30:25
+PEACH is a int local in C++ file: test_enum.cpp:30:33
+fruits is a Fruit local in C++ file: test_enum.cpp:30:41"
 
 expected_enums=(
   "empty_enum is a enum in C++ file: test_enum.cpp:2:6"

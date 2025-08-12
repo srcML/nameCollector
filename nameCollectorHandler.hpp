@@ -335,14 +335,19 @@ public:
                 //Get type from type stack of <type> and <struct>
                 std::string type = "";
                 if (isTypedCategory(category) && (typeStack.size() != 0)) {
-                    type = typeStack[typeStack.size()-1].type;
-                    replaceSubStringInPlace(type, ",", "&#44;");
-                    replaceSubStringInPlace(type, "\n", "");
-                    if (type == typeStack[typeStack.size()-1].associatedTag + " ")
-                        replaceSubStringInPlace(type, " ", ""); 
-                    if (isStruct(typeStack[typeStack.size()-1].associatedTag)) {
-                        replaceSubStringInPlace(type, typeStack[typeStack.size()-1].associatedTag + " ", "");
-                        replaceSubStringInPlace(type, " ", "");
+                    if ((category == "field") && (typeStack[typeStack.size()-1].type.find("enum") != std::string::npos)) {
+                        std::string type = "";  //Deal with enum fields without a type
+                    } else {
+                        type = typeStack[typeStack.size()-1].type;
+                        replaceSubStringInPlace(type, ",", "&#44;");
+                        replaceSubStringInPlace(type, "\n", "");
+                        if (type == typeStack[typeStack.size()-1].associatedTag + " ")
+                            replaceSubStringInPlace(type, " ", "");
+                        if (isStruct(typeStack[typeStack.size()-1].associatedTag)) {
+                            replaceSubStringInPlace(type, typeStack[typeStack.size()-1].associatedTag + " ", "");  //Remove "struct " from type
+                            replaceSubStringInPlace(type, "class ", "");  //Deal with enum class foo {};
+                            replaceSubStringInPlace(type, " ", "");
+                        }
                     }
                 }
 
@@ -364,19 +369,18 @@ public:
                 else
                     printReport(*outPtr, identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
 
-                if (DEBUG) {  //Print identifier and stack
+                if (DEBUG) {  //Print identifier and stacks
                     std::cerr << "Identifier: " << content << std::endl;
                     std::cerr << "Category: " << category << std::endl;
                     std::cerr << "Position: " << position << std::endl;
                     std::cerr << "Stereotype: " << stereotype << std::endl;
                     std::cerr << "Type: " << type << std::endl;
-                   //Print the stack
-                    std::cerr << "Stack: " ;
-                    for (int i=elementStack.size()-1; i>=0; --i) {
-                        std::cerr << elementStack[i] << " | ";
-                    }
-                    std::cerr << std::endl;
-                    std::cerr <<  "------------------------" << std::endl;
+                    std::cerr << "Element Stack: " ;
+                    for (int i=elementStack.size()-1; i>=0; --i) { std::cerr << elementStack[i] << " | "; }
+                    std::cerr << std::endl <<  "------------------------" << std::endl;
+                    std::cerr << "Type Stack: " ;
+                    for (int i=typeStack.size()-1; i>=0; --i) { std::cerr << "[" << typeStack[i].type << ", " << typeStack[i].associatedTag << "]"  << " | "; }
+                    std::cerr << std::endl <<  "------------------------" << std::endl;
                 }
             }
 
