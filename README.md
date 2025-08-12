@@ -76,21 +76,6 @@ Generate the srcML for the given source code file using the --position option.  
 
 Output is plain text by default.  Use -f csv or --csv for comma separated output.  An output file can be specified with -o option. Takes standard input by default, and an input file can be specified with -i.  The --append option will append output to an existing file rather than overwrite the file.
 
-## To Run Tests:
-From the source directory run the following commands to build nameCollector:
-
-`cmake . -B build`
-
-`cd build`
-
-`make`
-
-To run the tests defined in the testsuite directory use the following command:
-
-`make test`
-
-Once the test command is run you can check out the results of the tests by navigating to the `/Testing` subdirectory in the build directory, from here you can access the `LastTest.log` and `LastTestsFailed.log` files to view the test results.
-
 ## Developer Notes:
 
 The initial version of the application was developed by Decker from the srcSAX examples in June 2023.   This was extended to collect the different types of names by Maletic.  Maletic added the CLI11 interface and made the first public release (July 2023).  Testa added testing framework and testsuite in summer 2025.
