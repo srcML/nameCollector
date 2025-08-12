@@ -54,6 +54,15 @@ Example:
 
 `make`
 
+To run test suite:
+
+`ctest -V`
+
+To run and individual test:
+
+`ctest -R test_cpp_function -V`
+
+The results of the tests are in `/Testing` the build directory, from here you can access the `LastTest.log` and `LastTestsFailed.log` files to view the test results.
 
 ## To run:
 
