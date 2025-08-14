@@ -39,7 +39,7 @@ def max_int() -> int:
 EOF
 
 input=$(srcml test_function.py --position)
-output=$(echo "$input" | ./nameCollector -d)
+output=$(echo "$input" | ./nameCollector)
 expected="foo is a function in Python file: test_function.py:2:5
 bar is a function in Python file: test_function.py:6:5
 bin is a function in Python file: test_function.py:7:9

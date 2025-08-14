@@ -47,6 +47,12 @@ def test10[T](a,/,b:int,c=2,*args,**kwargs):
 class CLS[T]:
     pass
 
+# Lambdas
+lambda :
+lambda a: a
+lambda a,b : a+b
+
+
 
 EOF
 
@@ -85,7 +91,10 @@ c is a parameter in Python file: test_parameter.py:38:25
 args is a parameter in Python file: test_parameter.py:38:30
 kwargs is a parameter in Python file: test_parameter.py:38:37
 CLS is a class in Python file: test_parameter.py:42:7
-T is a template-parameter in Python file: test_parameter.py:42:11"
+T is a template-parameter in Python file: test_parameter.py:42:11
+a is a parameter in Python file: test_parameter.py:47:8
+a is a parameter in Python file: test_parameter.py:48:8
+b is a parameter in Python file: test_parameter.py:48:10"
 
 expected_parameters=(
   "a is a parameter in Python file: test_parameter.py:6:11"
