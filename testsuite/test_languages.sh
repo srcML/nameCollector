@@ -23,7 +23,7 @@ cat <<EOF > test_cs.cs
 using System;
 class Program{
     static void CSmain(string[] CSargs){
-        Console.WriteLine("Hello World!");
+        Console.WriteLine("Hello, World!");
     }
 }
 EOF
@@ -36,7 +36,14 @@ public class HelloWorld {
 }
 EOF
 
-input=$(srcml test_cpp.cpp test_c.c test_cs.cs test_java.java --position)
+cat <<EOF > test_python.py
+def PYmain():
+    print("Hello, World!")
+if __name__ == "__main__":
+    PYmain()
+EOF
+
+input=$(srcml test_cpp.cpp test_c.c test_cs.cs test_java.java test_python.py --position)
 output=$(echo "$input" | ./nameCollector )
 expected="main is a int function in C++ file: test_cpp.cpp:2:5
 main is a int function in C file: test_c.c:2:5
@@ -45,7 +52,8 @@ CSmain is a static void function in C# file: test_cs.cs:3:17
 CSargs is a string[] parameter in C# file: test_cs.cs:3:33
 HelloWorld is a class in Java file: test_java.java:1:14
 Jmain is a public static void function in Java file: test_java.java:2:24
-Jargs is a String[] parameter in Java file: test_java.java:2:39"
+Jargs is a String[] parameter in Java file: test_java.java:2:39
+PYmain is a function in Python file: test_python.py:1:5"
 
 # passes if all languages are collected properly
 # fails if one or more language is incorrectly collected
