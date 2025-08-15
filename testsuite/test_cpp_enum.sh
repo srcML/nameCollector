@@ -80,9 +80,9 @@ status is a enum global in C++ file: test_enum.cpp:24:24
 main is a int function in C++ file: test_enum.cpp:26:5
 current_color is a Color local in C++ file: test_enum.cpp:28:11
 Fruit is a enum in C++ file: test_enum.cpp:30:10
-APPLE is a int local in C++ file: test_enum.cpp:30:18
-ORANGE is a int local in C++ file: test_enum.cpp:30:25
-PEACH is a int local in C++ file: test_enum.cpp:30:33
+APPLE is a field in C++ file: test_enum.cpp:30:18
+ORANGE is a field in C++ file: test_enum.cpp:30:25
+PEACH is a field in C++ file: test_enum.cpp:30:33
 fruits is a Fruit local in C++ file: test_enum.cpp:30:41"
 
 expected_enums=(
