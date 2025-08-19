@@ -44,7 +44,8 @@ Example:
 
 
 ## Python notes:
-In Python, globals, locals, and fields are collected at their first appearance. If a name is assigned to twice within a scope, only the first use of that name will be collected.
+In Python, globals, locals, and fields are collected at their first appearance. If a name is assigned to twice within a scope, only the first use of that name will be collected.  
+Additionally, type information is NOT collected for any Python variables or functions.
 
 
 ## To build:
