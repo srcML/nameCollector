@@ -84,6 +84,15 @@ const std::unordered_set<std::string> USER_DEFINED_TAGS = {
     "annotation_defn" //Java only
 };
 
+const std::unordered_set<std::string> EXPR_TAGS = {
+    "expr_stmt",
+    "condition",
+    "control",
+    "global",
+    "nonlocal",
+    "alias"
+};
+
 //
 //srcML categories that have types AND are named
 //For C/C++, C#, and Java
@@ -100,6 +109,7 @@ const std::unordered_set<std::string> TYPED_CATEGORIES = {
     "event", //C# only
     "property" //C# only
 };
+
 
 const std::unordered_set<std::string> STEREOTYPED_CATEGORIES = {
     "function",
@@ -123,9 +133,21 @@ bool isTypedCategory(const std::string& category) {
     return TYPED_CATEGORIES.find(category) != TYPED_CATEGORIES.end();
 }
 
+// Is this tag an expr category?
+bool isExprCategory(const std::string& category) {
+    return EXPR_TAGS.find(category) != EXPR_TAGS.end();
+}
+
+
 // Is this tag stereotypable?
 bool isStereotypableCategory(const std::string& category) {
     return STEREOTYPED_CATEGORIES.find(category) != STEREOTYPED_CATEGORIES.end();
+}
+
+bool isStruct(const std::string& category) {
+    if (category == "class" || category == "struct" || category == "union"|| category == "enum") 
+        return true;
+    return false;
 }
 
 struct typeInfo {
@@ -198,7 +220,7 @@ void printReport(std::ostream& out, const identifier& id) {
         << id.getType() << (id.getType() != "" ? " " : "")
         << id.getCategory()
         << " in " << id.getLanguage() << " file: " << id.getFilename()
-        << (id.getPosition() != "" ? " at " : "")  << id.getPosition()
+        << (id.getPosition() != "" ? ":" : "")  << id.getPosition()
         << std::endl;
 }
 

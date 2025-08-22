@@ -18,9 +18,9 @@ EOF
 
 input=$(srcml test_class_name.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="Counter is a class in C++ file: test_class_name.cpp at 3:7
-Counter is a class in C++ file: test_class_name.cpp at 5:7
-main is a int function in C++ file: test_class_name.cpp at 9:5"
+expected="Counter is a class in C++ file: test_class_name.cpp:3:7
+Counter is a class in C++ file: test_class_name.cpp:5:7
+main is a int function in C++ file: test_class_name.cpp:9:5"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_class_name failed!"

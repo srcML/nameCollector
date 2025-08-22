@@ -61,30 +61,30 @@ EOF
 
 input=$(srcml test_class_method.hpp test_class_method.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="TEST_CLASS_HPP is a macro in C++ file: test_class_method.hpp at 2:9
-Counter is a class in C++ file: test_class_method.hpp at 4:7
-Counter is a constructor in C++ file: test_class_method.hpp at 6:5
-Counter is a constructor in C++ file: test_class_method.hpp at 7:5
-value is a int parameter in C++ file: test_class_method.hpp at 7:17
-~Counter is a destructor in C++ file: test_class_method.hpp at 8:5
-operator -- is a Counter& function in C++ file: test_class_method.hpp at 9:14
-public_field is a char field in C++ file: test_class_method.hpp at 11:10
-display is a void function in C++ file: test_class_method.hpp at 12:10
-counter_value is a int * field in C++ file: test_class_method.hpp at 14:10
-protected_field is a float field in C++ file: test_class_method.hpp at 17:11
-Counter is a constructor in C++ file: test_class_method.cpp at 4:10
-Counter is a constructor in C++ file: test_class_method.cpp at 6:10
-value is a int parameter in C++ file: test_class_method.cpp at 6:22
-~Counter is a destructor in C++ file: test_class_method.cpp at 8:10
-operator -- is a Counter& function in C++ file: test_class_method.cpp at 15:19
-display is a void function in C++ file: test_class_method.cpp at 20:15
-main is a int function in C++ file: test_class_method.cpp at 24:5
-defaultCounter is a Counter local in C++ file: test_class_method.cpp at 25:13
-seven is a Counter local in C++ file: test_class_method.cpp at 26:13"
+expected="TEST_CLASS_HPP is a macro in C++ file: test_class_method.hpp:2:9
+Counter is a class in C++ file: test_class_method.hpp:4:7
+Counter is a constructor in C++ file: test_class_method.hpp:6:5
+Counter is a constructor in C++ file: test_class_method.hpp:7:5
+value is a int parameter in C++ file: test_class_method.hpp:7:17
+~Counter is a destructor in C++ file: test_class_method.hpp:8:5
+operator -- is a Counter& function in C++ file: test_class_method.hpp:9:14
+public_field is a char field in C++ file: test_class_method.hpp:11:10
+display is a void function in C++ file: test_class_method.hpp:12:10
+counter_value is a int * field in C++ file: test_class_method.hpp:14:10
+protected_field is a float field in C++ file: test_class_method.hpp:17:11
+Counter is a constructor in C++ file: test_class_method.cpp:4:10
+Counter is a constructor in C++ file: test_class_method.cpp:6:10
+value is a int parameter in C++ file: test_class_method.cpp:6:22
+~Counter is a destructor in C++ file: test_class_method.cpp:8:10
+operator -- is a Counter& function in C++ file: test_class_method.cpp:15:19
+display is a void function in C++ file: test_class_method.cpp:20:15
+main is a int function in C++ file: test_class_method.cpp:24:5
+defaultCounter is a Counter local in C++ file: test_class_method.cpp:25:13
+seven is a Counter local in C++ file: test_class_method.cpp:26:13"
 
 expected_methods=(
-  "display is a void function in C++ file: test_class_method.hpp at 12:10"
-  "display is a void function in C++ file: test_class_method.cpp at 20:15"
+  "display is a void function in C++ file: test_class_method.hpp:12:10"
+  "display is a void function in C++ file: test_class_method.cpp:20:15"
 )
 
 # make sure fields are collected correctly in both hpp and cpp files

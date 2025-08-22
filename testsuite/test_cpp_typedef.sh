@@ -12,9 +12,9 @@ EOF
 
 input=$(srcml test_typedef.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="int_vector is a vector<int> typedef in C++ file: test_typedef.cpp at 2:21
-char_array is a char* typedef in C++ file: test_typedef.cpp at 3:15
-functionPtr is a int function in C++ file: test_typedef.cpp at 4:15"
+expected="int_vector is a vector<int> typedef in C++ file: test_typedef.cpp:2:21
+char_array is a char* typedef in C++ file: test_typedef.cpp:3:15
+functionPtr is a int function in C++ file: test_typedef.cpp:4:15"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_typedef failed!" 

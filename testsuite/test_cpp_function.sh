@@ -36,27 +36,27 @@ EOF
 
 input=$(srcml test_function.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="convertAsciiToChar is a char function in C++ file: test_function.cpp at 2:6
-acsciiValue is a int parameter in C++ file: test_function.cpp at 2:29
-main is a int function in C++ file: test_function.cpp at 5:5
-fibonacci is a int function in C++ file: test_function.cpp at 10:5
-n is a int parameter in C++ file: test_function.cpp at 10:19
-add is a auto global in C++ file: test_function.cpp at 22:6
-x is a int parameter in C++ file: test_function.cpp at 22:19
-y is a int parameter in C++ file: test_function.cpp at 22:26
-multiply is a int function in C++ file: test_function.cpp at 27:5
-a is a int parameter in C++ file: test_function.cpp at 27:18
-b is a int parameter in C++ file: test_function.cpp at 27:25
-multiply is a float function in C++ file: test_function.cpp at 28:7
-a is a float parameter in C++ file: test_function.cpp at 28:22
-b is a float parameter in C++ file: test_function.cpp at 28:31"
+expected="convertAsciiToChar is a char function in C++ file: test_function.cpp:2:6
+acsciiValue is a int parameter in C++ file: test_function.cpp:2:29
+main is a int function in C++ file: test_function.cpp:5:5
+fibonacci is a int function in C++ file: test_function.cpp:10:5
+n is a int parameter in C++ file: test_function.cpp:10:19
+add is a auto global in C++ file: test_function.cpp:22:6
+x is a int parameter in C++ file: test_function.cpp:22:19
+y is a int parameter in C++ file: test_function.cpp:22:26
+multiply is a int function in C++ file: test_function.cpp:27:5
+a is a int parameter in C++ file: test_function.cpp:27:18
+b is a int parameter in C++ file: test_function.cpp:27:25
+multiply is a float function in C++ file: test_function.cpp:28:7
+a is a float parameter in C++ file: test_function.cpp:28:22
+b is a float parameter in C++ file: test_function.cpp:28:31"
 
 expected_functions=(
-  "convertAsciiToChar is a char function in C++ file: test_function.cpp at 2:6"
-  "main is a int function in C++ file: test_function.cpp at 5:5"
-  "fibonacci is a int function in C++ file: test_function.cpp at 10:5"
-  "multiply is a int function in C++ file: test_function.cpp at 27:5"
-  "multiply is a float function in C++ file: test_function.cpp at 28:7"
+  "convertAsciiToChar is a char function in C++ file: test_function.cpp:2:6"
+  "main is a int function in C++ file: test_function.cpp:5:5"
+  "fibonacci is a int function in C++ file: test_function.cpp:10:5"
+  "multiply is a int function in C++ file: test_function.cpp:27:5"
+  "multiply is a float function in C++ file: test_function.cpp:28:7"
 )
 
 # make sure contructors are collected correctly in both hpp and cpp files

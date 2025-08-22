@@ -35,24 +35,24 @@ EOF
 
 input=$(srcml test_class_constructor.hpp test_class_constructor.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="TEST_CLASS_HPP is a macro in C++ file: test_class_constructor.hpp at 2:9
-Counter is a class in C++ file: test_class_constructor.hpp at 4:7
-Counter is a constructor in C++ file: test_class_constructor.hpp at 6:5
-Counter is a constructor in C++ file: test_class_constructor.hpp at 7:5
-value is a int parameter in C++ file: test_class_constructor.hpp at 7:17
-counter_value is a int * field in C++ file: test_class_constructor.hpp at 9:9
-Counter is a constructor in C++ file: test_class_constructor.cpp at 4:10
-Counter is a constructor in C++ file: test_class_constructor.cpp at 6:10
-value is a int parameter in C++ file: test_class_constructor.cpp at 6:22
-main is a int function in C++ file: test_class_constructor.cpp at 8:5
-defaultCounter is a Counter local in C++ file: test_class_constructor.cpp at 9:13
-seven is a Counter local in C++ file: test_class_constructor.cpp at 10:13"
+expected="TEST_CLASS_HPP is a macro in C++ file: test_class_constructor.hpp:2:9
+Counter is a class in C++ file: test_class_constructor.hpp:4:7
+Counter is a constructor in C++ file: test_class_constructor.hpp:6:5
+Counter is a constructor in C++ file: test_class_constructor.hpp:7:5
+value is a int parameter in C++ file: test_class_constructor.hpp:7:17
+counter_value is a int * field in C++ file: test_class_constructor.hpp:9:9
+Counter is a constructor in C++ file: test_class_constructor.cpp:4:10
+Counter is a constructor in C++ file: test_class_constructor.cpp:6:10
+value is a int parameter in C++ file: test_class_constructor.cpp:6:22
+main is a int function in C++ file: test_class_constructor.cpp:8:5
+defaultCounter is a Counter local in C++ file: test_class_constructor.cpp:9:13
+seven is a Counter local in C++ file: test_class_constructor.cpp:10:13"
 
 expected_constructors=(
-  "Counter is a constructor in C++ file: test_class_constructor.hpp at 6:5"
-  "Counter is a constructor in C++ file: test_class_constructor.hpp at 7:5"
-  "Counter is a constructor in C++ file: test_class_constructor.cpp at 4:10"
-  "Counter is a constructor in C++ file: test_class_constructor.cpp at 6:10"
+  "Counter is a constructor in C++ file: test_class_constructor.hpp:6:5"
+  "Counter is a constructor in C++ file: test_class_constructor.hpp:7:5"
+  "Counter is a constructor in C++ file: test_class_constructor.cpp:4:10"
+  "Counter is a constructor in C++ file: test_class_constructor.cpp:6:10"
 )
 
 # make sure contructors are collected correctly in both hpp and cpp files
