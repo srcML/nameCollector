@@ -763,11 +763,12 @@ private:
     // struct {int x;} foo;  -- this is not a field but a local/global
     // Need to deal with nested structs as fields
     // Fields have a "block | struct" someplace on stack
+    // Also needs to check if in a function within a class decl (local)
     bool isField() const {
         int  i        = elementStack.size()-1;
-        while (i > 0) {  
-            if ((elementStack[i] == "block") &&  isStruct(elementStack[i-1])) 
-                    return true;
+        while (i > 0) {
+            if (elementStack[i] == "function" || elementStack[i] == "constructor" || elementStack[i] == "destructor") return false;
+            if ((elementStack[i] == "block") &&  isStruct(elementStack[i-1])) return true;
             --i;
         }
         return false;
