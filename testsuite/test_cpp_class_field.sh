@@ -15,6 +15,7 @@ public:
     Counter& operator --();
 
     char public_field;
+    static int static_field; 
 private:
     int *counter_value;
 
@@ -64,8 +65,9 @@ value is a int parameter in C++ file: test_class_fields.hpp:7:17
 ~Counter is a destructor in C++ file: test_class_fields.hpp:8:5
 operator -- is a Counter& function in C++ file: test_class_fields.hpp:9:14
 public_field is a char field in C++ file: test_class_fields.hpp:11:10
-counter_value is a int * field in C++ file: test_class_fields.hpp:13:10
-protected_field is a float field in C++ file: test_class_fields.hpp:16:11
+static_field is a static int field in C++ file: test_class_fields.hpp:12:16
+counter_value is a int * field in C++ file: test_class_fields.hpp:14:10
+protected_field is a float field in C++ file: test_class_fields.hpp:17:11
 Counter is a constructor in C++ file: test_class_fields.cpp:4:10
 Counter is a constructor in C++ file: test_class_fields.cpp:6:10
 value is a int parameter in C++ file: test_class_fields.cpp:6:22
@@ -77,8 +79,9 @@ seven is a Counter local in C++ file: test_class_fields.cpp:22:13"
 
 expected_fields=(
   "public_field is a char field in C++ file: test_class_fields.hpp:11:10"
-  "counter_value is a int * field in C++ file: test_class_fields.hpp:13:10"
-  "protected_field is a float field in C++ file: test_class_fields.hpp:16:11"
+  "static_field is a static int field in C++ file: test_class_fields.hpp:12:16"
+  "counter_value is a int * field in C++ file: test_class_fields.hpp:14:10"
+  "protected_field is a float field in C++ file: test_class_fields.hpp:17:11"
 )
 
 # make sure fields are collected correctly in both hpp and cpp files
