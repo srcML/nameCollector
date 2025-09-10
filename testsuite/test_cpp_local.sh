@@ -9,6 +9,22 @@ int multiply(int a, int b){
     return return_value;
 }
 
+// to test that localInsideClassMethod is categorized as a local and  not a field
+class Shapes{
+    public:
+
+        Shapes();
+        Shapes(char): borderCharacter(c) {};
+
+        int calculateArea(int length, int width){ 
+            int localInsideClassMethod = length*width; 
+            return localInsideClassMethod; 
+        }; 
+
+    private:
+        char borderCharacter; 
+};
+
 int main(){
     int k = 8, j, big_number;
     int product = multiply(10, 12);
@@ -34,17 +50,25 @@ expected="multiply is a int function in C++ file: test_local.cpp:2:5
 a is a int parameter in C++ file: test_local.cpp:2:18
 b is a int parameter in C++ file: test_local.cpp:2:25
 return_value is a int local in C++ file: test_local.cpp:3:9
-main is a int function in C++ file: test_local.cpp:7:5
-k is a int local in C++ file: test_local.cpp:8:9
-j is a int local in C++ file: test_local.cpp:8:16
-big_number is a int local in C++ file: test_local.cpp:8:19
-product is a int local in C++ file: test_local.cpp:9:9
-i is a int local in C++ file: test_local.cpp:11:14
-next_one is a int local in C++ file: test_local.cpp:12:13
-collection is a std::vector<int> local in C++ file: test_local.cpp:16:22
-number is a auto local in C++ file: test_local.cpp:17:14
-even is a bool local in C++ file: test_local.cpp:18:33
-odd is a bool local in C++ file: test_local.cpp:19:20"
+Shapes is a class in C++ file: test_local.cpp:8:7
+Shapes is a constructor in C++ file: test_local.cpp:11:9
+Shapes is a constructor in C++ file: test_local.cpp:12:9
+calculateArea is a int function in C++ file: test_local.cpp:14:13
+length is a int parameter in C++ file: test_local.cpp:14:31
+width is a int parameter in C++ file: test_local.cpp:14:43
+localInsideClassMethod is a int local in C++ file: test_local.cpp:15:17
+borderCharacter is a char field in C++ file: test_local.cpp:20:14
+main is a int function in C++ file: test_local.cpp:23:5
+k is a int local in C++ file: test_local.cpp:24:9
+j is a int local in C++ file: test_local.cpp:24:16
+big_number is a int local in C++ file: test_local.cpp:24:19
+product is a int local in C++ file: test_local.cpp:25:9
+i is a int local in C++ file: test_local.cpp:27:14
+next_one is a int local in C++ file: test_local.cpp:28:13
+collection is a std::vector<int> local in C++ file: test_local.cpp:32:22
+number is a auto local in C++ file: test_local.cpp:33:14
+even is a bool local in C++ file: test_local.cpp:34:33
+odd is a bool local in C++ file: test_local.cpp:35:20"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_local failed!"
