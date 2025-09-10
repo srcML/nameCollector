@@ -47,6 +47,8 @@ Counter& Counter::operator --() {
 }
 
 void Counter::display(){
+    static char staticLocal; 
+    int nonStaticLocal; 
     std::cout << *counter_value << std::endl; 
 }
 
@@ -78,9 +80,11 @@ value is a int parameter in C++ file: test_class_method.cpp:6:22
 ~Counter is a destructor in C++ file: test_class_method.cpp:8:10
 operator -- is a Counter& function in C++ file: test_class_method.cpp:15:19
 display is a void function in C++ file: test_class_method.cpp:20:15
-main is a int function in C++ file: test_class_method.cpp:24:5
-defaultCounter is a Counter local in C++ file: test_class_method.cpp:25:13
-seven is a Counter local in C++ file: test_class_method.cpp:26:13"
+staticLocal is a static char local in C++ file: test_class_method.cpp:21:17
+nonStaticLocal is a int local in C++ file: test_class_method.cpp:22:9
+main is a int function in C++ file: test_class_method.cpp:26:5
+defaultCounter is a Counter local in C++ file: test_class_method.cpp:27:13
+seven is a Counter local in C++ file: test_class_method.cpp:28:13"
 
 expected_methods=(
   "display is a void function in C++ file: test_class_method.hpp:12:10"
