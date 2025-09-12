@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # test the collection of struct names and struct object names
-# NOTE 7/28/25: struct objects created within the struct definition are misidentified as fields instead of global struct objects
-# test will fail until this issue is fixed (issue #22)
 # output of struct within typedef definition includes some spacing issue and newline issue
 
 cat <<EOF > test_struct.cpp
