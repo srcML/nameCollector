@@ -376,7 +376,7 @@ public:
                 //If it is a function name, collect the complex name ex. String::length, String::operator+=
                 //If it is a decl collect simple name only
                 if (((category == "destructor") || (category == "constructor") || (category == "function")) && (elementStack.back() != "name")) {
-                    elementStack.pop_back();
+                    if (elementStack.size() != 0) elementStack.pop_back();
                     return;
                 }
 
@@ -653,14 +653,14 @@ public:
             elementStack.push_back("init");  // Deal with namespace foo = x::y;
         }
         if (std::string(localname) == "namespace" && !isNoDeclLanguage()) {
-            elementStack.pop_back();  // Deal with namespace foo = x::y;
+            if (elementStack.size() != 0) elementStack.pop_back();  // Deal with namespace foo = x::y;
         }
 
         // If in a no decl language, need to keep track of scope
         if (isNoDeclLanguage() && (std::string(localname) == "function" ||
                                    std::string(localname) == "lambda"   ||
                                    std::string(localname) == "class")) {
-            scopeStack.pop_back();
+            if (scopeStack.size() != 0) scopeStack.pop_back();
         }
 
         if (isNoDeclLanguage() && (std::string(localname) == "expr_stmt" ||
