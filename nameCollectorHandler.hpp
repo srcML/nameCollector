@@ -297,8 +297,8 @@ public:
      * Overide for desired behaviour.
      */
     virtual void endUnit(const char* localname, const char* prefix, const char* URI) {
-        elementStack.pop_back();
-        if (scopeStack.size() != 0) scopeStack.pop_back();
+        if (elementStack.size() != 0) elementStack.pop_back();
+        if (scopeStack.size() != 0)   scopeStack.pop_back();
     }
 
     /**
@@ -611,7 +611,7 @@ public:
             if (typeStack[typeStack.size()-1].associatedTag == localname)
                 typeStack.pop_back();
 
-        elementStack.pop_back();
+        if (elementStack.size() != 0) elementStack.pop_back();
 
         if (std::string(localname) == "operator" && isNoDeclLanguage()) {
             // If at an = operator in expr_stmt, output and then clear the expressions name list
