@@ -5,6 +5,9 @@
 # "Test test_cpp_namespace failed!" until the issue is fixed
 
 cat <<EOF > test_namespace.cpp
+// anonymous namespace
+namespace {}
+
 namespace SimpleNSP{
     void simpleMemberFunction();
 }
@@ -23,19 +26,22 @@ namespace OuterNamespace{
 //with aliases
 namespace nsp = SimpleNSP::abc::xyc;
 
+// anonymous namespace again
+namespace {}
+
 EOF
 
 input=$(srcml test_namespace.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="SimpleNSP is a namespace in C++ file: test_namespace.cpp:1:11
-simpleMemberFunction is a void function in C++ file: test_namespace.cpp:2:10
-InlineNamespace is a namespace in C++ file: test_namespace.cpp:4:18
-OuterNamespace is a namespace in C++ file: test_namespace.cpp:6:11
-OuterMemberClass is a class in C++ file: test_namespace.cpp:7:11
-InnerNamespace is a namespace in C++ file: test_namespace.cpp:11:15
-innerMember is a bool global in C++ file: test_namespace.cpp:12:14
-ThirdNestedNSP is a namespace in C++ file: test_namespace.cpp:13:19
-nsp is a namespace in C++ file: test_namespace.cpp:17:11"
+expected="SimpleNSP is a namespace in C++ file: test_namespace.cpp:4:11
+simpleMemberFunction is a void function in C++ file: test_namespace.cpp:5:10
+InlineNamespace is a namespace in C++ file: test_namespace.cpp:7:18
+OuterNamespace is a namespace in C++ file: test_namespace.cpp:9:11
+OuterMemberClass is a class in C++ file: test_namespace.cpp:10:11
+InnerNamespace is a namespace in C++ file: test_namespace.cpp:14:15
+innerMember is a bool global in C++ file: test_namespace.cpp:15:14
+ThirdNestedNSP is a namespace in C++ file: test_namespace.cpp:16:19
+nsp is a namespace in C++ file: test_namespace.cpp:20:11"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_namespace failed!" 

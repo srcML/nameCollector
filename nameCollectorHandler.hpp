@@ -166,6 +166,7 @@ public:
 
           // this is adding all elements, so you might only want to push certain elements
 
+
         std::string back = elementStack.back();
 
         if (back == "name" && std::string(localname) == "name")                 // Top-level Names
@@ -652,7 +653,7 @@ public:
         if (category == "namespace" && !isNoDeclLanguage()) {
             elementStack.push_back("init");  // Deal with namespace foo = x::y;
         }
-        if (std::string(localname) == "namespace" && !isNoDeclLanguage()) {
+        if (std::string(localname) == "namespace" && category != "" && !isNoDeclLanguage()) {
             if (elementStack.size() != 0) elementStack.pop_back();  // Deal with namespace foo = x::y;
         }
 
@@ -672,8 +673,6 @@ public:
         if (isNoDeclLanguage() && std::string(localname) == "expr") {
             complexNameCount = 0;
         }
-
-
 
     }
 
