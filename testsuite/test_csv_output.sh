@@ -80,14 +80,14 @@ expected_text=$(printf "%s\n" "${expected[@]}")
 if [ ${#output[@]} -ne ${#expected[@]} ]; then
     echo "Test test_csv_output failed!"
     echo "Expected: '$expected_text'"
-    echo "Got     : '$output_text'"
+    echo "Got: '$output_text'"
     exit 1
 else
     for i in "${!expected[@]}"; do
       if [[ "${output[$i]}" != "${expected[$i]}" ]]; then
         echo "Test test_csv_output failed on line $((i + 1))!"
         echo "   Expected: '${expected[$i]}'"
-        echo "   Got     : '${output[$i]}'"
+        echo "   Got: '${output[$i]}'"
         exit 1
       fi
     done
