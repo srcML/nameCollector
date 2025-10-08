@@ -49,7 +49,8 @@ echo "$input" | ./namecollector --csv -o test_csv_output.csv
 mapfile -t output < test_csv_output.csv
 output_text=$(cat test_csv_output.csv)
 
-expected=("multiply,int,function,test_csv_output.cpp,2:5,C++,"
+expected=("Name,Type,Category,File,Position,Language,Stereotype"
+"multiply,int,function,test_csv_output.cpp,2:5,C++,"
 "a,int,parameter,test_csv_output.cpp,2:18,C++,"
 "b,int,parameter,test_csv_output.cpp,2:25,C++,"
 "return_value,int,local,test_csv_output.cpp,3:9,C++,"
