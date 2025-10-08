@@ -48,7 +48,7 @@ struct scope {
 class nameCollectorHandler : public srcSAXHandler {
 public:
     nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName() {};
-    nameCollectorHandler(std::ostream* ptr, bool csv) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv) {};
+    nameCollectorHandler(std::ostream* ptr, bool csv, bool noHeader) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv), printHeader(!noHeader){};
     ~nameCollectorHandler() {};
 
 #pragma GCC diagnostic push
@@ -122,12 +122,17 @@ public:
                 std::cerr << attributes[i].value << std::endl;
         }
 
+        if (outputCSV && printHeader) { //Print header once for csv
+            *outPtr << "Name,Type,Category,File,Position,Language,Stereotype" << std::endl;
+            printHeader = false;
+        }
+
         srcFileLanguage = "unknown";
-        if (numAttributes >= 1)
+        if (numAttributes >= 2)
             srcFileLanguage = attributes[1].value;
 
         srcFileName = "unknown";
-        if (numAttributes >= 2)
+        if (numAttributes >= 3)
             srcFileName = attributes[2].value;
 
         elementStack.push_back(localname);
@@ -426,6 +431,7 @@ public:
                 }
 
                 //Output results
+
                 if (outputCSV)
                     *outPtr << identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type);
                 else
@@ -445,15 +451,7 @@ public:
                     std::cerr << std::endl;
                     std::cerr << "------------------------" << std::endl;
                 }
-            }
-
-
-
-
-
-
-            else if (isNoDeclLanguage() && isExprCategory(category)) {
-
+            } else if (isNoDeclLanguage() && isExprCategory(category)) {
                 bool isComplexFieldName = false;
                 // If complex name, need to verify it is 'self.XYZ' being defined and we are currently in a class
                 if (isComplexName && 
@@ -509,7 +507,6 @@ public:
                         if (currentScope.names.find(content) == scopeStack.back().names.end() || isComprehensionControl) {
                             if (!isComprehensionControl)
                                 currentScope.names.insert(content);
-
                             if (isComprehensionControl)
                                 category = "local";
                             else if (currentScope.type == "global")
@@ -809,6 +806,7 @@ private:
     std::vector<scope>       scopeStack;           //Stack of scopes, used for Python
     std::ostream*            outPtr;               //Pointer to the output stream
     bool                     outputCSV;            //True is csv, False is report
+    bool                     printHeader;          //print csv column header
 
 };
 
