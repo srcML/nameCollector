@@ -120,7 +120,16 @@ public:
             std::cerr << "Attributes on UNIT: " << std::endl;
             for (int i=0; i<numAttributes; ++i)
                 std::cerr << attributes[i].value << std::endl;
+            std::cerr << "Namespaces on UNIT: " << std::endl;
+            for (int i=0; i<numNamespaces; ++i)
+                std::cerr << namespaces[i].uri << std::endl;
         }
+
+        //Check if srcml --position used to generate input
+        bool positionNotUsed = true;
+        for (int i=0; i<numNamespaces; ++i)
+            if (std::string(namespaces[i].uri) == "http://www.srcML.org/srcML/position") positionNotUsed = false;
+        if (positionNotUsed) std::cerr << "WARNING: srcml --position NOT used to generate input file." << std::endl;
 
         if (outputCSV && printHeader) { //Print header once for csv
             *outPtr << "Name,Type,Category,File,Position,Language,Stereotype" << std::endl;
