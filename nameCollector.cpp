@@ -50,13 +50,13 @@ int main(int argc, char * argv[]) {
     bool        noHeader     = false; //Do not print header in csv
     bool        appendOutput = false;
 
-    CLI::App app{"nameCollector: Finds all user defined identifier names in a srcML archive (one or more source code files).  "};
+    CLI::App app{"nameCollector: Output all user defined identifier names in a srcML file (i.e., one or more source code files).  "};
 
     app.add_option("-i, --input",    inputFile,    "Name of srcML file of source code with --position option");
     app.add_option("-o, --output",   outputFile,   "Name of output file");
     app.add_option("-f, --format",   outputFormat, "The output format (text by default): csv, text"); //To support other output options
     app.add_flag  ("-a, --append",   appendOutput, "Output will be appended to end of file");
-    app.add_flag  ("-c, --csv",      outputCSV,    "Short for: --format csv");
+    app.add_flag  ("-c, --csv",      outputCSV,    "Output csv with header (same as --format csv)");
     app.add_flag  ("-n, --noheader", noHeader,     "Do not print header in csv output");
     app.add_flag  ("-d, --debug",    DEBUG,        "Turn on debug mode (off by default)");
 
