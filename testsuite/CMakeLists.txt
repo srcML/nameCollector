@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.14)
 project(nameCollector-testsuite)
 enable_testing()
 
-
-
 # add test cases
 file(GLOB TESTS *.sh)
 foreach(TEST IN ITEMS ${TESTS})
