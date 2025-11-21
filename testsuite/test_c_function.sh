@@ -3,7 +3,7 @@
 cat <<EOF > test_c_function.c
 #include <stdio.h>
 
-// Macro for generic function to mimic function overloading, just collects print as a macro, int, float, const, X, are not collected
+// Macro for generic function to mimic function overloading, just collects print as a macro, int, float, const char*, X are not collected
 #define print(X) _Generic((X), \
     int: print_int, \
     float: print_float, \
