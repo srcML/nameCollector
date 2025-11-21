@@ -60,7 +60,7 @@ p is a int field in C++ file: test_struct.cpp:25:12
 Point is a struct in C++ file: test_struct.cpp:29:16
 x is a int field in C++ file: test_struct.cpp:30:9
 y is a int field in C++ file: test_struct.cpp:30:12
-pt is a struct Point {    int x&#44; y;} typedef in C++ file: test_struct.cpp:31:3"
+pt is a struct Point { int x, y; } typedef in C++ file: test_struct.cpp:31:3"
 
 expected_structs=(
   "Cat is a struct in C++ file: test_struct.cpp:1:8"
