@@ -39,7 +39,6 @@ int main() {
     ColorEnum color = RED;
     functionPointer funcPtr = add;
     characterArrayPtr charPtr = "Hello";
-    printf("%d\n", funcPtr(5, 10));
     return 0;
 }
 EOF
