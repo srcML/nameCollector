@@ -48,11 +48,11 @@ output=$(echo "$input" | ./nameCollector )
 expected="Integer is a int typedef in C file: test_typedef.c:3:13
 x is a int field in C file: test_typedef.c:6:9
 y is a int field in C file: test_typedef.c:7:9
-Point is a struct {    int x;    int y;} typedef in C file: test_typedef.c:8:3
+Point is a struct { int x; int y; } typedef in C file: test_typedef.c:8:3
 PointAgain is a struct in C file: test_typedef.c:11:16
 a is a int field in C file: test_typedef.c:12:9
 b is a int field in C file: test_typedef.c:13:9
-namedStructPoint is a struct PointAgain{    int a;    int b;} typedef in C file: test_typedef.c:14:3
+namedStructPoint is a struct PointAgain{ int a; int b; } typedef in C file: test_typedef.c:14:3
 Color is a enum in C file: test_typedef.c:16:14
 RED is a field in C file: test_typedef.c:17:5
 GREEN is a field in C file: test_typedef.c:18:5
