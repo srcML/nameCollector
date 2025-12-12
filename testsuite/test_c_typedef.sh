@@ -45,21 +45,21 @@ EOF
 
 input=$(srcml test_typedef.c --position)
 output=$(echo "$input" | ./nameCollector )
-expected="Integer is a int typedef in C file: test_typedef.c:3:13
+expected="Integer is typedef in C file: test_typedef.c:3:13
 x is a int field in C file: test_typedef.c:6:9
 y is a int field in C file: test_typedef.c:7:9
-Point is a struct { int x; int y; } typedef in C file: test_typedef.c:8:3
+Point is a typedef of struct in C file: test_typedef.c:8:3
 PointAgain is a struct in C file: test_typedef.c:11:16
 a is a int field in C file: test_typedef.c:12:9
 b is a int field in C file: test_typedef.c:13:9
-namedStructPoint is a struct PointAgain{ int a; int b; } typedef in C file: test_typedef.c:14:3
+namedStructPoint is a typedef of struct in C file: test_typedef.c:14:3
 Color is a enum in C file: test_typedef.c:16:14
 RED is a field in C file: test_typedef.c:17:5
 GREEN is a field in C file: test_typedef.c:18:5
 BLUE is a field in C file: test_typedef.c:19:5
-ColorEnum is a enum Color { RED; GREEN; BLUE } typedef in C file: test_typedef.c:20:3
+ColorEnum is a typedef of enum in C file: test_typedef.c:20:3
 functionPointer is a int function in C file: test_typedef.c:22:15
-characterArrayPtr is a char* typedef in C file: test_typedef.c:24:15
+characterArrayPtr is a typedef in C file: test_typedef.c:24:15
 add is a int function in C file: test_typedef.c:26:5
 x is a int parameter in C file: test_typedef.c:26:13
 y is a int parameter in C file: test_typedef.c:26:20

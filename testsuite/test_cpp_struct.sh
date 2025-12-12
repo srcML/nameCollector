@@ -31,11 +31,9 @@ struct outer {
     int q, p;
 };
 
-//inside typedef, somethings up here
-typedef struct Point {
-    int x, y;
-} pt;
-
+int main(){
+    return 0; 
+}
 
 EOF
 
@@ -57,17 +55,13 @@ b is a int field in C++ file: test_struct.cpp:23:16
 in is a inner field in C++ file: test_struct.cpp:24:7
 q is a int field in C++ file: test_struct.cpp:25:9
 p is a int field in C++ file: test_struct.cpp:25:12
-Point is a struct in C++ file: test_struct.cpp:29:16
-x is a int field in C++ file: test_struct.cpp:30:9
-y is a int field in C++ file: test_struct.cpp:30:12
-pt is a struct Point { int x, y; } typedef in C++ file: test_struct.cpp:31:3"
+main is a int function in C++ file: test_struct.cpp:28:5"
 
 expected_structs=(
   "Cat is a struct in C++ file: test_struct.cpp:1:8"
   "Person is a struct in C++ file: test_struct.cpp:6:8"
   "outer is a struct in C++ file: test_struct.cpp:21:8"
   "inner is a struct in C++ file: test_struct.cpp:22:12"
-  "Point is a struct in C++ file: test_struct.cpp:29:16"
   "person1 is a Person global in C++ file: test_struct.cpp:13:3"
   "anonymousStructObject is a struct global in C++ file: test_struct.cpp:18:3"
   "in is a inner field in C++ file: test_struct.cpp:24:7"

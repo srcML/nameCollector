@@ -23,7 +23,7 @@ struct {
     union {
         float a;
         int b;
-    } internalUnionObject; //union field?
+    } internalUnionObject; //union field
 } structObjectWithAnonymousNestedUnion;
 
 // anonymous union
