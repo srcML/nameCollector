@@ -5,7 +5,7 @@ Works for C, C++, C#, Java, and Python
 
 Input: A srcML file of source code with --position option.  srcML file can be a single unit (one source code file) or an archive (multiple source code files).
 
-Output: A list of identifier names,  their type (for declartions and functions), their syntactic category, the file name, and position (line:column) the identifier occurs (declared), the programming langauge, and for methods and classes their stereotype, from [stereocode](https://github.com/srcML/stereocode), if it is in the srcML.  Output is plain text (default) or csv (with no header).
+Output: A list of identifier names,  their type (for declartions and functions), their syntactic category, the file name, and position (line:column) the identifier occurs (declared), the programming langauge, and for methods and classes their stereotype, from [stereocode](https://github.com/srcML/stereocode), if it is in the srcML.  Output is plain text (default) or csv with column headings (as below).
 
 Example:
 
@@ -79,7 +79,7 @@ Generate the srcML for the given source code file using the --position option.  
 
 `./nameCollector --help`
 
-Output is plain text by default.  Use -f csv or --csv for comma separated output.  An output file can be specified with -o option. Takes standard input by default, and an input file can be specified with -i.  The --append option will append output to an existing file rather than overwrite the file.
+Output is plain text by default.  Use -f csv or --csv for comma separated output.  An output file can be specified with -o option. Takes standard input by default, and an input file is specified with -i.  The --append option will append output to an existing file rather than overwrite the file.  
 
 ## Developer Notes:
 

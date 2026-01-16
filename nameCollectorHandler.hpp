@@ -48,7 +48,7 @@ struct scope {
 class nameCollectorHandler : public srcSAXHandler {
 public:
     nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName() {};
-    nameCollectorHandler(std::ostream* ptr, bool csv) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv) {};
+    nameCollectorHandler(std::ostream* ptr, bool csv, bool noHeader) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv), printHeader(!noHeader){};
     ~nameCollectorHandler() {};
 
 #pragma GCC diagnostic push
@@ -120,14 +120,28 @@ public:
             std::cerr << "Attributes on UNIT: " << std::endl;
             for (int i=0; i<numAttributes; ++i)
                 std::cerr << attributes[i].value << std::endl;
+            std::cerr << "Namespaces on UNIT: " << std::endl;
+            for (int i=0; i<numNamespaces; ++i)
+                std::cerr << namespaces[i].uri << std::endl;
+        }
+
+        //Check if srcml --position used to generate input
+        bool positionNotUsed = true;
+        for (int i=0; i<numNamespaces; ++i)
+            if (std::string(namespaces[i].uri) == "http://www.srcML.org/srcML/position") positionNotUsed = false;
+        if (positionNotUsed) std::cerr << "WARNING: srcml --position NOT used to generate input file." << std::endl;
+
+        if (outputCSV && printHeader) { //Print header once for csv
+            *outPtr << "Name,Type,Category,File,Position,Language,Stereotype" << std::endl;
+            printHeader = false;
         }
 
         srcFileLanguage = "unknown";
-        if (numAttributes >= 1)
+        if (numAttributes >= 2)
             srcFileLanguage = attributes[1].value;
 
         srcFileName = "unknown";
-        if (numAttributes >= 2)
+        if (numAttributes >= 3)
             srcFileName = attributes[2].value;
 
         elementStack.push_back(localname);
@@ -165,6 +179,7 @@ public:
 
 
           // this is adding all elements, so you might only want to push certain elements
+
 
         std::string back = elementStack.back();
 
@@ -297,8 +312,8 @@ public:
      * Overide for desired behaviour.
      */
     virtual void endUnit(const char* localname, const char* prefix, const char* URI) {
-        elementStack.pop_back();
-        if (scopeStack.size() != 0) scopeStack.pop_back();
+        if (elementStack.size() != 0) elementStack.pop_back();
+        if (scopeStack.size() != 0)   scopeStack.pop_back();
     }
 
     /**
@@ -376,7 +391,7 @@ public:
                 //If it is a function name, collect the complex name ex. String::length, String::operator+=
                 //If it is a decl collect simple name only
                 if (((category == "destructor") || (category == "constructor") || (category == "function")) && (elementStack.back() != "name")) {
-                    elementStack.pop_back();
+                    if (elementStack.size() != 0) elementStack.pop_back();
                     return;
                 }
 
@@ -425,6 +440,7 @@ public:
                 }
 
                 //Output results
+
                 if (outputCSV)
                     *outPtr << identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type);
                 else
@@ -444,15 +460,7 @@ public:
                     std::cerr << std::endl;
                     std::cerr << "------------------------" << std::endl;
                 }
-            }
-
-
-
-
-
-
-            else if (isNoDeclLanguage() && isExprCategory(category)) {
-
+            } else if (isNoDeclLanguage() && isExprCategory(category)) {
                 bool isComplexFieldName = false;
                 // If complex name, need to verify it is 'self.XYZ' being defined and we are currently in a class
                 if (isComplexName && 
@@ -508,7 +516,6 @@ public:
                         if (currentScope.names.find(content) == scopeStack.back().names.end() || isComprehensionControl) {
                             if (!isComprehensionControl)
                                 currentScope.names.insert(content);
-
                             if (isComprehensionControl)
                                 category = "local";
                             else if (currentScope.type == "global")
@@ -611,7 +618,7 @@ public:
             if (typeStack[typeStack.size()-1].associatedTag == localname)
                 typeStack.pop_back();
 
-        elementStack.pop_back();
+        if (elementStack.size() != 0) elementStack.pop_back();
 
         if (std::string(localname) == "operator" && isNoDeclLanguage()) {
             // If at an = operator in expr_stmt, output and then clear the expressions name list
@@ -652,15 +659,15 @@ public:
         if (category == "namespace" && !isNoDeclLanguage()) {
             elementStack.push_back("init");  // Deal with namespace foo = x::y;
         }
-        if (std::string(localname) == "namespace" && !isNoDeclLanguage()) {
-            elementStack.pop_back();  // Deal with namespace foo = x::y;
+        if (std::string(localname) == "namespace" && category != "" && !isNoDeclLanguage()) {
+            if (elementStack.size() != 0) elementStack.pop_back();  // Deal with namespace foo = x::y;
         }
 
         // If in a no decl language, need to keep track of scope
         if (isNoDeclLanguage() && (std::string(localname) == "function" ||
                                    std::string(localname) == "lambda"   ||
                                    std::string(localname) == "class")) {
-            scopeStack.pop_back();
+            if (scopeStack.size() != 0) scopeStack.pop_back();
         }
 
         if (isNoDeclLanguage() && (std::string(localname) == "expr_stmt" ||
@@ -672,8 +679,6 @@ public:
         if (isNoDeclLanguage() && std::string(localname) == "expr") {
             complexNameCount = 0;
         }
-
-
 
     }
 
@@ -810,6 +815,7 @@ private:
     std::vector<scope>       scopeStack;           //Stack of scopes, used for Python
     std::ostream*            outPtr;               //Pointer to the output stream
     bool                     outputCSV;            //True is csv, False is report
+    bool                     printHeader;          //print csv column header
 
 };
 

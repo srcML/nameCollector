@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # test the collection of union names and union object names
-# NOTE 7/28/25: union objects created within the union definition are misidentified as fields instead of global struct objects
-# test will fail until this issue is fixed (issue #22), message will be "...output did not match expected!"
 
 cat <<EOF > test_union.cpp
 union StudentInfo {
@@ -25,7 +23,7 @@ struct {
     union {
         float a;
         int b;
-    } internalUnionObject; //union field?
+    } internalUnionObject; //union field
 } structObjectWithAnonymousNestedUnion;
 
 // anonymous union
