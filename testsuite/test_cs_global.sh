@@ -27,8 +27,9 @@ BUF is a public static int field in C# file: test_global.cs:4:23
 name is a public static string field in C# file: test_global.cs:5:26
 array is a public static int[] field in C# file: test_global.cs:6:25
 Program is a class in C# file: test_global.cs:9:7
-Main is a static void function in C# file: test_global.cs:10:15
-localInt is a int local in C# file: test_global.cs:11:9"
+GlobalVar is a static int field in C# file: test_global.cs:10:16
+Main is a static void function in C# file: test_global.cs:11:17
+localInt is a int local in C# file: test_global.cs:13:13"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cs_global failed!"
