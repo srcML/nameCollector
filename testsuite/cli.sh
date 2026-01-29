@@ -503,4 +503,191 @@ else
     echo "Test set_pos passed"
 fi
 
+
+# Testing the CSV header and position attribute features
+#####################################################################
+cat <<EOF > archive_position.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.srcML.org/srcML/src" xmlns:pos="http://www.srcML.org/srcML/position" revision="1.0.0" pos:tabs="8">
+
+<unit revision="1.0.0" language="C++" filename="a.cpp" pos:tabs="8" hash="7caa72dfd567a04e9e64b0502814bde478a317b5"><decl_stmt pos:start="1:1" pos:end="1:6"><decl pos:start="1:1" pos:end="1:5"><type pos:start="1:1" pos:end="1:3"><name pos:start="1:1" pos:end="1:3">int</name></type> <name pos:start="1:5" pos:end="1:5">x</name></decl>;</decl_stmt>
+</unit>
+
+</unit>
+EOF
+
+output=$(cat archive_position.xml | ../bin/nameCollector --csv 2>&1 )
+expected=$(cat <<EOF
+Name,Type,Category,File,Position,Language,Stereotype
+x,int,global,a.cpp,1:5,C++,
+EOF
+)
+if [[ "$output" != "$expected" ]]; then
+    echo "Test archive_position passed failed!"
+    echo "Expected: '$expected'"
+    echo "Got:      '$output'"
+    exit 1
+else
+    echo "Test archive_position passed"
+fi
+
+#####################################################################
+cat <<EOF > archive_no_position.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.srcML.org/srcML/src" revision="1.0.0">
+
+<unit revision="1.0.0" language="C++" filename="a.cpp" hash="7caa72dfd567a04e9e64b0502814bde478a317b5"><decl_stmt><decl><type><name>int</name></type> <name>x</name></decl>;</decl_stmt>
+</unit>
+
+</unit>
+EOF
+
+output=$(cat archive_no_position.xml | ../bin/nameCollector --csv 2>&1 )
+expected=$(cat <<EOF
+WARNING: srcml --position NOT used to generate input file.
+Name,Type,Category,File,Position,Language,Stereotype
+x,int,global,a.cpp,,C++,
+EOF
+)
+if [[ "$output" != "$expected" ]]; then
+    echo "Test archive_no_position passed failed!"
+    echo "Expected: '$expected'"
+    echo "Got:      '$output'"
+    exit 1
+else
+    echo "Test archive_no_position passed"
+fi
+
+#####################################################################
+cat <<EOF > single_unit_position.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.srcML.org/srcML/src" xmlns:pos="http://www.srcML.org/srcML/position" revision="1.0.0" language="C++" filename="a.cpp" pos:tabs="8"><decl_stmt pos:start="1:1" pos:end="1:6"><decl pos:start="1:1" pos:end="1:5"><type pos:start="1:1" pos:end="1:3"><name pos:start="1:1" pos:end="1:3">int</name></type> <name pos:start="1:5" pos:end="1:5">x</name></decl>;</decl_stmt>
+</unit>
+EOF
+
+output=$(cat single_unit_position.xml | ../bin/nameCollector --csv 2>&1 )
+expected=$(cat <<EOF
+Name,Type,Category,File,Position,Language,Stereotype
+x,int,global,a.cpp,1:5,C++,
+EOF
+)
+if [[ "$output" != "$expected" ]]; then
+    echo "Test single_unit_position passed failed!"
+    echo "Expected: '$expected'"
+    echo "Got:      '$output'"
+    exit 1
+else
+    echo "Test single_unit_position passed"
+fi
+
+#####################################################################
+cat <<EOF > single_unit_no_position.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.srcML.org/srcML/src" revision="1.0.0" language="C++" filename="a.cpp"><decl_stmt><decl><type><name>int</name></type> <name>x</name></decl>;</decl_stmt>
+</unit>
+EOF
+
+output=$(cat single_unit_no_position.xml | ../bin/nameCollector --csv 2>&1 )
+expected=$(cat <<EOF
+WARNING: srcml --position NOT used to generate input file.
+Name,Type,Category,File,Position,Language,Stereotype
+x,int,global,a.cpp,,C++,
+EOF
+)
+if [[ "$output" != "$expected" ]]; then
+    echo "Test single_unit_no_position passed failed!"
+    echo "Expected: '$expected'"
+    echo "Got:      '$output'"
+    exit 1
+else
+    echo "Test single_unit_no_position passed"
+fi
+
+#####################################################################
+cat <<EOF > double_file_position.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.srcML.org/srcML/src" xmlns:pos="http://www.srcML.org/srcML/position" revision="1.0.0" pos:tabs="8">
+
+<unit revision="1.0.0" language="C++" filename="a.cpp" pos:tabs="8" hash="7caa72dfd567a04e9e64b0502814bde478a317b5"><decl_stmt pos:start="1:1" pos:end="1:6"><decl pos:start="1:1" pos:end="1:5"><type pos:start="1:1" pos:end="1:3"><name pos:start="1:1" pos:end="1:3">int</name></type> <name pos:start="1:5" pos:end="1:5">x</name></decl>;</decl_stmt>
+</unit>
+
+<unit revision="1.0.0" language="C++" filename="b.cpp" pos:tabs="8" hash="4d9f53177cc4ca85d01a8b93ffb6d9b4f9effe7f"><decl_stmt pos:start="1:1" pos:end="1:6"><decl pos:start="1:1" pos:end="1:5"><type pos:start="1:1" pos:end="1:3"><name pos:start="1:1" pos:end="1:3">int</name></type> <name pos:start="1:5" pos:end="1:5">y</name></decl>;</decl_stmt>
+</unit>
+
+</unit>
+EOF
+
+output=$(cat double_file_position.xml | ../bin/nameCollector --csv 2>&1 )
+expected=$(cat <<EOF
+Name,Type,Category,File,Position,Language,Stereotype
+x,int,global,a.cpp,1:5,C++,
+y,int,global,b.cpp,1:5,C++,
+EOF
+)
+if [[ "$output" != "$expected" ]]; then
+    echo "Test double_file_position passed failed!"
+    echo "Expected: '$expected'"
+    echo "Got:      '$output'"
+    exit 1
+else
+    echo "Test double_file_position passed"
+fi
+
+#####################################################################
+cat <<EOF > double_file_no_position.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.srcML.org/srcML/src" revision="1.0.0">
+
+<unit revision="1.0.0" language="C++" filename="a.cpp" hash="7caa72dfd567a04e9e64b0502814bde478a317b5"><decl_stmt><decl><type><name>int</name></type> <name>x</name></decl>;</decl_stmt>
+</unit>
+
+<unit revision="1.0.0" language="C++" filename="b.cpp" hash="4d9f53177cc4ca85d01a8b93ffb6d9b4f9effe7f"><decl_stmt><decl><type><name>int</name></type> <name>y</name></decl>;</decl_stmt>
+</unit>
+
+</unit>
+EOF
+
+output=$(cat double_file_no_position.xml | ../bin/nameCollector --csv 2>&1 )
+expected=$(cat <<EOF
+WARNING: srcml --position NOT used to generate input file.
+Name,Type,Category,File,Position,Language,Stereotype
+x,int,global,a.cpp,,C++,
+y,int,global,b.cpp,,C++,
+EOF
+)
+if [[ "$output" != "$expected" ]]; then
+    echo "Test double_file_no_position passed failed!"
+    echo "Expected: '$expected'"
+    echo "Got:      '$output'"
+    exit 1
+else
+    echo "Test double_file_no_position passed"
+fi
+
+#####################################################################
+cat <<EOF > archive_no_header.xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.srcML.org/srcML/src" xmlns:pos="http://www.srcML.org/srcML/position" revision="1.0.0" pos:tabs="8">
+
+<unit revision="1.0.0" language="C++" filename="a.cpp" pos:tabs="8" hash="7caa72dfd567a04e9e64b0502814bde478a317b5"><decl_stmt pos:start="1:1" pos:end="1:6"><decl pos:start="1:1" pos:end="1:5"><type pos:start="1:1" pos:end="1:3"><name pos:start="1:1" pos:end="1:3">int</name></type> <name pos:start="1:5" pos:end="1:5">x</name></decl>;</decl_stmt>
+</unit>
+
+</unit>
+EOF
+
+output=$(cat archive_no_header.xml | ../bin/nameCollector --csv -n 2>&1 )
+expected=$(cat <<EOF
+x,int,global,a.cpp,1:5,C++,
+EOF
+)
+if [[ "$output" != "$expected" ]]; then
+    echo "Test archive_no_header passed failed!"
+    echo "Expected: '$expected'"
+    echo "Got:      '$output'"
+    exit 1
+else
+    echo "Test archive_no_header passed"
+fi
+
+
 exit 0
