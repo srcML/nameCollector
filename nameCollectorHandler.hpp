@@ -851,7 +851,10 @@ private:
 
     diffOperation getDiffOp(const std::string& diffElement) {
         typedef std::unordered_map<std::string, diffOperation> DiffElementMap;
-        static const DiffElementMap diffElementMap;
+        static const DiffElementMap diffElementMap = { { "delete", DELETE },
+                                                       { "insert", INSERT },
+                                                       { "common", COMMON },
+                                                     };
         DiffElementMap::const_iterator itr = diffElementMap.find(diffElement);
         return itr != diffElementMap.end() ? itr->second : NONE;
     }
