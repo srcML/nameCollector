@@ -49,7 +49,7 @@ find_package(LibXml2 REQUIRED)
 
 link_directories(/usr/local/lib)
 
-add_executable(nameCollector nameCollector.cpp nameCollectorHandler.hpp identifierName.hpp)
+add_executable(nameCollector nameCollector.cpp versionedString.cpp nameCollectorHandler.hpp identifierName.hpp versionedString.hpp)
 target_link_libraries(nameCollector ${LIBSRCSAX} LibXml2::LibXml2)
 
 # Download the CLI11 parser into directory named "external".

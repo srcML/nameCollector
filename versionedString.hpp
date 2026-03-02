@@ -55,6 +55,7 @@ class versionedString {
         void clear();
 
         std::size_t find(const std::string&) const;
+        void erase(const std::string&);
 
         versionedString remove_spaces() const;
         versionedString normalize_spaces() const;

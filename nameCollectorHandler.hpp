@@ -461,8 +461,9 @@ public:
                 if (stereotypeStack.size() != 0) stereotypeStack.pop_back();
 
                 //Remove any prefix String:: from context - for functions
-                if (content.find("::") != std::string::npos)
-                    content = content.substr(content.find("::")+2);
+                if (content.find("::") != std::string::npos) {
+                    content.erase("::");
+                }
 
                 if (usePreviousPosition) {
                     position = previousPosition;
@@ -748,7 +749,7 @@ public:
             output is used.
         */
         if (collectContent) {
-            content.append((const char *)ch, len);
+            content.append((const char *)ch, len, diffStack.back());
         }
         if (collectOpContent) {
             opContent.append((const char *)ch, len);
@@ -827,7 +828,7 @@ private:
 
 
     bool                     collectContent;       //Flag to collect characters
-    std::string              content;              //Content collected
+    versionedString          content;              //Content collected
     std::string              position;             //The position of content
     std::string              previousPosition;     //The last gathered position - important for operator functions
     bool                     usePreviousPosition;  //A flag that specifies whether to use the previous position for output

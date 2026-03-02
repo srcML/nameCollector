@@ -7,7 +7,7 @@
  * This file is part of the srcDiff Infrastructure.
  */
 
-#include <versionedString.hpp>
+#include "versionedString.hpp"
 // TODO: is this still used?
 #ifdef __linux__
     #include <execinfo.h>
@@ -104,7 +104,7 @@ std::string versionedString::normalize(const std::string& str, const std::string
     return out.str();
 }
 
-std::size_t find(const std::string& str) const {
+std::size_t versionedString::find(const std::string& str) const {
 
     if(string_original) {
         std::size_t pos = string_original->find(str);
@@ -122,6 +122,23 @@ std::size_t find(const std::string& str) const {
 
     return std::string::npos;
 
+}
+
+void versionedString::erase(const std::string& str) {
+
+    if(string_original) {
+        std::size_t pos = string_original->find(str);
+        if(pos != std::string::npos) {
+            string_original->erase(pos + str.size());
+        }
+    }
+
+    if(string_modified) {
+        std::size_t pos = string_modified->find(str);
+        if(pos != std::string::npos) {
+            string_modified->erase(pos + str.size());
+        }
+    }
 }
 
 versionedString versionedString::remove_spaces() const {
