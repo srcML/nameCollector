@@ -23,6 +23,7 @@
 #include <vector>
 
 #include "identifierName.hpp"
+#include "versionedString.hpp"
 
 extern bool DEBUG;
 
@@ -192,7 +193,7 @@ public:
 
         // record diff elements on stack, ignore otherwise
         if (URI == DIFF_NAMESPACE) {
-            DiffOperation op = getDiffOp(localName);
+            diffOperation op = getDiffOp(localName);
             if (op != NONE) {
                 diffStack.push_back(op);
             }
@@ -352,7 +353,7 @@ public:
 
         // remove diff element from stack, ignore otherwise
         if (URI == DIFF_NAMESPACE) {
-            DiffOperation op = getDiffOp(localName);
+            diffOperation op = getDiffOp(localName);
             if (op != NONE) {
                 diffStack.pop_back();
             }
@@ -461,7 +462,7 @@ public:
 
                 //Remove any prefix String:: from context - for functions
                 if (content.find("::") != std::string::npos)
-                    content = content.substr(content.find("::")+2, content.length()-1);
+                    content = content.substr(content.find("::")+2);
 
                 if (usePreviousPosition) {
                     position = previousPosition;
@@ -630,7 +631,7 @@ public:
                 previousComplexName = content;
             }
 
-            content = "";
+            content.clear();
             position = "";
 
             collectContent = false;
@@ -846,17 +847,16 @@ private:
     bool                     printHeader;          //print csv column header
 
     // srcDiff Features
-    enum DiffOperation { COMMON, DELETE, INSERT, NONE };
 
-    DiffOperation getDiffOp(const std::string& diffElement) {
-        typedef std::unordered_map<std::string, DiffOperation> DiffElementMap;
+    diffOperation getDiffOp(const std::string& diffElement) {
+        typedef std::unordered_map<std::string, diffOperation> DiffElementMap;
         static const DiffElementMap diffElementMap;
         DiffElementMap::const_iterator itr = diffElementMap.find(diffElement);
         return itr != diffElementMap.end() ? itr->second : NONE;
     }
 
     const std::string DIFF_NAMESPACE = "http://www.srcML.org/srcDiff";
-    std::vector<DiffOperation> diffStack;                              //Stack of diff operations
+    std::vector<diffOperation> diffStack;                              //Stack of diff operations
 
 };
 
