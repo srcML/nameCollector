@@ -147,6 +147,7 @@ public:
             srcFileName = attributes[2].value;
 
         elementStack.push_back(localName);
+        diffStack.push_back(COMMON);
 
         if (isNoDeclLanguage()) {
             scope globalScope;
@@ -174,6 +175,7 @@ public:
                               int numNamespaces, const struct srcsax_namespace * namespaces,
                               int numAttributes, const struct srcsax_attribute * attributes) {
 
+
           // check localname if it is a name and look at stack to see what it is in.
           // names can be nested, so you might only want to do this for top-level names
           // If you want to gather the text, then you need to set a flag when you start collecting (start_element)
@@ -183,9 +185,20 @@ public:
           // this is adding all elements, so you might only want to push certain elements
 
 
+
         std::string back = elementStack.back();
 
         const std::string localName = localname;
+
+        // record diff elements on stack, ignore otherwise
+        if (URI == DIFF_NAMESPACE) {
+            DiffOperation op = getDiffOp(localName);
+            if (op != NONE) {
+                diffStack.push_back(op);
+            }
+            return;
+        }
+
         if (back == "name" && localName == "name")                 // Top-level Names
             elementStack.push_back("name_2");
         else if (back.find("name_") == 0 && localName == "name") { // Sub-names in complex names
@@ -316,7 +329,8 @@ public:
      */
     virtual void endUnit(const char* localname, const char* prefix, const char* URI) {
         if (elementStack.size() != 0) elementStack.pop_back();
-        if (scopeStack.size() != 0)   scopeStack.pop_back();
+        if (diffStack.size()    != 0) diffStack.pop_back();
+        if (scopeStack.size()   != 0) scopeStack.pop_back();
     }
 
     /**
@@ -335,6 +349,16 @@ public:
         bool isComplexName = false;
 
         const std::string localName = localname;
+
+        // remove diff element from stack, ignore otherwise
+        if (URI == DIFF_NAMESPACE) {
+            DiffOperation op = getDiffOp(localName);
+            if (op != NONE) {
+                diffStack.pop_back();
+            }
+            return;
+        }
+
         if ((localName == "name") && (content != ""))  {
             int nameDepth = 0;
             if (elementStack.back() == "name") {
@@ -612,9 +636,6 @@ public:
             collectContent = false;
         }
 
-
-
-
         if (localName == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
         } 
@@ -802,6 +823,8 @@ private:
         return srcFileLanguage == "Python"; // Add any future languages which have no decls
     }
 
+
+
     bool                     collectContent;       //Flag to collect characters
     std::string              content;              //Content collected
     std::string              position;             //The position of content
@@ -821,6 +844,19 @@ private:
     std::ostream*            outPtr;               //Pointer to the output stream
     bool                     outputCSV;            //True is csv, False is report
     bool                     printHeader;          //print csv column header
+
+    // srcDiff Features
+    enum DiffOperation { COMMON, DELETE, INSERT, NONE };
+
+    DiffOperation getDiffOp(const std::string& diffElement) {
+        typedef std::unordered_map<std::string, DiffOperation> DiffElementMap;
+        static const DiffElementMap diffElementMap;
+        DiffElementMap::const_iterator itr = diffElementMap.find(diffElement);
+        return itr != diffElementMap.end() ? itr->second : NONE;
+    }
+
+    const std::string DIFF_NAMESPACE = "http://www.srcML.org/srcDiff";
+    std::vector<DiffOperation> diffStack;                              //Stack of diff operations
 
 };
 
