@@ -136,6 +136,7 @@ public:
                 std::cerr << namespaces[i].uri << std::endl;
         }
 
+        const std::string localName = localname;
 
         srcFileLanguage = "unknown";
         if (numAttributes >= 2)
@@ -145,7 +146,7 @@ public:
         if (numAttributes >= 3)
             srcFileName = attributes[2].value;
 
-        elementStack.push_back(localname);
+        elementStack.push_back(localName);
 
         if (isNoDeclLanguage()) {
             scope globalScope;
@@ -184,7 +185,7 @@ public:
 
         std::string back = elementStack.back();
 
-        std::string localName = localname;
+        const std::string localName = localname;
         if (back == "name" && localName == "name")                 // Top-level Names
             elementStack.push_back("name_2");
         else if (back.find("name_") == 0 && localName == "name") { // Sub-names in complex names
@@ -203,9 +204,9 @@ public:
                     break;
                 }
             }
-            elementStack.push_back(add_generic ? "generic_parameter_list" : localname);
+            elementStack.push_back(add_generic ? "generic_parameter_list" : localName);
         } else {                                                                // All other tags
-            elementStack.push_back(localname);
+            elementStack.push_back(localName);
         }
 
         if (localName == "name") {
@@ -278,7 +279,7 @@ public:
             }
         }
         
-        if (isStereotypableCategory(localname)) {
+        if (isStereotypableCategory(localName)) {
             // Check for stereotype information from stereocode
             for (int i = 0; i < numAttributes; ++i) {
                 if (attributes[i].prefix != 0 && std::string(attributes[i].prefix) == "st" && std::string(attributes[i].localname) == "stereotype") {
@@ -333,7 +334,7 @@ public:
         std::string category;
         bool isComplexName = false;
 
-        std::string localName = localname;
+        const std::string localName = localname;
         if ((localName == "name") && (content != ""))  {
             int nameDepth = 0;
             if (elementStack.back() == "name") {
@@ -619,7 +620,7 @@ public:
         } 
         // Note: struct gather content for typename turns off in endElement at block
         if (typeStack.size() != 0)
-            if (typeStack[typeStack.size()-1].associatedTag == localname)
+            if (typeStack[typeStack.size()-1].associatedTag == localName)
                 typeStack.pop_back();
 
         if (elementStack.size() != 0) elementStack.pop_back();
