@@ -129,14 +129,14 @@ void versionedString::erase(const std::string& str) {
     if(string_original) {
         std::size_t pos = string_original->find(str);
         if(pos != std::string::npos) {
-            string_original->erase(pos + str.size());
+            string_original->erase(0, pos + str.size());
         }
     }
 
     if(string_modified) {
         std::size_t pos = string_modified->find(str);
         if(pos != std::string::npos) {
-            string_modified->erase(pos + str.size());
+            string_modified->erase(0, pos + str.size());
         }
     }
 }
