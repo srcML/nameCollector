@@ -47,8 +47,8 @@ struct scope {
  */
 class nameCollectorHandler : public srcSAXHandler {
 public:
-    nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), inIndex(false), complexNameCount(0), previousComplexName() {};
-    nameCollectorHandler(std::ostream* ptr, bool csv, bool noHeader) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv), printHeader(!noHeader){};
+    nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), inIndexCount(0), complexNameCount(0), previousComplexName() {};
+    nameCollectorHandler(std::ostream* ptr, bool csv, bool noHeader) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), inIndexCount(0), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv), printHeader(!noHeader){};
     ~nameCollectorHandler() {};
 
 #pragma GCC diagnostic push
@@ -207,7 +207,7 @@ public:
             elementStack.push_back(localname);
         }
 
-        if (std::string(localname) == "name" && !inIndex) {
+        if (std::string(localname) == "name" && inIndexCount == 0) {
             collectContent = true;
 
             // Get position info if it exists
@@ -243,8 +243,10 @@ public:
         else if (std::string(localname) == "from" && elementStack[elementStack.size()-2] == "import") {
             elementStack[elementStack.size()-2] = "from-import";
         } 
-        else if (std::string(localname) == "index") {
-            inIndex = true;
+        else
+
+        if (std::string(localname) == "index") {
+            ++inIndexCount;
             collectContent = false;
         }
 
@@ -335,7 +337,7 @@ public:
     virtual void endElement(const char* localname, const char* prefix, const char* URI) {
         std::string category;
         bool isComplexName = false;
-        if ((std::string(localname) == "name") && (content != "") && !inIndex)  {
+        if ((std::string(localname) == "name") && (content != "") && inIndexCount == 0)  {
             int nameDepth = 0;
             if (elementStack.back() == "name") {
                 category = elementStack[elementStack.size()-2]; //Normal name
@@ -614,7 +616,7 @@ public:
         }
 
         if (std::string(localname) == "index") {
-            inIndex = false;
+            --inIndexCount;
         }
 
         if (std::string(localname) == "type") {
@@ -813,7 +815,7 @@ private:
     std::vector<std::string> elementStack;         //Stack of srcML tags
     bool                     collectOpContent;
     std::string              opContent;
-    bool                     inIndex;
+    int                      inIndexCount;
     int                      complexNameCount;
     std::string              previousComplexName;
     std::vector<identifier>  expressionNames;      //List of expression names, which can't be output in order
