@@ -242,6 +242,9 @@ public:
         }
         else if (std::string(localname) == "from" && elementStack[elementStack.size()-2] == "import") {
             elementStack[elementStack.size()-2] = "from-import";
+        } 
+        else if (std::string(localname) == "index") {
+            collectContent = false;
         }
 
         if (isNoDeclLanguage() && std::string(localname) == "operator") {
@@ -608,9 +611,6 @@ public:
 
             collectContent = false;
         }
-
-
-
 
         if (std::string(localname) == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
