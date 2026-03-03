@@ -391,7 +391,7 @@ public:
                 //Deal with complex function names
                 //If it is a function name, collect the complex name ex. String::length, String::operator+=
                 //If it is a decl collect simple name only
-                if (((category == "destructor") || (category == "constructor") || (category == "function")) && (elementStack.back() != "name")) {
+                if (((category == "destructor") || (category == "constructor") || (category == "function") || (category == "decl")) && (elementStack.back() != "name")) {
                     if (elementStack.size() != 0) elementStack.pop_back();
                     return;
                 }
@@ -442,10 +442,11 @@ public:
 
                 //Output results
 
-                if (outputCSV)
+                if (outputCSV) {
                     *outPtr << identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type);
-                else
+                } else {
                     printReport(*outPtr, identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
+                }
 
                 if (DEBUG) {  //Print identifier and stacks
                     std::cerr << "Identifier: " << content << std::endl;
