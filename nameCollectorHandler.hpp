@@ -47,7 +47,7 @@ struct scope {
  */
 class nameCollectorHandler : public srcSAXHandler {
 public:
-    nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName() {};
+    nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), inIndex(false), complexNameCount(0), previousComplexName() {};
     nameCollectorHandler(std::ostream* ptr, bool csv, bool noHeader) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv), printHeader(!noHeader){};
     ~nameCollectorHandler() {};
 
@@ -207,7 +207,7 @@ public:
             elementStack.push_back(localname);
         }
 
-        if (std::string(localname) == "name") {
+        if (std::string(localname) == "name" && !inIndex) {
             collectContent = true;
 
             // Get position info if it exists
@@ -244,6 +244,7 @@ public:
             elementStack[elementStack.size()-2] = "from-import";
         } 
         else if (std::string(localname) == "index") {
+            inIndex = true;
             collectContent = false;
         }
 
@@ -334,7 +335,7 @@ public:
     virtual void endElement(const char* localname, const char* prefix, const char* URI) {
         std::string category;
         bool isComplexName = false;
-        if ((std::string(localname) == "name") && (content != ""))  {
+        if ((std::string(localname) == "name") && (content != "") && !inIndex)  {
             int nameDepth = 0;
             if (elementStack.back() == "name") {
                 category = elementStack[elementStack.size()-2]; //Normal name
@@ -612,6 +613,10 @@ public:
             collectContent = false;
         }
 
+        if (std::string(localname) == "index") {
+            inIndex = false;
+        }
+
         if (std::string(localname) == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
         } 
@@ -808,6 +813,7 @@ private:
     std::vector<std::string> elementStack;         //Stack of srcML tags
     bool                     collectOpContent;
     std::string              opContent;
+    bool                     inIndex;
     int                      complexNameCount;
     std::string              previousComplexName;
     std::vector<identifier>  expressionNames;      //List of expression names, which can't be output in order
