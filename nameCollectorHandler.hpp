@@ -330,7 +330,7 @@ public:
      */
     virtual void endUnit(const char* localname, const char* prefix, const char* URI) {
         if (elementStack.size() != 0) elementStack.pop_back();
-        if (diffStack.size()    != 0) diffStack.pop_back();
+        if (!diffStack.empty())       diffStack.pop_back();
         if (scopeStack.size()   != 0) scopeStack.pop_back();
     }
 
