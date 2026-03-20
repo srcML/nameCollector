@@ -47,8 +47,8 @@ struct scope {
  */
 class nameCollectorHandler : public srcSAXHandler {
 public:
-    nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName() {};
-    nameCollectorHandler(std::ostream* ptr, bool csv, bool noHeader) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv), printHeader(!noHeader){};
+    nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), inIndexCount(0), complexNameCount(0), previousComplexName() {};
+    nameCollectorHandler(std::ostream* ptr, bool csv, bool noHeader) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), inIndexCount(0), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv), printHeader(!noHeader){};
     ~nameCollectorHandler() {};
 
 #pragma GCC diagnostic push
@@ -207,7 +207,7 @@ public:
             elementStack.push_back(localname);
         }
 
-        if (std::string(localname) == "name") {
+        if (std::string(localname) == "name" && inIndexCount == 0) {
             collectContent = true;
 
             // Get position info if it exists
@@ -242,6 +242,12 @@ public:
         }
         else if (std::string(localname) == "from" && elementStack[elementStack.size()-2] == "import") {
             elementStack[elementStack.size()-2] = "from-import";
+        } 
+        else
+
+        if (std::string(localname) == "index") {
+            ++inIndexCount;
+            collectContent = false;
         }
 
         if (isNoDeclLanguage() && std::string(localname) == "operator") {
@@ -331,7 +337,7 @@ public:
     virtual void endElement(const char* localname, const char* prefix, const char* URI) {
         std::string category;
         bool isComplexName = false;
-        if ((std::string(localname) == "name") && (content != ""))  {
+        if ((std::string(localname) == "name") && (content != "") && inIndexCount == 0)  {
             int nameDepth = 0;
             if (elementStack.back() == "name") {
                 category = elementStack[elementStack.size()-2]; //Normal name
@@ -391,7 +397,7 @@ public:
                 //Deal with complex function names
                 //If it is a function name, collect the complex name ex. String::length, String::operator+=
                 //If it is a decl collect simple name only
-                if (((category == "destructor") || (category == "constructor") || (category == "function")) && (elementStack.back() != "name")) {
+                if (((category == "destructor") || (category == "constructor") || (category == "function") || (category == "decl")) && (elementStack.back() != "name")) {
                     if (elementStack.size() != 0) elementStack.pop_back();
                     return;
                 }
@@ -442,10 +448,11 @@ public:
 
                 //Output results
 
-                if (outputCSV)
+                if (outputCSV) {
                     *outPtr << identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type);
-                else
+                } else {
                     printReport(*outPtr, identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
+                }
 
                 if (DEBUG) {  //Print identifier and stacks
                     std::cerr << "Identifier: " << content << std::endl;
@@ -608,8 +615,9 @@ public:
             collectContent = false;
         }
 
-
-
+        if (std::string(localname) == "index") {
+            --inIndexCount;
+        }
 
         if (std::string(localname) == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
@@ -807,6 +815,7 @@ private:
     std::vector<std::string> elementStack;         //Stack of srcML tags
     bool                     collectOpContent;
     std::string              opContent;
+    int                      inIndexCount;
     int                      complexNameCount;
     std::string              previousComplexName;
     std::vector<identifier>  expressionNames;      //List of expression names, which can't be output in order
