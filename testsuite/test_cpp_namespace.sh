@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # test the collection of namespace names
-# NOTE 7/28/25: namespace aliases are collected, this is related to issue #21, the test will fail with message:
-# "Test test_cpp_namespace failed!" until the issue is fixed
 
 cat <<EOF > test_namespace.cpp
 // anonymous namespace

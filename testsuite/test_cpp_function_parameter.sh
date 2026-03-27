@@ -3,25 +3,27 @@
 cat <<EOF > test_function_parameter.cpp 
 #include <iostream>
 //should collect function_parameter_one as a function pointer parameter
-void callback_one(int x) {}
+void callback_one(int) {}
 void test_one_parameter(void (*function_parameter_one)(int)) { function_parameter_one(1); }
 
 //test with multiple parameters for the function-parameter
 int callback_two(int, double) { return 0; }
-void test_multiple_parameters(int (*function_parameter_two)(int, double)) { function_parameter_two(1, 2.0); 
+void test_multiple_parameters(int (*function_parameter_two)(int, double)) { function_parameter_two(1, 2.0); }
 
 //test function param by reference
 void test_by_reference(void (&function_parameter_three)(int)) { function_parameter_three(2); }
 
 //test multiple function parameters
-void test_multiple_function_parameters(void (*function_parameterA)(int), int (*function_parameterB)(int)) { function_parameterA(2); }
+void test_multiple_function_parameters(void (*function_parameterA)(int), int (*function_parameterB)(int, double)) { function_parameterA(2); }
 
+int main(){
+    return 0; 
+}
 EOF
 
 input=$(srcml test_function_parameter.cpp  --position)
 output=$(echo "$input" | ./nameCollector )
 expected="callback_one is a void function in C++ file: test_function_parameter.cpp:3:6
-x is a int parameter in C++ file: test_function_parameter.cpp:3:23
 test_one_parameter is a void function in C++ file: test_function_parameter.cpp:4:6
 function_parameter_one is a function-parameter in C++ file: test_function_parameter.cpp:4:32
 callback_two is a int function in C++ file: test_function_parameter.cpp:7:5
@@ -31,7 +33,8 @@ test_by_reference is a void function in C++ file: test_function_parameter.cpp:11
 function_parameter_three is a function-parameter in C++ file: test_function_parameter.cpp:11:31
 test_multiple_function_parameters is a void function in C++ file: test_function_parameter.cpp:14:6
 function_parameterA is a function-parameter in C++ file: test_function_parameter.cpp:14:47
-function_parameterB is a function-parameter in C++ file: test_function_parameter.cpp:14:80"
+function_parameterB is a function-parameter in C++ file: test_function_parameter.cpp:14:80
+main is a int function in C++ file: test_function_parameter.cpp:16:5"
 
 expected_function_parameters=(
   "function_parameter_one is a function-parameter in C++ file: test_function_parameter.cpp:4:32"
