@@ -23,8 +23,8 @@ private:
 EOF
 
 cat <<EOF > test_operator_no_space.cpp
-#include "test_class.hpp"
 #include <iostream>
+#include "test_operator_no_space.hpp"
 
 Counter::Counter() : counter_value(new int(0)) {}
 
