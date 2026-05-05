@@ -10,16 +10,13 @@
 /**
  *
  * Takes srcML input (with --position) of a source code file(s)
- *  Gets a vector<identifier> which contains name, category, and position
- *  of all the user defined identifiers in the file
- *
  * Works for srcML single unit or archives.
- *
  *
  * Need to have installed: libxml2 and srcml
  * Need to build and install srcSAX:
  *  In srcSAX folder:
- *    cmake CMakeLists.txt
+ *    cmake CMakeLists.txt -B build
+ *    cd build
  *    make
  *    sudo make install
  *
@@ -50,8 +47,13 @@ int main(int argc, char * argv[]) {
     bool        noHeader     = false; //Do not print header in csv
     bool        appendOutput = false;
 
-    CLI::App app{"nameCollector: Output all user defined identifier names in a srcML file (i.e., one or more source code files).  "};
+    std::string   description = "nameCollector";
+    description = description + "\n Produces a list of all user defined identifier names in a source code file(s).  Works for C, C++, C#, Java, Python. ";
+    description = description + "\n Input: a srcML file/archive - which is one or more source code files. srcML needs --position option.";
+    description = description + "\n Output: For each name gives type, syntactic category, and location in file.  CSV or text description output.";
+    description = description + "\n Typical USAGE: ./nameCollector -i foo.cpp.xml -o foo.cpp.csv --csv \n";
 
+    CLI::App app{description};
     app.add_option("-i, --input",    inputFile,    "Name of srcML file of source code with --position option");
     app.add_option("-o, --output",   outputFile,   "Name of output file");
     app.add_option("-f, --format",   outputFormat, "The output format (text by default): csv, text"); //To support other output options
