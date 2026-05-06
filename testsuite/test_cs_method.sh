@@ -44,9 +44,6 @@ add is a static int function in C# file: test_method.cs:4:16
 a is a int parameter in C# file: test_method.cs:4:24
 b is a int parameter in C# file: test_method.cs:4:31
 nonStaticFunction is a void function in C# file: test_method.cs:8:10
-multiply is a static int field in C# file: test_method.cs:12:16
-x is a static int field in C# file: test_method.cs:12:42
-y is a static int field in C# file: test_method.cs:12:44
 outer is a static void function in C# file: test_method.cs:14:17
 p is a ref int parameter in C# file: test_method.cs:14:31
 inner is a static int function in C# file: test_method.cs:15:20
