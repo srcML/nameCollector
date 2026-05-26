@@ -319,8 +319,10 @@ public:
      * Overide for desired behaviour.
      */
     virtual void endUnit(const char* localname, const char* prefix, const char* URI) {
-        if (elementStack.size() != 0) elementStack.pop_back();
-        if (scopeStack.size() != 0)   scopeStack.pop_back();
+        if (elementStack.size() != 0) elementStack.clear();
+        if (scopeStack.size() != 0)   scopeStack.clear();
+        if (typeStack.size() != 0) typeStack.clear();
+        if (stereotypeStack.size() != 0) stereotypeStack.clear();
     }
 
     /**
@@ -335,6 +337,7 @@ public:
      * Overide for desired behaviour.
      */
     virtual void endElement(const char* localname, const char* prefix, const char* URI) {
+        std::cerr << "In endElement for " << localname << " in file " << srcFileName << "\n";
         std::string category;
         bool isComplexName = false;
         if ((std::string(localname) == "name") && (content != "") && inIndexCount == 0)  {
@@ -417,16 +420,16 @@ public:
 
                 //Get type from type stack of <type> and <struct>
                 std::string type = "";
-                if (isTypedCategory(category) && (typeStack.size() != 0) && !isUntypedLanguage()) {
+                if (isTypedCategory(category) && (typeStack.size() >= 1) && !isUntypedLanguage()) {
                     if ((category == "field") && (typeStack[typeStack.size()-1].type.find("enum") != std::string::npos)) {
                         std::string type = "";  //Deal with enum fields without a type
                     } else {
-                        type = typeStack[typeStack.size()-1].type;
+                        type = typeStack.size() >= 1 ? typeStack[typeStack.size()-1].type : "";
                         replaceSubStringInPlace(type, ",", "&#44;");
                         replaceSubStringInPlace(type, "\n", "");
-                        if (type == typeStack[typeStack.size()-1].associatedTag + " ")
+                        if (typeStack.size() >= 1 && type == typeStack[typeStack.size()-1].associatedTag + " ")
                             replaceSubStringInPlace(type, " ", "");
-                        if (isStruct(typeStack[typeStack.size()-1].associatedTag)) {
+                        if (typeStack.size() >= 1 && isStruct(typeStack[typeStack.size()-1].associatedTag)) {
                             replaceSubStringInPlace(type, typeStack[typeStack.size()-1].associatedTag + " ", "");  //Remove "struct " from type
                             replaceSubStringInPlace(type, "class ", "");  //Deal with enum class foo {};
                             replaceSubStringInPlace(type, " ", "");
@@ -619,11 +622,11 @@ public:
             --inIndexCount;
         }
 
-        if (std::string(localname) == "type") {
+        if (typeStack.size() >= 1 && std::string(localname) == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
         } 
         // Note: struct gather content for typename turns off in endElement at block
-        if (typeStack.size() != 0)
+        if (typeStack.size() >= 1)
             if (typeStack[typeStack.size()-1].associatedTag == localname)
                 typeStack.pop_back();
 
