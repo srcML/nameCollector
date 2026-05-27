@@ -47,8 +47,8 @@ struct scope {
  */
 class nameCollectorHandler : public srcSAXHandler {
 public:
-    nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName() {};
-    nameCollectorHandler(std::ostream* ptr, bool csv, bool noHeader) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv), printHeader(!noHeader){};
+    nameCollectorHandler() : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), inIndexCount(0), complexNameCount(0), previousComplexName() {};
+    nameCollectorHandler(std::ostream* ptr, bool csv, bool noHeader) : collectContent(false), content(), position(), usePreviousPosition(false), collectOpContent(false), opContent(), inIndexCount(0), complexNameCount(0), previousComplexName(), outPtr(ptr), outputCSV(csv), printHeader(!noHeader){};
     ~nameCollectorHandler() {};
 
 #pragma GCC diagnostic push
@@ -95,6 +95,17 @@ public:
                            int numNamespaces, const struct srcsax_namespace * namespaces, int numAttributes,
                            const struct srcsax_attribute * attributes) {
 
+
+        //Check if srcml --position used to generate input
+        bool positionNotUsed = true;
+        for (int i=0; i<numNamespaces; ++i)
+            if (std::string(namespaces[i].uri) == "http://www.srcML.org/srcML/position") positionNotUsed = false;
+        if (positionNotUsed) std::cerr << "WARNING: srcml --position NOT used to generate input file." << std::endl;
+
+        if (outputCSV && printHeader) { //Print header once for csv
+            *outPtr << "Name,Type,Category,File,Position,Language,Stereotype" << std::endl;
+        }
+
     }
 
     /**
@@ -125,16 +136,6 @@ public:
                 std::cerr << namespaces[i].uri << std::endl;
         }
 
-        //Check if srcml --position used to generate input
-        bool positionNotUsed = true;
-        for (int i=0; i<numNamespaces; ++i)
-            if (std::string(namespaces[i].uri) == "http://www.srcML.org/srcML/position") positionNotUsed = false;
-        if (positionNotUsed) std::cerr << "WARNING: srcml --position NOT used to generate input file." << std::endl;
-
-        if (outputCSV && printHeader) { //Print header once for csv
-            *outPtr << "Name,Type,Category,File,Position,Language,Stereotype" << std::endl;
-            printHeader = false;
-        }
 
         srcFileLanguage = "unknown";
         if (numAttributes >= 2)
@@ -206,7 +207,7 @@ public:
             elementStack.push_back(localname);
         }
 
-        if (std::string(localname) == "name") {
+        if (std::string(localname) == "name" && inIndexCount == 0) {
             collectContent = true;
 
             // Get position info if it exists
@@ -231,16 +232,22 @@ public:
                 typeInfo insertType;
                 // If parent tag is a decl, check if grandparent is decl_stmt.
                 // If so, make decl_stmt the associated tag
-                if (elementStack[elementStack.size()-2] == "decl" && elementStack[elementStack.size()-3] == "decl_stmt")
+                if (elementStack.size() >= 3 && elementStack[elementStack.size()-2] == "decl" && elementStack[elementStack.size()-3] == "decl_stmt")
                     insertType.associatedTag = "decl_stmt";
                 else
-                    insertType.associatedTag = elementStack[elementStack.size()-2];
+                    insertType.associatedTag = elementStack.size() >= 2 ? elementStack[elementStack.size()-2] : "";
                 insertType.gatherContent = true;
                 typeStack.push_back(insertType);
             }
         }
-        else if (std::string(localname) == "from" && elementStack[elementStack.size()-2] == "import") {
+        else if (std::string(localname) == "from" && elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "import") {
             elementStack[elementStack.size()-2] = "from-import";
+        } 
+        else
+
+        if (std::string(localname) == "index") {
+            ++inIndexCount;
+            collectContent = false;
         }
 
         if (isNoDeclLanguage() && std::string(localname) == "operator") {
@@ -312,8 +319,10 @@ public:
      * Overide for desired behaviour.
      */
     virtual void endUnit(const char* localname, const char* prefix, const char* URI) {
-        if (elementStack.size() != 0) elementStack.pop_back();
-        if (scopeStack.size() != 0)   scopeStack.pop_back();
+        if (elementStack.size() != 0) elementStack.clear();
+        if (scopeStack.size() != 0)   scopeStack.clear();
+        if (typeStack.size() != 0) typeStack.clear();
+        if (stereotypeStack.size() != 0) stereotypeStack.clear();
     }
 
     /**
@@ -330,16 +339,16 @@ public:
     virtual void endElement(const char* localname, const char* prefix, const char* URI) {
         std::string category;
         bool isComplexName = false;
-        if ((std::string(localname) == "name") && (content != ""))  {
-            int nameDepth = 0;
-            if (elementStack.back() == "name") {
-                category = elementStack[elementStack.size()-2]; //Normal name
+        if ((std::string(localname) == "name") && (content != "") && inIndexCount == 0)  {
+            size_t nameDepth = 0;
+            if (elementStack.size() != 0 && elementStack.back() == "name") {
+                category = elementStack.size() >= 2 ? elementStack[elementStack.size()-2] : ""; //Normal name
                 nameDepth = 1;
                 complexNameCount = 0;
             }
-            else {
+            else if (elementStack.size() != 0) {
                 nameDepth = std::stoi(elementStack.back().substr(5));
-                category = elementStack[elementStack.size()-(nameDepth+1)];
+                category = elementStack.size() >= (nameDepth + 1) ? elementStack[elementStack.size()-(nameDepth+1)] : "";
                 isComplexName = true;
             }
 
@@ -349,7 +358,7 @@ public:
 
             // If in a no decl language AND category is expr, go a level higher
             if (isNoDeclLanguage() && category == "expr") {
-                std::string expr_category = elementStack[elementStack.size()-(nameDepth+2)];
+                std::string expr_category = elementStack.size() >= (nameDepth + 2) ? elementStack[elementStack.size()-(nameDepth+2)] : "";
                 if (expr_category == "expr_stmt" ||
                     expr_category == "condition" ||
                     expr_category == "alias"     ||
@@ -359,7 +368,7 @@ public:
                 else if (expr_category == "tuple" ||
                          expr_category == "array") {
                     nameDepth += 2;
-                    expr_category = elementStack[elementStack.size()-(nameDepth+2)];
+                    expr_category = elementStack.size() >= (nameDepth + 2) ? elementStack[elementStack.size()-(nameDepth+2)] : "";
                     if (expr_category == "expr_stmt" ||
                         expr_category == "control") {
                         category = expr_category;
@@ -377,7 +386,7 @@ public:
                 if (category == "destructor_decl")  category = "destructor";
                 if (category == "annotation_defn")  category = "annotation";
                 if (category == "function_decl") {
-                    if (elementStack[elementStack.size()-3] == "parameter")
+                    if (elementStack.size() >= 3 && elementStack[elementStack.size()-3] == "parameter")
                         category = "function-parameter";
                     else
                         category = "function";
@@ -390,7 +399,7 @@ public:
                 //Deal with complex function names
                 //If it is a function name, collect the complex name ex. String::length, String::operator+=
                 //If it is a decl collect simple name only
-                if (((category == "destructor") || (category == "constructor") || (category == "function")) && (elementStack.back() != "name")) {
+                if (((category == "destructor") || (category == "constructor") || (category == "function") || (category == "decl")) && (elementStack.back() != "name")) {
                     if (elementStack.size() != 0) elementStack.pop_back();
                     return;
                 }
@@ -410,16 +419,16 @@ public:
 
                 //Get type from type stack of <type> and <struct>
                 std::string type = "";
-                if (isTypedCategory(category) && (typeStack.size() != 0) && !isUntypedLanguage()) {
+                if (isTypedCategory(category) && (typeStack.size() >= 1) && !isUntypedLanguage()) {
                     if ((category == "field") && (typeStack[typeStack.size()-1].type.find("enum") != std::string::npos)) {
                         std::string type = "";  //Deal with enum fields without a type
                     } else {
-                        type = typeStack[typeStack.size()-1].type;
+                        type = typeStack.size() >= 1 ? typeStack[typeStack.size()-1].type : "";
                         replaceSubStringInPlace(type, ",", "&#44;");
                         replaceSubStringInPlace(type, "\n", "");
-                        if (type == typeStack[typeStack.size()-1].associatedTag + " ")
+                        if (typeStack.size() >= 1 && type == typeStack[typeStack.size()-1].associatedTag + " ")
                             replaceSubStringInPlace(type, " ", "");
-                        if (isStruct(typeStack[typeStack.size()-1].associatedTag)) {
+                        if (typeStack.size() >= 1 && isStruct(typeStack[typeStack.size()-1].associatedTag)) {
                             replaceSubStringInPlace(type, typeStack[typeStack.size()-1].associatedTag + " ", "");  //Remove "struct " from type
                             replaceSubStringInPlace(type, "class ", "");  //Deal with enum class foo {};
                             replaceSubStringInPlace(type, " ", "");
@@ -441,10 +450,11 @@ public:
 
                 //Output results
 
-                if (outputCSV)
+                if (outputCSV) {
                     *outPtr << identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type);
-                else
+                } else {
                     printReport(*outPtr, identifier(content, category, position, stereotype, srcFileName, srcFileLanguage, type));
+                }
 
                 if (DEBUG) {  //Print identifier and stacks
                     std::cerr << "Identifier: " << content << std::endl;
@@ -466,6 +476,7 @@ public:
                 if (isComplexName && 
                     complexNameCount == 2 && 
                     previousComplexName == "self" &&
+                    scopeStack.size() >= 2 &&
                     scopeStack.back().type == "function" &&
                     scopeStack[scopeStack.size()-2].type == "class") {
                         isComplexFieldName = true;
@@ -512,7 +523,7 @@ public:
                         currentScope.names.insert(content);
                     }
                     else if (category == "control") {
-                        bool isComprehensionControl = elementStack[elementStack.size()-(nameDepth+4)] == "comprehension";
+                        bool isComprehensionControl = elementStack.size() >= (nameDepth + 4) ? elementStack[elementStack.size()-(nameDepth+4)] == "comprehension" : false;
                         if (currentScope.names.find(content) == scopeStack.back().names.end() || isComprehensionControl) {
                             if (!isComprehensionControl)
                                 currentScope.names.insert(content);
@@ -552,7 +563,7 @@ public:
                         }
                     }
                     else if (category == "alias") {
-                        std::string alias_category = elementStack[elementStack.size()-(nameDepth+3)];
+                        std::string alias_category = elementStack.size() >= (nameDepth + 3) ? elementStack[elementStack.size()-(nameDepth+3)] : "";
                         if (currentScope.names.find(content) == currentScope.names.end() || alias_category == "catch") {
                             if (alias_category != "catch")
                                 currentScope.names.insert(content);
@@ -607,14 +618,15 @@ public:
             collectContent = false;
         }
 
+        if (std::string(localname) == "index") {
+            --inIndexCount;
+        }
 
-
-
-        if (std::string(localname) == "type") {
+        if (typeStack.size() >= 1 && std::string(localname) == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
         } 
         // Note: struct gather content for typename turns off in endElement at block
-        if (typeStack.size() != 0)
+        if (typeStack.size() >= 1)
             if (typeStack[typeStack.size()-1].associatedTag == localname)
                 typeStack.pop_back();
 
@@ -623,7 +635,7 @@ public:
         if (std::string(localname) == "operator" && isNoDeclLanguage()) {
             // If at an = operator in expr_stmt, output and then clear the expressions name list
             if (opContent == "=") {
-                if (elementStack[elementStack.size()-2] == "expr_stmt") {
+                if (elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "expr_stmt") {
                     for (auto identifier : expressionNames) {
                         scope& currentScope = identifier.getCategory() != "field" ? scopeStack.back() : scopeStack[scopeStack.size()-2];
                         if (currentScope.names.find(identifier.getName()) == currentScope.names.end()) {
@@ -638,7 +650,7 @@ public:
                 }
             }
             else if (opContent == ":=") {
-                if (elementStack[elementStack.size()-2] == "condition" && expressionNames.size() != 0) {
+                if (elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "condition" && expressionNames.size() != 0) {
                     if (outputCSV)
                         *outPtr << expressionNames.back();
                     else
@@ -646,7 +658,7 @@ public:
                     expressionNames.clear();
                 }
             }
-            else if (elementStack[elementStack.size()-2] == "condition") {
+            else if (elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "condition") {
                 expressionNames.clear();
             }
             collectOpContent = false;
@@ -806,6 +818,7 @@ private:
     std::vector<std::string> elementStack;         //Stack of srcML tags
     bool                     collectOpContent;
     std::string              opContent;
+    int                      inIndexCount;
     int                      complexNameCount;
     std::string              previousComplexName;
     std::vector<identifier>  expressionNames;      //List of expression names, which can't be output in order

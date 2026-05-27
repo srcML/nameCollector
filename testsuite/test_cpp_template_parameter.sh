@@ -4,13 +4,17 @@ cat <<EOF > test_template_parameter.cpp
 #include <iostream>
 //type template parameters
 template <typename T>
-T cls::foo() {}
+T function(T arg) {
+    return arg;
+}
 template <class R>
-R cls<R>::bar() {}
+R classParameter () {}
 // non type with function
-template <int U> void functionWithUParameter(U arg);
+template <int U> 
+int data[U] = {0};
 //template template
-template<template<typename> class TT> struct Struct{}; 
+template<template<typename> class TT> 
+struct wrapper{ TT<int> intWrapper;}; 
 //with default values
 template<typename X = int> struct F {};
 template<int N = 42> struct G {};
@@ -26,53 +30,59 @@ struct Q {
 };
 // with alias
 template<typename A>
-using Ptr = T*;
+using A_ptr = A*;
+
+int main() {
+    return 0;
+}
 EOF
 
 input=$(srcml test_template_parameter.cpp  --position)
 output=$(echo "$input" | ./nameCollector )
 expected="T is a template-parameter in C++ file: test_template_parameter.cpp:3:20
-foo is a T function in C++ file: test_template_parameter.cpp:4:8
-R is a template-parameter in C++ file: test_template_parameter.cpp:5:17
-bar is a R function in C++ file: test_template_parameter.cpp:6:11
-U is a template-parameter in C++ file: test_template_parameter.cpp:8:15
-functionWithUParameter is a void function in C++ file: test_template_parameter.cpp:8:23
-arg is a U parameter in C++ file: test_template_parameter.cpp:8:48
-TT is a template-parameter in C++ file: test_template_parameter.cpp:10:35
-Struct is a struct in C++ file: test_template_parameter.cpp:10:46
-X is a template-parameter in C++ file: test_template_parameter.cpp:12:19
-F is a struct in C++ file: test_template_parameter.cpp:12:35
-N is a template-parameter in C++ file: test_template_parameter.cpp:13:14
-G is a struct in C++ file: test_template_parameter.cpp:13:29
-Ts is a template-parameter in C++ file: test_template_parameter.cpp:15:23
-ignore is a void function in C++ file: test_template_parameter.cpp:15:32
-ts is a Ts... parameter in C++ file: test_template_parameter.cpp:15:45
-P1 is a template-parameter in C++ file: test_template_parameter.cpp:17:19
-P2 is a template-parameter in C++ file: test_template_parameter.cpp:17:27
-C is a template-parameter in C++ file: test_template_parameter.cpp:17:46
-P3 is a template-parameter in C++ file: test_template_parameter.cpp:17:55
-K is a struct in C++ file: test_template_parameter.cpp:17:66
-Z is a template-parameter in C++ file: test_template_parameter.cpp:19:19
-Q is a struct in C++ file: test_template_parameter.cpp:20:8
-O is a template-parameter in C++ file: test_template_parameter.cpp:21:23
-Inner is a struct in C++ file: test_template_parameter.cpp:22:12
-A is a template-parameter in C++ file: test_template_parameter.cpp:25:19"
+function is a T function in C++ file: test_template_parameter.cpp:4:3
+arg is a T parameter in C++ file: test_template_parameter.cpp:4:14
+R is a template-parameter in C++ file: test_template_parameter.cpp:7:17
+classParameter is a R function in C++ file: test_template_parameter.cpp:8:3
+U is a template-parameter in C++ file: test_template_parameter.cpp:10:15
+data is a int global in C++ file: test_template_parameter.cpp:11:5
+TT is a template-parameter in C++ file: test_template_parameter.cpp:13:35
+wrapper is a struct in C++ file: test_template_parameter.cpp:14:8
+intWrapper is a TT<int> field in C++ file: test_template_parameter.cpp:14:25
+X is a template-parameter in C++ file: test_template_parameter.cpp:16:19
+F is a struct in C++ file: test_template_parameter.cpp:16:35
+N is a template-parameter in C++ file: test_template_parameter.cpp:17:14
+G is a struct in C++ file: test_template_parameter.cpp:17:29
+Ts is a template-parameter in C++ file: test_template_parameter.cpp:19:23
+ignore is a void function in C++ file: test_template_parameter.cpp:19:32
+ts is a Ts... parameter in C++ file: test_template_parameter.cpp:19:45
+P1 is a template-parameter in C++ file: test_template_parameter.cpp:21:19
+P2 is a template-parameter in C++ file: test_template_parameter.cpp:21:27
+C is a template-parameter in C++ file: test_template_parameter.cpp:21:46
+P3 is a template-parameter in C++ file: test_template_parameter.cpp:21:55
+K is a struct in C++ file: test_template_parameter.cpp:21:66
+Z is a template-parameter in C++ file: test_template_parameter.cpp:23:19
+Q is a struct in C++ file: test_template_parameter.cpp:24:8
+O is a template-parameter in C++ file: test_template_parameter.cpp:25:23
+Inner is a struct in C++ file: test_template_parameter.cpp:26:12
+A is a template-parameter in C++ file: test_template_parameter.cpp:29:19
+main is a int function in C++ file: test_template_parameter.cpp:32:5"
 
 expected_template_parameters=(
   "T is a template-parameter in C++ file: test_template_parameter.cpp:3:20"
-  "R is a template-parameter in C++ file: test_template_parameter.cpp:5:17"
-  "U is a template-parameter in C++ file: test_template_parameter.cpp:8:15"
-  "TT is a template-parameter in C++ file: test_template_parameter.cpp:10:35"
-  "X is a template-parameter in C++ file: test_template_parameter.cpp:12:19"
-  "N is a template-parameter in C++ file: test_template_parameter.cpp:13:14"
-  "Ts is a template-parameter in C++ file: test_template_parameter.cpp:15:23"
-  "P1 is a template-parameter in C++ file: test_template_parameter.cpp:17:19"
-  "P2 is a template-parameter in C++ file: test_template_parameter.cpp:17:27"
-  "C is a template-parameter in C++ file: test_template_parameter.cpp:17:46"
-  "P3 is a template-parameter in C++ file: test_template_parameter.cpp:17:55"
-  "Z is a template-parameter in C++ file: test_template_parameter.cpp:19:19"
-  "O is a template-parameter in C++ file: test_template_parameter.cpp:21:23"
-  "A is a template-parameter in C++ file: test_template_parameter.cpp:25:19"
+  "R is a template-parameter in C++ file: test_template_parameter.cpp:7:17"
+  "U is a template-parameter in C++ file: test_template_parameter.cpp:10:15"
+  "TT is a template-parameter in C++ file: test_template_parameter.cpp:13:35"
+  "X is a template-parameter in C++ file: test_template_parameter.cpp:16:19"
+  "N is a template-parameter in C++ file: test_template_parameter.cpp:17:14"
+  "Ts is a template-parameter in C++ file: test_template_parameter.cpp:19:23"
+  "P1 is a template-parameter in C++ file: test_template_parameter.cpp:21:19"
+  "P2 is a template-parameter in C++ file: test_template_parameter.cpp:21:27"
+  "C is a template-parameter in C++ file: test_template_parameter.cpp:21:46"
+  "P3 is a template-parameter in C++ file: test_template_parameter.cpp:21:55"
+  "Z is a template-parameter in C++ file: test_template_parameter.cpp:23:19"
+  "O is a template-parameter in C++ file: test_template_parameter.cpp:25:23"
+  "A is a template-parameter in C++ file: test_template_parameter.cpp:29:19"
 )
 
 for template_parameter in "${expected_template_parameters[@]}"; do

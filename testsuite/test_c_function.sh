@@ -85,7 +85,7 @@ expected_functions=(
 for function in "${expected_functions[@]}"; do
   if ! echo "$output" | grep -Fq "$function"; then
     echo "Test test_c_function failed!"
-    echo "Expected field: '$function' not found"
+    echo "Expected function: '$function' not found"
     echo "Got:"
     echo "$output"
     exit 1

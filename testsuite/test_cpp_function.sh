@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of global variable names in c++
+# test the collection of function names in c++
 
 cat <<EOF > test_function.cpp
 // function prototype

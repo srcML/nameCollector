@@ -44,7 +44,7 @@ int main(){
 EOF
 
 input=$(srcml test_csv_header.cpp --position)
-echo "$input" | ./namecollector --csv -o test_csv_header.csv
+echo "$input" | ../bin/nameCollector --csv -o test_csv_header.csv
 mapfile -t output < test_csv_header.csv
 output_text=$(cat test_csv_header.csv)
 
