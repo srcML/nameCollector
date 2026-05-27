@@ -232,15 +232,15 @@ public:
                 typeInfo insertType;
                 // If parent tag is a decl, check if grandparent is decl_stmt.
                 // If so, make decl_stmt the associated tag
-                if (elementStack[elementStack.size()-2] == "decl" && elementStack[elementStack.size()-3] == "decl_stmt")
+                if (elementStack.size() >= 3 && elementStack[elementStack.size()-2] == "decl" && elementStack[elementStack.size()-3] == "decl_stmt")
                     insertType.associatedTag = "decl_stmt";
                 else
-                    insertType.associatedTag = elementStack[elementStack.size()-2];
+                    insertType.associatedTag = elementStack.size() >= 2 ? elementStack[elementStack.size()-2] : "";
                 insertType.gatherContent = true;
                 typeStack.push_back(insertType);
             }
         }
-        else if (std::string(localname) == "from" && elementStack[elementStack.size()-2] == "import") {
+        else if (std::string(localname) == "from" && elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "import") {
             elementStack[elementStack.size()-2] = "from-import";
         } 
         else
@@ -337,19 +337,18 @@ public:
      * Overide for desired behaviour.
      */
     virtual void endElement(const char* localname, const char* prefix, const char* URI) {
-        std::cerr << "In endElement for " << localname << " in file " << srcFileName << "\n";
         std::string category;
         bool isComplexName = false;
         if ((std::string(localname) == "name") && (content != "") && inIndexCount == 0)  {
-            int nameDepth = 0;
-            if (elementStack.back() == "name") {
-                category = elementStack[elementStack.size()-2]; //Normal name
+            size_t nameDepth = 0;
+            if (elementStack.size() != 0 && elementStack.back() == "name") {
+                category = elementStack.size() > 2 ? elementStack[elementStack.size()-2] : ""; //Normal name
                 nameDepth = 1;
                 complexNameCount = 0;
             }
-            else {
+            else if (elementStack.size() != 0) {
                 nameDepth = std::stoi(elementStack.back().substr(5));
-                category = elementStack[elementStack.size()-(nameDepth+1)];
+                category = elementStack.size() >= (nameDepth + 1) ? elementStack[elementStack.size()-(nameDepth+1)] : "";
                 isComplexName = true;
             }
 
@@ -359,7 +358,7 @@ public:
 
             // If in a no decl language AND category is expr, go a level higher
             if (isNoDeclLanguage() && category == "expr") {
-                std::string expr_category = elementStack[elementStack.size()-(nameDepth+2)];
+                std::string expr_category = elementStack.size() >= (nameDepth + 2) ? elementStack[elementStack.size()-(nameDepth+2)] : "";
                 if (expr_category == "expr_stmt" ||
                     expr_category == "condition" ||
                     expr_category == "alias"     ||
@@ -369,7 +368,7 @@ public:
                 else if (expr_category == "tuple" ||
                          expr_category == "array") {
                     nameDepth += 2;
-                    expr_category = elementStack[elementStack.size()-(nameDepth+2)];
+                    expr_category = elementStack.size() >= (nameDepth + 2) ? elementStack[elementStack.size()-(nameDepth+2)] : "";
                     if (expr_category == "expr_stmt" ||
                         expr_category == "control") {
                         category = expr_category;
@@ -387,7 +386,7 @@ public:
                 if (category == "destructor_decl")  category = "destructor";
                 if (category == "annotation_defn")  category = "annotation";
                 if (category == "function_decl") {
-                    if (elementStack[elementStack.size()-3] == "parameter")
+                    if (elementStack.size() >= 3 && elementStack[elementStack.size()-3] == "parameter")
                         category = "function-parameter";
                     else
                         category = "function";
@@ -477,6 +476,7 @@ public:
                 if (isComplexName && 
                     complexNameCount == 2 && 
                     previousComplexName == "self" &&
+                    scopeStack.size() >= 2 &&
                     scopeStack.back().type == "function" &&
                     scopeStack[scopeStack.size()-2].type == "class") {
                         isComplexFieldName = true;
@@ -523,7 +523,7 @@ public:
                         currentScope.names.insert(content);
                     }
                     else if (category == "control") {
-                        bool isComprehensionControl = elementStack[elementStack.size()-(nameDepth+4)] == "comprehension";
+                        bool isComprehensionControl = elementStack.size() >= (nameDepth + 4) ? elementStack[elementStack.size()-(nameDepth+4)] == "comprehension" : false;
                         if (currentScope.names.find(content) == scopeStack.back().names.end() || isComprehensionControl) {
                             if (!isComprehensionControl)
                                 currentScope.names.insert(content);
@@ -563,7 +563,7 @@ public:
                         }
                     }
                     else if (category == "alias") {
-                        std::string alias_category = elementStack[elementStack.size()-(nameDepth+3)];
+                        std::string alias_category = elementStack.size() >= (nameDepth + 3) ? elementStack[elementStack.size()-(nameDepth+3)] : "";
                         if (currentScope.names.find(content) == currentScope.names.end() || alias_category == "catch") {
                             if (alias_category != "catch")
                                 currentScope.names.insert(content);
@@ -635,7 +635,7 @@ public:
         if (std::string(localname) == "operator" && isNoDeclLanguage()) {
             // If at an = operator in expr_stmt, output and then clear the expressions name list
             if (opContent == "=") {
-                if (elementStack[elementStack.size()-2] == "expr_stmt") {
+                if (elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "expr_stmt") {
                     for (auto identifier : expressionNames) {
                         scope& currentScope = identifier.getCategory() != "field" ? scopeStack.back() : scopeStack[scopeStack.size()-2];
                         if (currentScope.names.find(identifier.getName()) == currentScope.names.end()) {
@@ -650,7 +650,7 @@ public:
                 }
             }
             else if (opContent == ":=") {
-                if (elementStack[elementStack.size()-2] == "condition" && expressionNames.size() != 0) {
+                if (elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "condition" && expressionNames.size() != 0) {
                     if (outputCSV)
                         *outPtr << expressionNames.back();
                     else
@@ -658,7 +658,7 @@ public:
                     expressionNames.clear();
                 }
             }
-            else if (elementStack[elementStack.size()-2] == "condition") {
+            else if (elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "condition") {
                 expressionNames.clear();
             }
             collectOpContent = false;
