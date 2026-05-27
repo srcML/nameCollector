@@ -342,7 +342,7 @@ public:
         if ((std::string(localname) == "name") && (content != "") && inIndexCount == 0)  {
             size_t nameDepth = 0;
             if (elementStack.size() != 0 && elementStack.back() == "name") {
-                category = elementStack.size() > 2 ? elementStack[elementStack.size()-2] : ""; //Normal name
+                category = elementStack.size() >= 2 ? elementStack[elementStack.size()-2] : ""; //Normal name
                 nameDepth = 1;
                 complexNameCount = 0;
             }
