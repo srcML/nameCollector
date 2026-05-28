@@ -12,18 +12,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install srcML (runtime + dev headers)
-RUN if [ "$TARGETARCH" = "amd64" ]; then \
-      wget https://github.com/srcML/srcML/releases/download/v1.1.0/srcml_1.1.0-1_ubuntu24.04_amd64.deb \
-      && wget https://github.com/srcML/srcML/releases/download/v1.1.0/srcml-dev_1.1.0-1_ubuntu24.04_amd64.deb; \
-    elif [ "$TARGETARCH" = "arm64" ]; then \
-      wget https://github.com/srcML/srcML/releases/download/v1.1.0/srcml_1.1.0-1_ubuntu24.04_arm64.deb \
-      && wget https://github.com/srcML/srcML/releases/download/v1.1.0/srcml-dev_1.1.0-1_ubuntu22.04_arm64.deb; \
-    else \
-      echo "Unsupported arch: $TARGETARCH" && exit 1; \
-    fi && \
-    apt-get update && apt-get install -y ./*.deb && rm -f ./*.deb
-
 # Build and install srcSAX
 RUN mkdir -p /srcSAX \
     && wget -O /tmp/srcSAX.tar.gz https://github.com/srcML/srcSAX/archive/refs/heads/master.tar.gz \
