@@ -30,7 +30,10 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
     apt-get update && apt-get install -y ./*.deb && rm -f ./*.deb
 
 # 3. Build and install srcSAX (Force standard paths so nameCollector finds it)
-COPY srcSAX /srcSAX
+RUN mkdir -p /srcSAX \
+    && wget -O /tmp/srcSAX.tar.gz https://github.com/srcML/srcSAX/archive/refs/heads/master.tar.gz \
+    && tar -xzf /tmp/srcSAX.tar.gz -C /srcSAX --strip-components=1 \
+    && rm /tmp/srcSAX.tar.gz
 WORKDIR /srcSAX
 RUN cmake -B build -G Ninja \
     -DCMAKE_INSTALL_PREFIX=/usr/local \
