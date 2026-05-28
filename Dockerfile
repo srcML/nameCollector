@@ -74,6 +74,6 @@ COPY --from=builder /usr/local/lib/ /usr/local/lib/
 RUN ldconfig
 
 # Copy nameCollector binary from builder
-COPY --from=builder /nameCollector/build/bin/ /usr/local/bin/nameCollector
+COPY --from=builder /nameCollector/build/bin/nameCollector /usr/local/bin/nameCollector
 
-WORKDIR /nameCollector/build/bin
+WORKDIR /examples
