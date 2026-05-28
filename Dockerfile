@@ -33,7 +33,6 @@ RUN mkdir -p /nameCollector \
 WORKDIR /nameCollector
 RUN cmake -B build -G Ninja && cd build && ninja
 
-
 FROM ubuntu:24.04
 ARG TARGETARCH
 
@@ -42,8 +41,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     ca-certificates \
     libxml2 \
+    nano \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/cache/debconf/*-old /var/log/dpkg.log /var/log/apt/*
 
 # Install srcML
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
@@ -54,8 +54,7 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
       echo "Unsupported arch: $TARGETARCH" && exit 1; \
     fi && \
     apt-get update && apt-get install -y ./*.deb && rm -f ./*.deb \
-    && apt-get remove -y wget && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* /var/cache/debconf/*-old /var/log/dpkg.log /var/log/apt/*
 
 # Copy srcSAX shared libs from builder
 COPY --from=builder /usr/local/lib/ /usr/local/lib/
@@ -64,4 +63,12 @@ RUN ldconfig
 # Copy nameCollector binary from builder
 COPY --from=builder /nameCollector/build/bin/nameCollector /usr/local/bin/nameCollector
 
+# Install examples
 WORKDIR /examples
+ARG CACHEBUST=1
+RUN wget -qO- https://api.github.com/repos/srcML/nameCollector/releases/tags/v1.0.0 \
+       | grep -oE '"browser_download_url": *"[^"]*"' \
+       | sed -E 's/.*"(https:[^"]+)".*/\1/' \
+       | wget -i - \
+    && apt-get remove -y wget && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /var/cache/debconf/*-old /var/log/dpkg.log /var/log/apt/*

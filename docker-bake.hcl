@@ -18,8 +18,14 @@ target "namecollector" {
   context    = "."
   dockerfile = "Dockerfile"
   platforms  = ["linux/amd64", "linux/arm64"]
+  args = {
+    CACHEBUST = "${timestamp()}"
+  }
   tags = [
-    "${REGISTRY}/${IMAGE}:${TAG}",
+    "${REGISTRY}/${IMAGE}:1.0.0",
+    "${REGISTRY}/${IMAGE}:1.0",
+    "${REGISTRY}/${IMAGE}:1",
+    "${REGISTRY}/${IMAGE}:latest",
   ]
 }
 
