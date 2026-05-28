@@ -43,7 +43,10 @@ RUN cmake -B build -G Ninja \
     && ninja install
 
 # 4. Build nameCollector
-COPY nameCollector /nameCollector 
+RUN mkdir -p /nameCollector \
+    && wget -O /tmp/nameCollector.tar.gz https://github.com/srcML/nameCollector/archive/refs/heads/main.tar.gz \
+    && tar -xzf /tmp/nameCollector.tar.gz -C /nameCollector --strip-components=1 \
+    && rm /tmp/nameCollector.tar.gz
 WORKDIR /nameCollector
 RUN cmake -B build -G Ninja && cd build && ninja
 
