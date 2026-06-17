@@ -182,7 +182,8 @@ public:
           // this is adding all elements, so you might only want to push certain elements
 
 
-        std::string back = elementStack.back();
+        std::string back = "";
+        if (elementStack.size() > 0) back = elementStack.back();
 
         if (back == "name" && std::string(localname) == "name")                 // Top-level Names
             elementStack.push_back("name_2");
@@ -398,7 +399,7 @@ public:
                 //Deal with complex function names
                 //If it is a function name, collect the complex name ex. String::length, String::operator+=
                 //If it is a decl collect simple name only
-                if (((category == "destructor") || (category == "constructor") || (category == "function") || (category == "decl")) && (elementStack.back() != "name")) {
+                if (((category == "destructor") || (category == "constructor") || (category == "function") || (category == "decl")) && ((elementStack.size() != 0) && (elementStack.back() != "name"))) {
                     if (elementStack.size() != 0) elementStack.pop_back();
                     return;
                 }
