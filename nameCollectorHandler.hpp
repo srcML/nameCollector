@@ -183,7 +183,7 @@ public:
 
 
         std::string back = "";
-        if (elementStack.size() > 0) back = elementStack.back();
+        if (!elementStack.empty()) back = elementStack.back();
 
         if (back == "name" && std::string(localname) == "name")                 // Top-level Names
             elementStack.push_back("name_2");
@@ -277,7 +277,7 @@ public:
         } 
         
         //Stop gathering contents of structs when a block is encountered
-        if ((std::string(localname) == "block") && (typeStack.size() != 0)) {
+        if ((std::string(localname) == "block") && (!typeStack.empty())) {
             if (isStruct(typeStack[typeStack.size()-1].associatedTag)) {
                 typeStack[typeStack.size()-1].gatherContent = false;
             }
@@ -319,10 +319,10 @@ public:
      * Overide for desired behaviour.
      */
     virtual void endUnit(const char* localname, const char* prefix, const char* URI) {
-        if (elementStack.size() != 0) elementStack.clear();
-        if (scopeStack.size() != 0)   scopeStack.clear();
-        if (typeStack.size() != 0) typeStack.clear();
-        if (stereotypeStack.size() != 0) stereotypeStack.clear();
+        if (!elementStack.empty())    elementStack.clear();
+        if (!scopeStack.empty())      scopeStack.clear();
+        if (!typeStack.empty())       typeStack.clear();
+        if (!stereotypeStack.empty()) stereotypeStack.clear();
     }
 
     /**
@@ -341,12 +341,12 @@ public:
         bool isComplexName = false;
         if ((std::string(localname) == "name") && (content != "") && inIndexCount == 0)  {
             size_t nameDepth = 0;
-            if (elementStack.size() != 0 && elementStack.back() == "name") {
+            if (!elementStack.empty() && elementStack.back() == "name") {
                 category = elementStack.size() >= 2 ? elementStack[elementStack.size()-2] : ""; //Normal name
                 nameDepth = 1;
                 complexNameCount = 0;
             }
-            else if (elementStack.size() != 0) {
+            else if (!elementStack.empty()) {
                 nameDepth = std::stoi(elementStack.back().substr(5));
                 category = elementStack.size() >= (nameDepth + 1) ? elementStack[elementStack.size()-(nameDepth+1)] : "";
                 isComplexName = true;
@@ -399,8 +399,8 @@ public:
                 //Deal with complex function names
                 //If it is a function name, collect the complex name ex. String::length, String::operator+=
                 //If it is a decl collect simple name only
-                if (((category == "destructor") || (category == "constructor") || (category == "function") || (category == "decl")) && ((elementStack.size() != 0) && (elementStack.back() != "name"))) {
-                    if (elementStack.size() != 0) elementStack.pop_back();
+                if (((category == "destructor") || (category == "constructor") || (category == "function") || (category == "decl")) && ((!elementStack.empty()) && (elementStack.back() != "name"))) {
+                    if (!elementStack.empty()) elementStack.pop_back();
                     return;
                 }
 
@@ -448,8 +448,9 @@ public:
                     }
                 }
 
-                std::string stereotype = (isStereotypableCategory(category) && stereotypeStack.size() != 0 ? stereotypeStack[stereotypeStack.size() - 1] : "");
-                if (stereotypeStack.size() != 0) stereotypeStack.pop_back();
+                std::string stereotype = (isStereotypableCategory(category) && !stereotypeStack.empty() ?
+                                          stereotypeStack[stereotypeStack.size() - 1] : "");
+                if (!stereotypeStack.empty()) stereotypeStack.pop_back();
 
                 //Remove any prefix String:: from context - for functions
                 if (content.find("::") != std::string::npos)
@@ -642,7 +643,7 @@ public:
             if (typeStack[typeStack.size()-1].associatedTag == localname)
                 typeStack.pop_back();
 
-        if (elementStack.size() != 0) elementStack.pop_back();
+        if (!elementStack.empty()) elementStack.pop_back();
 
         if (std::string(localname) == "operator" && isNoDeclLanguage()) {
             // If at an = operator in expr_stmt, output and then clear the expressions name list
@@ -684,14 +685,14 @@ public:
             elementStack.push_back("init");  // Deal with namespace foo = x::y;
         }
         if (std::string(localname) == "namespace" && category != "" && !isNoDeclLanguage()) {
-            if (elementStack.size() != 0) elementStack.pop_back();  // Deal with namespace foo = x::y;
+            if (!elementStack.empty()) elementStack.pop_back();  // Deal with namespace foo = x::y;
         }
 
         // If in a no decl language, need to keep track of scope
         if (isNoDeclLanguage() && (std::string(localname) == "function" ||
                                    std::string(localname) == "lambda"   ||
                                    std::string(localname) == "class")) {
-            if (scopeStack.size() != 0) scopeStack.pop_back();
+            if (!scopeStack.empty()) scopeStack.pop_back();
         }
 
         if (isNoDeclLanguage() && (std::string(localname) == "expr_stmt" ||
