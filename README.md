@@ -1,3 +1,10 @@
+<!--
+// SPDX-License-Identifier: GPL-3.0-only
+
+ @file README.md
+ @copyright Copyright (C) 2026 srcML, LLC. (www.srcML.org)
+  This file is part of the nameCollector application.
+-->
 # nameCollector
 A tool for collecting all user-defined identifier names from a source code file.  
 
@@ -5,7 +12,7 @@ Works for C, C++, C#, Java, and Python
 
 Input: A srcML file of source code with --position option.  srcML file can be a single unit (one source code file) or an archive (multiple source code files).
 
-Output: A list of identifier names,  their type (for declartions and functions), their syntactic category, the file name, and position (line:column) the identifier occurs (declared), the programming langauge, and for methods and classes their stereotype, from [stereocode](https://github.com/srcML/stereocode), if it is in the srcML.  Output is plain text (default) or csv with column headings (as below).
+Output: A list of identifier names,  their type (for declartions and functions), their syntactic category, the file name, and position (line:column) the identifier occurs (declared), the programming langauge, and for methods and classes their stereotype, from [stereocode](https://github.com/srcML/stereocode), if in the srcML.  Output is plain text (default) or csv with column headings (as below).
 
 Example:
 
@@ -44,7 +51,7 @@ Example:
 
 
 ## Python notes:
-In Python, globals, locals, and fields are collected at their first appearance. If a name is assigned to twice within a scope, only the first use of that name will be collected.  
+In Python, globals, locals, and fields are collected at their first appearance. If a name is assigned more than once within a scope, only the first use of the name is collected.  
 Additionally, type information is NOT collected for any Python variables or functions.
 
 
@@ -83,15 +90,17 @@ Output is plain text by default.  Use -f csv or --csv for comma separated output
 
 ## Developer Notes:
 
-The initial version of the application was developed by Decker from the srcSAX examples in June 2023. This was extended to collect the different types of names by Maletic. Maletic added the CLI11 interface and made the first public release (July 2023). Testa added testing framework and testsuite in summer 2025. Behler added support for Python alongside the 1.1.0 release of srcML (August 2025).
+The initial version of the application was developed by Decker from the srcSAX examples in June 2023. This was extended to collect the different types of names by Maletic. Maletic added the CLI11 interface and made the first public release (July 2023). Testa added testing framework and testsuite in summer 2025. Behler added support for Python alongside the 1.1.0 release of srcML (August 2025).  Sipanhioglu fixed a memory bug June 2026.  Ramadan set up Docker image in June 2026.
 
 nameCollector is a good simple example of how to use srcSAX to build fast and scalable tools for collecting analysis information.
 
 Developers of nameCollector:
+- Ali Al-Ramadan
 - Joshua Behler
 - Michael Collard
 - Michael Decker
 - Jonathan Maletic
+- John Sipanhioglu
 - Sophia Testa 
 
 

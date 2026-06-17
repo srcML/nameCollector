@@ -2,12 +2,12 @@
 /**
  * @file nameCollectorHandler.cpp
  *
- * @copyright Copyright (C) 2013-2023 srcML, LLC. (www.srcML.org)
+ * @copyright Copyright (C) 2013-2026 srcML, LLC. (www.srcML.org)
  *
  * This file is part of the nameCollector application.
  */
 
-/** Modified by MaleticJuly 2023.
+/**
  *
  *  Collects all user defined names in a given C, C++, C#, Java file
  *
