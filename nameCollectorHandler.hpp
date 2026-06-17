@@ -266,8 +266,7 @@ public:
             scopeStack.push_back(classScope);
         }
         
-        //Need to collect some type info for struct and anonymous struct 
-        // struct foo { } x;  // x has type foo
+        //Need to collect some type info for struct and anonymous struct
         // struct { } x;      // x has type struct
         if (isStruct(std::string(localname))) {
             typeInfo insertType;
@@ -282,7 +281,7 @@ public:
                 typeStack[typeStack.size()-1].gatherContent = false;
             }
         }
-        
+
         if (isStereotypableCategory(localname)) {
             // Check for stereotype information from stereocode
             for (int i = 0; i < numAttributes; ++i) {
@@ -418,14 +417,26 @@ public:
                 }
 
                 //Get type from type stack of <type> and <struct>
+                //Deals with anonymous struct etc.
                 std::string type = "";
                 if (isTypedCategory(category) && (typeStack.size() >= 1) && !isUntypedLanguage()) {
                     if ((category == "field") && (typeStack[typeStack.size()-1].type.find("enum") != std::string::npos)) {
                         std::string type = "";  //Deal with enum fields without a type
                     } else {
-                        type = typeStack.size() >= 1 ? typeStack[typeStack.size()-1].type : "";
-                        replaceSubStringInPlace(type, ",", "&#44;");
-                        replaceSubStringInPlace(type, "\n", "");
+                        //Deal with typedefs with structs etc.
+                        if (typeStack.size() >= 1 && typeStack[typeStack.size()-1].associatedTag == "typedef") {
+                            type = typeStack[typeStack.size()-1].type;
+                            size_t blank = type.find(' ');
+                            if (blank != std::string::npos) {
+                                if (type.substr(0, blank).find("struct")!= std::string::npos) type = "struct";
+                                if (type.substr(0, blank).find("enum")!= std::string::npos) type = "enum";
+                                if (type.substr(0, blank).find("class")!= std::string::npos) type = "class";
+                                if (type.substr(0, blank).find("union")!= std::string::npos) type = "union";
+                            }
+                        }
+                        else
+                            type = typeStack.size() >= 1 ? typeStack[typeStack.size()-1].type : "";
+
                         if (typeStack.size() >= 1 && type == typeStack[typeStack.size()-1].associatedTag + " ")
                             replaceSubStringInPlace(type, " ", "");
                         if (typeStack.size() >= 1 && isStruct(typeStack[typeStack.size()-1].associatedTag)) {
