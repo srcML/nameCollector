@@ -368,7 +368,7 @@ public:
             return;
         }
 
-        if ((localName == "name") && (content != "") && inIndexCount == 0)  {
+        if (localName == "name" && content != "" && inIndexCount == 0)  {
             size_t nameDepth = 0;
             if (!elementStack.empty() && elementStack.back() == "name") {
                 category = elementStack.size() >= 2 ? elementStack[elementStack.size()-2] : ""; //Normal name
@@ -668,8 +668,9 @@ public:
         if (typeStack.size() >= 1 && localName == "type") {
             typeStack[typeStack.size()-1].gatherContent = false;
         } 
+
         // Note: struct gather content for typename turns off in endElement at block
-        if (typeStack.size() != 1 && typeStack[typeStack.size()-1].associatedTag == localName) {
+        if (typeStack.size() >= 1 && typeStack[typeStack.size()-1].associatedTag == localName) {
             typeStack.pop_back();
         }
 
