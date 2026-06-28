@@ -4,8 +4,10 @@
 
 cat <<EOF > test_typedef.cpp
 #include <vector>
-typedef int Integer; 
-typedef vector<int> int_vector;
+#include <iostream>
+
+typedef int Integer;
+typedef std::vector<int> int_vector;
 typedef char* char_array[5];    //array of char ptr
 typedef int (*functionPtr)(int, int);  // with fxn pointer
 
@@ -26,18 +28,18 @@ EOF
 
 input=$(srcml test_typedef.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="Integer is a typedef in C++ file: test_typedef.cpp:2:13
-int_vector is a typedef in C++ file: test_typedef.cpp:3:21
-char_array is a typedef in C++ file: test_typedef.cpp:4:15
-functionPtr is a int function in C++ file: test_typedef.cpp:5:15
-Point is a struct in C++ file: test_typedef.cpp:8:16
-x is a int field in C++ file: test_typedef.cpp:9:9
-y is a int field in C++ file: test_typedef.cpp:9:12
-pt is a typedef of struct in C++ file: test_typedef.cpp:10:3
-v is a int field in C++ file: test_typedef.cpp:13:9
-w is a int field in C++ file: test_typedef.cpp:13:12
-anon_struct_typedef is a typedef of struct in C++ file: test_typedef.cpp:14:3
-main is a int function in C++ file: test_typedef.cpp:16:5"
+expected="Integer is a int typedef in C++ file: test_typedef.cpp:4:13
+int_vector is a std::vector<int> typedef in C++ file: test_typedef.cpp:5:26
+char_array is a char* typedef in C++ file: test_typedef.cpp:6:15
+functionPtr is a int function in C++ file: test_typedef.cpp:7:15
+Point is a struct in C++ file: test_typedef.cpp:10:16
+x is a int field in C++ file: test_typedef.cpp:11:9
+y is a int field in C++ file: test_typedef.cpp:11:12
+pt is a struct typedef in C++ file: test_typedef.cpp:12:3
+v is a int field in C++ file: test_typedef.cpp:15:9
+w is a int field in C++ file: test_typedef.cpp:15:12
+anon_struct_typedef is a struct typedef in C++ file: test_typedef.cpp:16:3
+main is a int function in C++ file: test_typedef.cpp:18:5"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_typedef failed!" 

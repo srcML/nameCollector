@@ -32,6 +32,7 @@ if [[ "$output" != "$expected" ]]; then
     echo "Got: '$output'"
     exit 1
 fi
+echo "Test test_c_macro passed!" 
 # Repeat tests
 
 exit 0

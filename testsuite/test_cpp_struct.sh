@@ -4,6 +4,7 @@
 # output of struct within typedef definition includes some spacing issue and newline issue
 
 cat <<EOF > test_struct.cpp
+#include <iostream>
 struct Cat{
     //empty struct
 };
@@ -39,32 +40,32 @@ EOF
 
 input=$(srcml test_struct.cpp --position)
 output=$(echo "$input" | ./nameCollector )
-expected="Cat is a struct in C++ file: test_struct.cpp:1:8
-Person is a struct in C++ file: test_struct.cpp:6:8
-ssn is a int field in C++ file: test_struct.cpp:8:9
-name is a char* field in C++ file: test_struct.cpp:10:11
-age is a int field in C++ file: test_struct.cpp:11:9
-printAge is a void function in C++ file: test_struct.cpp:12:10
-person1 is a Person global in C++ file: test_struct.cpp:13:3
-field is a float field in C++ file: test_struct.cpp:17:11
-anonymousStructObject is a struct global in C++ file: test_struct.cpp:18:3
-outer is a struct in C++ file: test_struct.cpp:21:8
-inner is a struct in C++ file: test_struct.cpp:22:12
-a is a int field in C++ file: test_struct.cpp:23:13
-b is a int field in C++ file: test_struct.cpp:23:16
-in is a inner field in C++ file: test_struct.cpp:24:7
-q is a int field in C++ file: test_struct.cpp:25:9
-p is a int field in C++ file: test_struct.cpp:25:12
-main is a int function in C++ file: test_struct.cpp:28:5"
+expected="Cat is a struct in C++ file: test_struct.cpp:2:8
+Person is a struct in C++ file: test_struct.cpp:7:8
+ssn is a int field in C++ file: test_struct.cpp:9:9
+name is a char* field in C++ file: test_struct.cpp:11:11
+age is a int field in C++ file: test_struct.cpp:12:9
+printAge is a void function in C++ file: test_struct.cpp:13:10
+person1 is a Person global in C++ file: test_struct.cpp:14:3
+field is a float field in C++ file: test_struct.cpp:18:11
+anonymousStructObject is a struct global in C++ file: test_struct.cpp:19:3
+outer is a struct in C++ file: test_struct.cpp:22:8
+inner is a struct in C++ file: test_struct.cpp:23:12
+a is a int field in C++ file: test_struct.cpp:24:13
+b is a int field in C++ file: test_struct.cpp:24:16
+in is a inner field in C++ file: test_struct.cpp:25:7
+q is a int field in C++ file: test_struct.cpp:26:9
+p is a int field in C++ file: test_struct.cpp:26:12
+main is a int function in C++ file: test_struct.cpp:29:5"
 
 expected_structs=(
-  "Cat is a struct in C++ file: test_struct.cpp:1:8"
-  "Person is a struct in C++ file: test_struct.cpp:6:8"
-  "outer is a struct in C++ file: test_struct.cpp:21:8"
-  "inner is a struct in C++ file: test_struct.cpp:22:12"
-  "person1 is a Person global in C++ file: test_struct.cpp:13:3"
-  "anonymousStructObject is a struct global in C++ file: test_struct.cpp:18:3"
-  "in is a inner field in C++ file: test_struct.cpp:24:7"
+  "Cat is a struct in C++ file: test_struct.cpp:2:8"
+  "Person is a struct in C++ file: test_struct.cpp:7:8"
+  "outer is a struct in C++ file: test_struct.cpp:22:8"
+  "inner is a struct in C++ file: test_struct.cpp:23:12"
+  "person1 is a Person global in C++ file: test_struct.cpp:14:3"
+  "anonymousStructObject is a struct global in C++ file: test_struct.cpp:19:3"
+  "in is a inner field in C++ file: test_struct.cpp:25:7"
 )
 
 # test should fail until the issue with srcml parsing structs with immediate obj declarations is resolved

@@ -14,7 +14,7 @@ class Shapes{
     public:
 
         Shapes();
-        Shapes(char): borderCharacter(c) {};
+        Shapes(char c): borderCharacter(c) {};
 
         int calculateArea(int length, int width){ 
             int localInsideClassMethod = length*width; 
@@ -37,9 +37,10 @@ int main(){
     }
     //nested locals
     std::vector<int> collection = {1, 2, 3};
+    bool odd;
     for(auto number:collection){
-        if(number%2 == 0){ bool even = true; }
-        else {bool odd = false; }
+        if(number%2 == 0){ odd = false; }
+        else {odd = true; }
     }
     return 0; 
 }
@@ -55,6 +56,7 @@ return_value is a int local in C++ file: test_local.cpp:3:9
 Shapes is a class in C++ file: test_local.cpp:8:7
 Shapes is a constructor in C++ file: test_local.cpp:11:9
 Shapes is a constructor in C++ file: test_local.cpp:12:9
+c is a char parameter in C++ file: test_local.cpp:12:21
 calculateArea is a int function in C++ file: test_local.cpp:14:13
 length is a int parameter in C++ file: test_local.cpp:14:31
 width is a int parameter in C++ file: test_local.cpp:14:43
@@ -70,9 +72,8 @@ product is a int local in C++ file: test_local.cpp:27:9
 i is a int local in C++ file: test_local.cpp:29:14
 next_one is a int local in C++ file: test_local.cpp:30:13
 collection is a std::vector<int> local in C++ file: test_local.cpp:34:22
-number is a auto local in C++ file: test_local.cpp:35:14
-even is a bool local in C++ file: test_local.cpp:36:33
-odd is a bool local in C++ file: test_local.cpp:37:20"
+odd is a bool local in C++ file: test_local.cpp:35:10
+number is a auto local in C++ file: test_local.cpp:36:14"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_local failed!"
