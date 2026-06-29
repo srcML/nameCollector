@@ -6,7 +6,7 @@
   This file is part of the nameCollector application.
 -->
 # nameCollector
-A tool for collecting all user-defined identifier names from a source code file.  
+A tool for collecting all user-defined identifier names from one or more source code files.  
 
 Works for C, C++, C#, Java, and Python
 
