@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /**
- * @file nameCollectorHandler.cpp
+ * @file nameCollectorHandler.hpp
  *
- * @copyright Copyright (C) 2013-2026 srcML, LLC. (www.srcML.org)
+ * @copyright Copyright (C) 2023-2026 srcML, LLC. (www.srcML.org)
  *
  * This file is part of the nameCollector application.
  */
