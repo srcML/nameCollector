@@ -6,7 +6,7 @@ enable_testing()
 file(GLOB TESTS *.sh)
 foreach(TEST IN ITEMS ${TESTS})
     get_filename_component(TEST_NAME ${TEST} NAME)
-    add_test(NAME nameCollector.${TEST_NAME} COMMAND ${TEST} WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../bin")
+    add_test(NAME nameCollector.${TEST_NAME} COMMAND ${TEST} WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../../bin")
 endforeach()
 
 # copy input files
@@ -16,6 +16,4 @@ endforeach()
     # get_filename_component(TESTFILE_NAME ${TESTFILE} NAME)
     # configure_file(${TESTFILE} ${TESTFILE_NAME} COPYONLY)
 # endforeach()
-
-add_subdirectory(deltas)
 
