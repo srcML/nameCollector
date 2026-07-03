@@ -381,6 +381,11 @@ public:
                 }
             }
 
+            // if this is a namespace in a using, do not collect it
+            if (category == "namespace" && elementStack.size() >= 3 && elementStack[elementStack.size() - 2] == "namespace" && elementStack[elementStack.size() - 3] == "using") {
+                category = "";
+            }
+
             //Only interested in user defined identifiers
             if (isUserDefinedIdentifier(category)) {
                 if (category == "class_decl")       category = "class";
