@@ -66,6 +66,7 @@ Q is a struct in C++ file: test_template_parameter.cpp:24:8
 O is a template-parameter in C++ file: test_template_parameter.cpp:25:23
 Inner is a struct in C++ file: test_template_parameter.cpp:26:12
 A is a template-parameter in C++ file: test_template_parameter.cpp:29:19
+A_ptr is a A* typedef in C++ file: test_template_parameter.cpp:30:7
 main is a int function in C++ file: test_template_parameter.cpp:32:5"
 
 expected_template_parameters=(
