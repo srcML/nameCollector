@@ -26,6 +26,12 @@ namespace MyCatsInitials{
     char murphy= 'M';
     char peanut= 'P';
 }
+class MyClass {
+public:
+    static int foo;
+};
+int MyClass::foo = 20;
+
 int main(){
     return 0;
 }
@@ -54,7 +60,10 @@ globalTemplateVar is a T global in C++ file: test_global.cpp:18:3
 MyCatsInitials is a namespace in C++ file: test_global.cpp:20:11
 murphy is a char global in C++ file: test_global.cpp:21:10
 peanut is a char global in C++ file: test_global.cpp:22:10
-main is a int function in C++ file: test_global.cpp:24:5"
+MyClass is a class in C++ file: test_global.cpp:24:7
+foo is a static int field in C++ file: test_global.cpp:26:16
+foo is a int global in C++ file: test_global.cpp:28:14
+main is a int function in C++ file: test_global.cpp:30:5"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_global failed!"

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-only
 /**
- * @file nameCollectorHandler.cpp
+ * @file nameCollectorHandler.hpp
  *
- * @copyright Copyright (C) 2013-2026 srcML, LLC. (www.srcML.org)
+ * @copyright Copyright (C) 2023-2026 srcML, LLC. (www.srcML.org)
  *
  * This file is part of the nameCollector application.
  */
@@ -185,8 +185,6 @@ public:
 
           // this is adding all elements, so you might only want to push certain elements
 
-
-
         std::string back = "";
         if (!elementStack.empty()) back = elementStack.back();
 
@@ -251,6 +249,10 @@ public:
                 // If so, make decl_stmt the associated tag
                 if (elementStack.size() >= 3 && elementStack[elementStack.size()-2] == "decl" && elementStack[elementStack.size()-3] == "decl_stmt")
                     insertType.associatedTag = "decl_stmt";
+                // if parent tag is an init, check if grandparent is using
+                // if so, make using the associated tag
+                else if (elementStack.size() >= 3 && elementStack[elementStack.size()-2] == "init" && elementStack[elementStack.size()-3] == "using")
+                    insertType.associatedTag = "using";
                 else
                     insertType.associatedTag = elementStack.size() >= 2 ? elementStack[elementStack.size()-2] : "";
                 insertType.gatherContent = true;
@@ -286,7 +288,7 @@ public:
         
         //Need to collect some type info for struct and anonymous struct
         // struct { } x;      // x has type struct
-        if (isStruct(localName)) {
+        if (isStruct(localname) && (srcFileLanguage == "C++" || srcFileLanguage == "C")) {
             typeInfo insertType;
             insertType.associatedTag = localName; //struct, class, enum, union
             insertType.gatherContent = true;
@@ -354,6 +356,7 @@ public:
      * Overide for desired behaviour.
      */
     virtual void endElement(const char* localname, const char* prefix, const char* URI) {
+
         std::string category;
         bool isComplexName = false;
 
@@ -403,6 +406,11 @@ public:
                         category = expr_category;
                     }
                 }
+            }
+
+            // if this is a namespace in a using, do not collect it
+            if (category == "namespace" && elementStack.size() >= 3 && elementStack[elementStack.size() - 2] == "namespace" && elementStack[elementStack.size() - 3] == "using") {
+                category = "";
             }
 
             //Only interested in user defined identifiers
@@ -650,6 +658,10 @@ public:
                     }
                 }
             }
+            else if (category == "using") {
+                typeAfterNameContent = content;
+                typeAfterNamePosition = position;
+            } 
 
             if (isComplexName) {
                 previousComplexName = content;
@@ -660,9 +672,34 @@ public:
 
             collectContent = false;
         }
+        
 
         if (localName == "index") {
             --inIndexCount;
+        }
+        
+        // if ending the init of a using, it is a typedef
+        if (std::string(localname) == "init" && elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "using") {
+            if (outputCSV) {
+                *outPtr << identifier(typeAfterNameContent, "typedef", typeAfterNamePosition, "", srcFileName, srcFileLanguage, typeStack[typeStack.size()-1].type);
+            } else {
+                printReport(*outPtr, identifier(typeAfterNameContent, "typedef", typeAfterNamePosition, "", srcFileName, srcFileLanguage, typeStack[typeStack.size()-1].type));
+            }
+
+            if (DEBUG) {  //Print identifier and stacks
+                std::cerr << "Identifier: " << typeAfterNameContent << std::endl;
+                std::cerr << "Category: " << "typedef" << std::endl;
+                std::cerr << "Position: " << typeAfterNamePosition << std::endl;
+                std::cerr << "Stereotype: " << "" << std::endl;
+                std::cerr << "Type: " << typeStack[typeStack.size()-1].type << std::endl;
+                std::cerr << "Element Stack: ";
+                for (int i=elementStack.size()-1; i>=0; --i) { std::cerr << elementStack[i] << " | "; }
+                std::cerr << std::endl;
+                std::cerr << "Type Stack: ";
+                for (int i=typeStack.size()-1; i>=0; --i) { std::cerr << "[" << typeStack[i].type << ", " << typeStack[i].associatedTag << "]"  << " | "; }
+                std::cerr << std::endl;
+                std::cerr << "------------------------" << std::endl;
+            }
         }
 
         if (typeStack.size() >= 1 && localName == "type") {
@@ -818,6 +855,10 @@ private:
             if (elementStack[i] == "template" || elementStack[i] == "generic_parameter_list") return true;
             --i;
         }
+        if (srcFileLanguage == "Java") {
+            if (elementStack.size() >= 5 && elementStack[elementStack.size()-5] == "class" && elementStack[elementStack.size()-4] == "name" && elementStack[elementStack.size()-3] == "parameter_list" && elementStack[elementStack.size()-2] == "parameter")
+                return true;
+        }
         return false;
     }
 
@@ -868,6 +909,8 @@ private:
     int                      inIndexCount;
     int                      complexNameCount;
     std::string              previousComplexName;
+    std::string              typeAfterNameContent; //Storage location for a name whose type info appears after it
+    std::string              typeAfterNamePosition;//Storage location for a name's position whose type info appears after it
     std::vector<identifier>  expressionNames;      //List of expression names, which can't be output in order
     std::string              srcFileName;          //Current source code file name (vs xml)
     std::string              srcFileLanguage;      //Current source code language

@@ -2,7 +2,7 @@
 /**
  * @file identifierName.hpp
  *
- * @copyright Copyright (C) 2023 srcML, LLC. (www.srcML.org)
+ * @copyright Copyright (C) 2023-2026 srcML, LLC. (www.srcML.org)
  *
  * This file is part of the nameCollector application.
  */

@@ -17,7 +17,7 @@ output=$(echo "$input" | ./nameCollector --csv)
 
 expected="Name,Type,Category,File,Position,Language,Stereotype
 Box|Container,,class,test_class_rename_generic_original.java|test_class_rename_generic_modified.java,1:14,Java,
-T,,template_parameter,test_class_rename_generic_original.java|test_class_rename_generic_modified.java,1:18,Java,"
+T,,template-parameter,test_class_rename_generic_original.java|test_class_rename_generic_modified.java,1:18|1:24,Java,"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_class_rename_generic output did not match expected!"
