@@ -181,7 +181,6 @@ public:
 
           // this is adding all elements, so you might only want to push certain elements
 
-
         std::string back = "";
         if (!elementStack.empty()) back = elementStack.back();
 
@@ -273,7 +272,7 @@ public:
         
         //Need to collect some type info for struct and anonymous struct
         // struct { } x;      // x has type struct
-        if (isStruct(std::string(localname))) {
+        if (isStruct(std::string(localname)) && (srcFileLanguage == "C++" || srcFileLanguage == "C")) {
             typeInfo insertType;
             insertType.associatedTag = std::string(localname); //struct, class, enum, union
             insertType.gatherContent = true;
@@ -824,6 +823,10 @@ private:
         while (i > 0) {
             if (elementStack[i] == "template" || elementStack[i] == "generic_parameter_list") return true;
             --i;
+        }
+        if (srcFileLanguage == "Java") {
+            if (elementStack.size() >= 5 && elementStack[elementStack.size()-5] == "class" && elementStack[elementStack.size()-4] == "name" && elementStack[elementStack.size()-3] == "parameter_list" && elementStack[elementStack.size()-2] == "parameter")
+                return true;
         }
         return false;
     }
