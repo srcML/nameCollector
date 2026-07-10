@@ -13,11 +13,7 @@
 
 #include <libxml/xmlwriter.h>
 #include <srcSAXHandler.hpp>
-
-#ifndef NAME_COLLECTOR_CPP_CALLBACK_ADAPTER
-#define NAME_COLLECTOR_CPP_CALLBACK_ADAPTER
 #include <cppCallbackAdapter.hpp>
-#endif
 
 #include "identifierName.hpp"
 #include "versionedString.hpp"
