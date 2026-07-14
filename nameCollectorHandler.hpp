@@ -357,7 +357,7 @@ public:
      */
     virtual void endElement(const char* localname, const char* prefix, const char* URI) {
 
-        std::string category;
+        versionedString category;
         bool isComplexName = false;
 
         const std::string localName = localname;
@@ -374,13 +374,13 @@ public:
         if (localName == "name" && content != "" && inIndexCount == 0)  {
             size_t nameDepth = 0;
             if (!elementStack.empty() && elementStack.back() == "name") {
-                category = elementStack.size() >= 2 ? elementStack[elementStack.size()-2] : ""; //Normal name
+                category = versionedString(elementStack.size() >= 2 ? elementStack[elementStack.size()-2] : "", diffStack.back()); //Normal name
                 nameDepth = 1;
                 complexNameCount = 0;
             }
             else if (!elementStack.empty()) {
                 nameDepth = std::stoi(elementStack.back().substr(5));
-                category = elementStack.size() >= (nameDepth + 1) ? elementStack[elementStack.size()-(nameDepth+1)] : "";
+                category = versionedString(elementStack.size() >= (nameDepth + 1) ? elementStack[elementStack.size()-(nameDepth+1)] : "", diffStack.back());
                 isComplexName = true;
             }
 
@@ -389,13 +389,13 @@ public:
             }
 
             // If in a no decl language AND category is expr, go a level higher
-            if (isNoDeclLanguage() && category == "expr") {
+            if (isNoDeclLanguage() && category.equals("expr", diffStack.back())) {
                 std::string expr_category = elementStack.size() >= (nameDepth + 2) ? elementStack[elementStack.size()-(nameDepth+2)] : "";
                 if (expr_category == "expr_stmt" ||
                     expr_category == "condition" ||
                     expr_category == "alias"     ||
                     expr_category == "control") {
-                    category = expr_category;
+                    category = versionedString(expr_category, diffStack.back());
                 }
                 else if (expr_category == "tuple" ||
                          expr_category == "array") {
@@ -403,54 +403,54 @@ public:
                     expr_category = elementStack.size() >= (nameDepth + 2) ? elementStack[elementStack.size()-(nameDepth+2)] : "";
                     if (expr_category == "expr_stmt" ||
                         expr_category == "control") {
-                        category = expr_category;
+                        category = versionedString(expr_category, diffStack.back());
                     }
                 }
             }
 
             // if this is a namespace in a using, do not collect it
-            if (category == "namespace" && elementStack.size() >= 3 && elementStack[elementStack.size() - 2] == "namespace" && elementStack[elementStack.size() - 3] == "using") {
-                category = "";
+            if (category.equals("namespace", diffStack.back()) && elementStack.size() >= 3 && elementStack[elementStack.size() - 2] == "namespace" && elementStack[elementStack.size() - 3] == "using") {
+                category.clear();
             }
 
             //Only interested in user defined identifiers
             if (isUserDefinedIdentifier(category)) {
-                if (category == "class_decl")       category = "class";
-                if (category == "enum_decl")        category = "enum";
-                if (category == "struct_decl")      category = "struct";
-                if (category == "union_decl")       category = "union";
-                if (category == "constructor_decl") category = "constructor";
-                if (category == "destructor_decl")  category = "destructor";
-                if (category == "annotation_defn")  category = "annotation";
-                if (category == "function_decl") {
+                if (category.equals("class_decl", diffStack.back()))       category = versionedString("class", diffStack.back());
+                if (category.equals("enum_decl", diffStack.back()))        category = versionedString("enum", diffStack.back());
+                if (category.equals("struct_decl", diffStack.back()))      category = versionedString("struct", diffStack.back());
+                if (category.equals("union_decl", diffStack.back()))       category = versionedString("union", diffStack.back());
+                if (category.equals("constructor_decl", diffStack.back())) category = versionedString("constructor", diffStack.back());
+                if (category.equals("destructor_decl", diffStack.back()))  category = versionedString("destructor", diffStack.back());
+                if (category.equals("annotation_defn", diffStack.back()))  category = versionedString("annotation", diffStack.back());
+                if (category.equals("function_decl", diffStack.back())) {
                     if (elementStack.size() >= 3 && elementStack[elementStack.size()-3] == "parameter")
-                        category = "function-parameter";
+                        category = versionedString("function-parameter", diffStack.back());
                     else
-                        category = "function";
+                        category = versionedString("function", diffStack.back());
                 }
 
-                if (content.find("operator") != std::string::npos && srcFileLanguage == "C++" && category == "function") {
+                if (content.find("operator") != std::string::npos && srcFileLanguage == "C++" && category.equals("function", diffStack.back())) {
                     usePreviousPosition = true;
                 }
 
                 //Deal with complex function names
                 //If it is a function name, collect the complex name ex. String::length, String::operator+=
                 //If it is a decl collect simple name only
-                if (((category == "destructor") || (category == "constructor") || (category == "function") || (category == "decl")) && ((!elementStack.empty()) && (elementStack.back() != "name"))) {
+                if (((category.equals("destructor", diffStack.back())) || (category.equals("constructor", diffStack.back())) || (category.equals("function", diffStack.back())) || (category.equals("decl", diffStack.back()))) && ((!elementStack.empty()) && (elementStack.back() != "name"))) {
                     if (!elementStack.empty()) elementStack.pop_back();
                     return;
                 }
 
-                if (category == "parameter") {
+                if (category.equals("parameter", diffStack.back())) {
                     if (isNoDeclLanguage()) scopeStack.back().names.insert(content);
-                    if (isTemplateParameter()) category = "template-parameter";
+                    if (isTemplateParameter()) category = versionedString("template-parameter", diffStack.back());
                 }
-                if (category == "decl") { //Need additional checks
-                    category = "global";
-                    if (isParameter())  category = "parameter";
+                if (category.equals("decl", diffStack.back())) { //Need additional checks
+                    category = versionedString("global", diffStack.back());
+                    if (isParameter())  category = versionedString("parameter", diffStack.back());
                     else {
-                        if (isLocal()) category = "local";
-                        if (isField()) category = "field";
+                        if (isLocal()) category = versionedString("local", diffStack.back());
+                        if (isField()) category = versionedString("field", diffStack.back());
                     }
                 }
 
@@ -458,7 +458,7 @@ public:
                 //Deals with anonymous struct etc.
                 std::string type = "";
                 if (isTypedCategory(category) && (typeStack.size() >= 1) && !isUntypedLanguage()) {
-                    if ((category == "field") && (typeStack[typeStack.size()-1].type.find("enum") != std::string::npos)) {
+                    if ((category.equals("field", diffStack.back())) && (typeStack[typeStack.size()-1].type.find("enum") != std::string::npos)) {
                         std::string type = "";  //Deal with enum fields without a type
                     } else {
                         //Deal with typedefs with structs etc.
@@ -534,17 +534,17 @@ public:
                 }
                 if (!isComplexName || isComplexFieldName) {
                     scope& currentScope = !isComplexFieldName ? scopeStack.back() : scopeStack[scopeStack.size()-2];
-                    if (category == "expr_stmt" || category == "condition") {
+                    if (category.equals("expr_stmt", diffStack.back()) || category.equals("condition", diffStack.back())) {
 
                         // Check if the name is currently in the current scope
                         if (currentScope.names.find(content) == currentScope.names.end()) {
                             // Determine category based on scope
                             if (currentScope.type == "global")
-                                category = "global";
+                                category = versionedString("global", diffStack.back());
                             else if (currentScope.type == "function")
-                                category = "local";
+                                category = versionedString("local", diffStack.back());
                             else if (currentScope.type == "class")
-                                category = "field";
+                                category = versionedString("field", diffStack.back());
                             expressionNames.push_back(identifier(content, category, position, "", srcFileName, srcFileLanguage, ""));
 
                             if (DEBUG) {  //Print identifier and stacks
@@ -569,23 +569,23 @@ public:
                             }
                         }
                     }
-                    else if (category == "global" || category == "nonlocal") {
+                    else if (category.equals("global", diffStack.back()) || category.equals("nonlocal", diffStack.back())) {
                         // Just need to add to local scope so it isn't counted.
                         currentScope.names.insert(content);
                     }
-                    else if (category == "control") {
+                    else if (category.equals("control", diffStack.back())) {
                         bool isComprehensionControl = elementStack.size() >= (nameDepth + 4) ? elementStack[elementStack.size()-(nameDepth+4)] == "comprehension" : false;
                         if (currentScope.names.find(content) == scopeStack.back().names.end() || isComprehensionControl) {
                             if (!isComprehensionControl)
                                 currentScope.names.insert(content);
                             if (isComprehensionControl)
-                                category = "local";
+                                category = versionedString("local", diffStack.back());
                             else if (currentScope.type == "global")
-                                category = "global";
+                                category = versionedString("global", diffStack.back());
                             else if (currentScope.type == "function")
-                                category = "local";
+                                category = versionedString("local", diffStack.back());
                             else if (currentScope.type == "class")
-                                category = "field";
+                                category = versionedString("field", diffStack.back());
                             if (outputCSV)
                                 *outPtr << identifier(content, category, position, "", srcFileName, srcFileLanguage, "");
                             else
@@ -620,15 +620,15 @@ public:
                                 currentScope.names.insert(content);
 
                             if (alias_category == "import")
-                                category = "namespace";
+                                category = versionedString("namespace", diffStack.back());
                             else if (alias_category == "catch")
-                                category = "local";
+                                category = versionedString("local", diffStack.back());
                             else if (currentScope.type == "global")
-                                category = "global";
+                                category = versionedString("global", diffStack.back());
                             else if (currentScope.type == "function")
-                                category = "local";
+                                category = versionedString("local", diffStack.back());
                             else if (currentScope.type == "class")
-                                category = "field";
+                                category = versionedString("field", diffStack.back());
 
                             if (outputCSV)
                                 *outPtr << identifier(content, category, position, "", srcFileName, srcFileLanguage, "");
