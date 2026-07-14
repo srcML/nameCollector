@@ -29,6 +29,7 @@
 
 #include "cFamilyNameCollectorHandler.hpp"
 #include "pythonNameCollectorHandler.hpp"
+#include "javascriptNameCollectorHandler.hpp"
 
 extern bool DEBUG;
 
@@ -51,14 +52,17 @@ public:
     nameCollectorHandler() {
         cFamilyHandler = new cFamilyNameCollectorHandler();
         pythonHandler = new pythonNameCollectorHandler();
+        javascriptHandler = new javascriptNameCollectorHandler();
     };
     nameCollectorHandler(std::ostream* ptr, bool csv, bool noHeader) : outPtr(ptr), outputCSV(csv), printHeader(!noHeader) {
         cFamilyHandler = new cFamilyNameCollectorHandler(ptr, csv, noHeader);
         pythonHandler = new pythonNameCollectorHandler(ptr, csv, noHeader);
+        javascriptHandler = new javascriptNameCollectorHandler(ptr, csv, noHeader);
     };
     ~nameCollectorHandler() {
         delete cFamilyHandler;
         delete pythonHandler;
+        delete javascriptHandler;
     };
 
 #pragma GCC diagnostic push
@@ -107,6 +111,7 @@ public:
 
         cFamilyHandler->set_context(this->context);
         pythonHandler->set_context(this->context);
+        javascriptHandler->set_context(this->context);
 
         //Check if srcml --position used to generate input
         bool positionNotUsed = true;
@@ -163,7 +168,10 @@ public:
             adapter->push_handler(pythonHandler);
             adapter->get_handler()->startUnit(localname, prefix, URI, numNamespaces, namespaces, numAttributes, attributes);
         }
-
+        else if (srcFileLanguage == "JavaScript") {
+            adapter->push_handler(javascriptHandler);
+            adapter->get_handler()->startUnit(localname, prefix, URI, numNamespaces, namespaces, numAttributes, attributes);
+        }
         
     }
 
@@ -275,6 +283,7 @@ private:
     // Language handlers
     cFamilyNameCollectorHandler* cFamilyHandler;
     pythonNameCollectorHandler* pythonHandler;
+    javascriptNameCollectorHandler* javascriptHandler;
 
     std::ostream*            outPtr;               //Pointer to the output stream
     bool                     outputCSV;            //True is csv, False is report

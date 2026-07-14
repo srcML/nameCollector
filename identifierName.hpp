@@ -67,7 +67,6 @@ const std::unordered_set<std::string> USER_DEFINED_TAGS = {
     "destructor_decl",
     "class",
     "class_decl",
-    "interface",  //Java only
     "struct",
     "struct_decl",
     "enum",
@@ -79,7 +78,7 @@ const std::unordered_set<std::string> USER_DEFINED_TAGS = {
     "event",       //C# only
     "property",    //C# only
     "abstract",    //Java only
-    "interface",   //Java only
+    "interface",   //C#,Java only
     "annotation",     //Java only
     "annotation_defn" //Java only
 };
