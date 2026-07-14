@@ -20,8 +20,16 @@ const std::string versionedString::empty_str;
 versionedString::versionedString(char separator)
     : string_original(), string_modified(), separator(separator) {}
 
-versionedString::versionedString(std::string string, char separator)
-    : string_original(string), string_modified(string), separator(separator) {}
+versionedString::versionedString(std::string string, diffOperation version, char separator)
+    : string_original(), string_modified(), separator(separator) {
+        if(version != INSERT) {
+            string_original = string;
+        }
+
+        if(version != DELETE) {
+            string_modified = string;
+        }
+    }
 
 versionedString::versionedString(std::string string_original, std::string string_modified, char separator) 
     : string_original(string_original), string_modified(string_modified), separator(separator) {}
@@ -104,16 +112,29 @@ std::string versionedString::normalize(const std::string& str, const std::string
     return out.str();
 }
 
-std::size_t versionedString::find(const std::string& str) const {
+bool versionedString::equals(const std::string& str, diffOperation version) const {
 
-    if(string_original) {
+    if(version == DELETE) {
+        return string_original? string_original == str : false;
+    }
+
+    if(version == INSERT) {
+        return string_modified? string_modified == str : false;
+    }
+
+    return std::string(*this) == str;
+
+}
+std::size_t versionedString::find(const std::string& str, diffOperation version) const {
+
+    if(version != INSERT && string_original) {
         std::size_t pos = string_original->find(str);
         if(pos != std::string::npos) {
             return pos;
         }
     }
 
-    if(string_modified) {
+    if(version != DELETE && string_modified) {
         std::size_t pos = string_modified->find(str);
         if(pos != std::string::npos) {
             return pos;

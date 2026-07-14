@@ -35,7 +35,7 @@ class versionedString {
         static std::string normalize(const std::string& str, const std::string& sep);
 
         versionedString(char separator = '|');
-        versionedString(std::string string, char separator = '|');
+        versionedString(std::string string, diffOperation version = COMMON, char separator = '|');
         versionedString(std::string string_original, std::string string_modified, char separator = '|');
 
         bool is_common() const;
@@ -54,8 +54,9 @@ class versionedString {
         void append(const char * characters, size_t len, diffOperation version);
         void clear();
 
-        std::size_t find(const std::string&) const;
-        void erase(const std::string&);
+        bool equals(const std::string& str, diffOperation version = COMMON) const;
+        std::size_t find(const std::string& str, diffOperation version = COMMON) const;
+        void erase(const std::string& str);
 
         versionedString remove_spaces() const;
         versionedString normalize_spaces() const;
