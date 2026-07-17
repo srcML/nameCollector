@@ -58,8 +58,22 @@ genObjFunc is a function in JavaScript file: test_function.js:23:6
 iifeFunc is a function in JavaScript file: test_function.js:26:11"
 
 expected_functions=(
-  ""
-  ""
+  "func1 is a function in JavaScript file: test_function.js:1:10"
+  "func2 is a function in JavaScript file: test_function.js:2:17"
+  "func3 is a function in JavaScript file: test_function.js:3:16"
+  "exprFunc is a function in JavaScript file: test_function.js:5:21"
+  "genFunc1 is a function in JavaScript file: test_function.js:7:11"
+  "genExprFunc is a function in JavaScript file: test_function.js:9:24"
+  "clsFunc1 is a function in JavaScript file: test_function.js:12:5"
+  "clsFunc2 is a function in JavaScript file: test_function.js:13:12"
+  "clsFunc3 is a function in JavaScript file: test_function.js:14:9"
+  "clsFunc4 is a function in JavaScript file: test_function.js:15:9"
+  "genClsFunc is a function in JavaScript file: test_function.js:16:6"
+  "objFunc1 is a function in JavaScript file: test_function.js:20:5"
+  "objFunc2 is a function in JavaScript file: test_function.js:21:9"
+  "objFunc3 is a function in JavaScript file: test_function.js:22:9"
+  "genObjFunc is a function in JavaScript file: test_function.js:23:6"
+  "iifeFunc is a function in JavaScript file: test_function.js:26:11"
 )
 
 # make sure contructors are collected correctly in both hpp and js files

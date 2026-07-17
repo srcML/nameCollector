@@ -401,10 +401,18 @@ private:
     }
 
     bool isField() const {
+        
         int i = elementStack.size()-1;
         while (i > 0) {
+            if (elementStack[i].find("decl-") == 0) {
+                std::string typeOfDecl = elementStack[i].substr(5,element_stack[i].size()-5);
+                if (typeOfDecl == "static")
+                    return true;
+            }
             if (elementStack[i] == "function" || elementStack[i] == "constructor") 
                 return false;
+            else if (elementStack[i] == "class")
+                return true;
             --i;
         }
         return false;
@@ -415,6 +423,8 @@ private:
         while (i > 0) {
             if (elementStack[i] == "function" || elementStack[i] == "constructor")
                 return true;
+            else if (elementStack[i] == "class")
+                return false;
             --i;
         }
 
