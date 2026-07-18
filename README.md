@@ -78,7 +78,7 @@ The results of the tests are in `/Testing` the build directory, from here you ca
 
 ## To run:
 
-Generate the srcML for the given source code file using the --position option.  Then run nameCollector.
+Generate the srcML for the given source code file using the --position option. Then run nameCollector.
 
 `srcml foo.cpp --position -o foo.cpp.xml`
 
@@ -86,11 +86,11 @@ Generate the srcML for the given source code file using the --position option.  
 
 `./nameCollector --help`
 
-Output is plain text by default.  Use -f csv or --csv for comma separated output.  An output file can be specified with -o option. Takes standard input by default, and an input file is specified with -i.  The --append option will append output to an existing file rather than overwrite the file.  
+Output is plain text by default.  Use -f csv or --csv for comma separated output. An output file can be specified with -o option. Takes standard input by default, and an input file is specified with -i. The --append option will append output to an existing file rather than overwrite the file.  
 
 ## Developer Notes:
 
-The initial version of the application was developed by Decker from the srcSAX examples in June 2023. This was extended to collect the different types of names by Maletic. Maletic added the CLI11 interface and made the first public release (July 2023). Testa added testing framework and testsuite in summer 2025. Behler added support for Python alongside the 1.1.0 release of srcML (August 2025).  Sipanhioglu fixed a memory bug June 2026.  Ramadan set up Docker image in June 2026.
+The initial version of the application was developed by Decker from the srcSAX examples in June 2023. This was extended to collect the different types of names by Maletic. Maletic added the CLI11 interface and made the first public release (July 2023). Testa added testing framework and testsuite in summer 2025. Behler added support for Python alongside the 1.1.0 release of srcML (August 2025). Sipahioglu fixed a memory bug June 2026. Ramadan set up Docker image in June 2026.
 
 nameCollector is a good simple example of how to use srcSAX to build fast and scalable tools for collecting analysis information.
 
@@ -100,7 +100,7 @@ Developers of nameCollector:
 - Michael Collard
 - Michael Decker
 - Jonathan Maletic
-- John Sipanhioglu
+- John Sipahioglu
 - Sophia Testa 
 
 
