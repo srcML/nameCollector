@@ -3,7 +3,7 @@
 # Tests nested struct rename in C++
 
 cat <<EOF > test_struct_nested_original.cpp
-struct Outer {
+struct Container {
 struct Inner {
 };
 };
@@ -20,7 +20,7 @@ input=$(srcdiff test_struct_nested_original.cpp test_struct_nested_modified.cpp 
 output=$(echo "$input" | ./nameCollector --csv)
 
 expected="Name,Type,Category,File,Position,Language,Stereotype
-Outer|Container,,struct,test_struct_nested_original.cpp|test_struct_nested_modified.cpp,1:8,C++,
+Container,,struct,test_struct_nested_original.cpp|test_struct_nested_modified.cpp,1:8,C++,
 Inner|Nested,,struct,test_struct_nested_original.cpp|test_struct_nested_modified.cpp,2:8,C++,"
 
 if [[ "$output" != "$expected" ]]; then
