@@ -63,7 +63,7 @@ self is a global in Python file: test_class.py:26:1"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_py_class failed!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_py_class passed!"

@@ -75,7 +75,7 @@ echo "Test test_cs_method passed!" # all methods collected correctly
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cs_method output did not match expected!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 # Repeat tests

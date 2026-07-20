@@ -16,7 +16,7 @@ Point2d is a System.ValueTuple<double, double> typedef in C# file: test_using.cs
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cs_using failed!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_cs_using passed!"

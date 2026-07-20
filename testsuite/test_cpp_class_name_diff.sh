@@ -22,7 +22,7 @@ foo|bar,,class,test_class_name_diff_original.cpp|test_class_name_diff_modified.c
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_class_name_diff output did not match expected!"
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_cpp_class_name_diff passed!"

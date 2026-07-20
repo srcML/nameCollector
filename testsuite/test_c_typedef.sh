@@ -74,7 +74,7 @@ charPtr is a characterArrayPtr local in C file: test_typedef.c:36:23"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_c_typedef failed!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_c_typedef passed!"

@@ -29,7 +29,7 @@ main is a int function in C file: test_c_macro.c:8:5"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_c_macro output did not match expected!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_c_macro passed!" 

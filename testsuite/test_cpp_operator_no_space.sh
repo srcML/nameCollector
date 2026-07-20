@@ -89,7 +89,7 @@ echo "Test test_cpp_operator_no_space passed!" # all operators with no spaces co
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_operator_no_space output did not match expected!"
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 

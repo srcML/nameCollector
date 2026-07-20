@@ -37,7 +37,7 @@ Immutable is a class in Java file: test_class.java:14:13"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_java_class output did not match expected!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_java_class passed!" # all class collected correctly

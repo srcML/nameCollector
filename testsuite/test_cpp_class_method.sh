@@ -106,7 +106,7 @@ echo "Test test_cpp_class_method passed!" # all fields collected correctly
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_class_method output did not match expected!"
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 

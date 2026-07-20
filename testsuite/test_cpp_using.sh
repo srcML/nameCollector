@@ -34,7 +34,7 @@ main is a int function in C++ file: test_using.cpp:15:5"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_using failed!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_cpp_using passed!"

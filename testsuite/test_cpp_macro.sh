@@ -22,7 +22,7 @@ FOO is a macro in C++ file: test_macro.hpp:7:9"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_macro failed!"
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_cpp_macro passed!"

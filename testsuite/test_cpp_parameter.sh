@@ -126,7 +126,7 @@ echo "Test test_cpp_parameter passed!" # all parameters collected correctly
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_parameter output did not match expected!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 

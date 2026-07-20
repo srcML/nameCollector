@@ -98,7 +98,7 @@ echo "Test test_c_union passed!" # all unions collected correctly
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_c_union output did not match expected!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 # Repeat tests

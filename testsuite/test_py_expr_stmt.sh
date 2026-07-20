@@ -93,7 +93,7 @@ after_comp is a global in Python file: test_expr_stmt.py:47:1"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_py_expr_stmt failed!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_py_expr_stmt passed!"
