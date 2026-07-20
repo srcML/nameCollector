@@ -32,7 +32,7 @@ A is a public int property in C# file: test_property.cs:11:16
 set is a function in C# file: test_property.cs:11:20
 B is a public virtual int property in C# file: test_property.cs:12:24
 get is a function in C# file: test_property.cs:12:28
-set is a protected function in C# file: test_property.cs:12:43"
+set is a function in C# file: test_property.cs:12:43"
 
 
 

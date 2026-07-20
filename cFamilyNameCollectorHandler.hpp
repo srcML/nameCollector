@@ -369,8 +369,12 @@ public:
                 std::string type = "";
                 if (isTypedCategory(category) && typeStack.size() >= 1) {
                     if ((category == "field") && (typeStack[typeStack.size()-1].type.find("enum") != std::string::npos)) {
-                        std::string type = "";  //Deal with enum fields without a type
-                    } else {
+                        type = "";  //Deal with enum fields without a type
+                    }
+                    else if ((category == "function") && elementStack.size() >= 4 && elementStack[elementStack.size()-4] == "property") {
+                        type = ""; //Deal with functions `get`, `set`, etc. in properties
+                    } 
+                    else {
                         //Deal with typedefs with structs etc.
                         if (typeStack.size() >= 1 && typeStack[typeStack.size()-1].associatedTag == "typedef") {
                             type = typeStack[typeStack.size()-1].type;
