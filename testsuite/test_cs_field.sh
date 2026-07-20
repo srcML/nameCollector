@@ -62,7 +62,7 @@ l is a int? field in C# file: test_field.cs:15:10
 m is a public required int field in C# file: test_field.cs:16:25
 S is a struct in C# file: test_field.cs:19:8
 size is a public int field in C# file: test_field.cs:21:16
-I is an interface in C# file: test_field.cs:25:11
+I is a interface in C# file: test_field.cs:25:11
 A is a const int field in C# file: test_field.cs:27:15
 B is a static int field in C# file: test_field.cs:28:16
 E is a enum in C# file: test_field.cs:31:6

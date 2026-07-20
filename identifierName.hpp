@@ -145,7 +145,7 @@ bool isStereotypableCategory(const std::string& category) {
 }
 
 bool isStruct(const std::string& category) {
-    if (category == "class" || category == "struct" || category == "union"|| category == "enum") 
+    if (category == "class" || category == "struct" || category == "union" || category == "enum" || category == "interface") 
         return true;
     return false;
 }
