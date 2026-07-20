@@ -14,7 +14,7 @@ namespace SimpleNSP{
         }
     }
 }
-inline namespace InlineNamespace{ /*empty */ };
+inline namespace InlineNamespace{ /*empty */ }
 
 namespace OuterNamespace{
     class OuterMemberClass{
@@ -23,7 +23,7 @@ namespace OuterNamespace{
     
     namespace InnerNamespace{
         bool innerMember;
-        namespace ThirdNestedNSP{ /* empty */}; 
+        namespace ThirdNestedNSP{ /* empty */}
     }
 }
 //with aliases
@@ -31,6 +31,8 @@ namespace nsp = SimpleNSP::abc::xyc;
 
 // anonymous namespace again
 namespace {};
+
+namespace srcML::Lexer {}
 
 int main() {
     return 0;
@@ -51,7 +53,9 @@ InnerNamespace is a namespace in C++ file: test_namespace.cpp:19:15
 innerMember is a bool global in C++ file: test_namespace.cpp:20:14
 ThirdNestedNSP is a namespace in C++ file: test_namespace.cpp:21:19
 nsp is a namespace in C++ file: test_namespace.cpp:25:11
-main is a int function in C++ file: test_namespace.cpp:30:5"
+srcML is a namespace in C++ file: test_namespace.cpp:30:11
+Lexer is a namespace in C++ file: test_namespace.cpp:30:18
+main is a int function in C++ file: test_namespace.cpp:32:5"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_namespace failed!" 

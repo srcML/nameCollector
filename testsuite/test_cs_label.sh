@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of named labels, as in goto
+# test the collection of named labels, as in goto in C#
 
 cat <<EOF > test_label.cs
 class Program
