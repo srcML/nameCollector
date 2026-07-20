@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of global and local names definied in condition_exprs
+# test the collection of global and local names definied in condition_exprs in Python
 
 cat <<EOF > test_condition_expr.py
 if x := 10:
@@ -84,7 +84,7 @@ right is a global in Python file: test_condition_expr.py:51:11"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_py_condition_expr failed!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_py_condition_expr passed!"

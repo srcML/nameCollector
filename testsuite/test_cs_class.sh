@@ -76,7 +76,7 @@ NCObj is a NestedClass local in C# file: test_class.cs:39:21"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cs_class output did not match expected!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_cs_class passed!" # all class collected correctly

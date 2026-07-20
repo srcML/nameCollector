@@ -60,7 +60,7 @@ PYmain is a function in Python file: test_python.py:1:5"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_languages failed!"
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_languages passed!"

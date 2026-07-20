@@ -78,7 +78,7 @@ number is a auto local in C++ file: test_local.cpp:36:14"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_local failed!"
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_cpp_local passed!"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of function names in C++
+# test the collection of function names in Python
 
 cat <<EOF > test_function.py
 # Basic function
@@ -83,7 +83,7 @@ echo "Test test_py_function passed!" # all constructor collected correctly
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_py_function output did not match expected!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 

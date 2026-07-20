@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of import alias names
+# test the collection of import alias names in Python
 
 cat <<EOF > test_alias.py
 import module as ns1
@@ -78,7 +78,7 @@ e is a local in Python file: test_alias.py:45:29"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_py_alias failed!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_py_alias passed!"

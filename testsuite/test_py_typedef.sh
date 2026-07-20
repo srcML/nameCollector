@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of typedef names
+# test the collection of typedef names in Python
 
 cat <<EOF > test_typedef.py
 type URL = str
@@ -18,7 +18,7 @@ T is a template-parameter in Python file: test_typedef.py:3:16"
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_py_typedef failed!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 echo "Test test_py_typedef passed!"

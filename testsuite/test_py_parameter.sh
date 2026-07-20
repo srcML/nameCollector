@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of parameter names in c++
+# test the collection of parameter names in Python
 
 cat <<EOF > test_parameter.py
 # No parameters
@@ -141,7 +141,7 @@ echo "Test test_py_parameter passed!" # all parameters collected correctly
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_py_parameter output did not match expected!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 

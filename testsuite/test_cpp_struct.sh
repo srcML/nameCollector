@@ -101,7 +101,7 @@ echo "Test test_cpp_struct passed!" # all structs collected correctly
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cpp_struct output did not match expected!" 
     echo "Expected: '$expected'"
-    echo "Got: '$output'"
+    echo "Got:      '$output'"
     exit 1
 fi
 # Repeat tests

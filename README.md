@@ -41,7 +41,7 @@ Example:
 | local           | Local variable name (in a function) |
 | global          | Global variable name |
 | macro           | Macro name in C, C++ |
-| namespace       | User defined namespace in C++, C#, Python (import aliases) |
+| namespace       | User defined namespace in C++, C#, Java (package), Python (import aliases) |
 | parameter       | Name of a parameter |
 | function-parameter  | Name of a parameter, that is a function | 
 | template-parameter  | Name of a template parameter |
