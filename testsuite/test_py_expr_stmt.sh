@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of global and local names definied in expr_stmts
+# test the collection of global and local names definied in expr_stmts in Python
 
 cat <<EOF > test_expr_stmt.py
 x = 1

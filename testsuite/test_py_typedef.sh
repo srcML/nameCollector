@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of typedef names
+# test the collection of typedef names in Python
 
 cat <<EOF > test_typedef.py
 type URL = str

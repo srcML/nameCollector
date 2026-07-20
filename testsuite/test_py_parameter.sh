@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of parameter names in c++
+# test the collection of parameter names in Python
 
 cat <<EOF > test_parameter.py
 # No parameters

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of global and local names definied in condition_exprs
+# test the collection of global and local names definied in condition_exprs in Python
 
 cat <<EOF > test_condition_expr.py
 if x := 10:

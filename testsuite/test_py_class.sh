@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of class and class field names
+# test the collection of class and class field names in Python
 
 cat <<EOF > test_class.py
 class Nothing:

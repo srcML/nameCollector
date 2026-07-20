@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of function names in C++
+# test the collection of function names in Python
 
 cat <<EOF > test_function.py
 # Basic function

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# test the collection of import alias names
+# test the collection of import alias names in Python
 
 cat <<EOF > test_alias.py
 import module as ns1
