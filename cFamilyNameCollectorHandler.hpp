@@ -484,18 +484,26 @@ public:
             typeStack.pop_back();
         }
 
-        if (!elementStack.empty()) elementStack.pop_back();
+        if (localName == "namespace" && category != "" && !elementStack.empty() && element_stack.back() == "init") {
+            elementStack.pop_back();  // Deal with namespace foo = x::y;
+        }
+
+        std::string last_popped = "";
+        if (!elementStack.empty()) {
+            last_popped = elementStack.back();
+            elementStack.pop_back();
+        }
 
         //Address namespace foo = x::y;
-        // Push an init on stack after first name.  Then make sure to
+        // Push an init on stack after first name, only if not in form `namespace A::B`.  Then make sure to
         //  pop it off at end of </namespace>
         if (category == "namespace") {
-            elementStack.push_back("init");  // Deal with namespace foo = x::y;
+            if (last_popped != "name_2") {
+                elementStack.push_back("init");  // Deal with namespace foo = x::y;
+            }
         }
 
-        if (localName == "namespace" && category != "") {
-            if (!elementStack.empty()) elementStack.pop_back();  // Deal with namespace foo = x::y;
-        }
+        
     }
 
     /**
