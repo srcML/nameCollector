@@ -76,6 +76,7 @@ const std::unordered_set<std::string> USER_DEFINED_TAGS = {
     "union_decl",  //C, C++ only
     "macro",       //C, C++ only
     "namespace",   //C++, C# only
+    "package",     //Java only
     "event",       //C# only
     "property",    //C# only
     "abstract",    //Java only

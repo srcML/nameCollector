@@ -333,6 +333,7 @@ public:
                 if (category == "constructor_decl") category = "constructor";
                 if (category == "destructor_decl")  category = "destructor";
                 if (category == "annotation_defn")  category = "annotation";
+                if (category == "package")          category = "namespace";
                 if (category == "function_decl") {
                     if (elementStack.size() >= 3 && elementStack[elementStack.size()-3] == "parameter")
                         category = "function-parameter";
