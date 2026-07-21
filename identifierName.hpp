@@ -80,7 +80,6 @@ const std::unordered_set<std::string> USER_DEFINED_TAGS = {
     "property",    //C# only
     "abstract",    //Java only
     "interface",   //Java only
-    "annotation",     //Java only
     "annotation_defn" //Java only
 };
 

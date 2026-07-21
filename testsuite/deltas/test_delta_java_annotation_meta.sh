@@ -18,7 +18,6 @@ input=$(srcdiff test_annotation_meta_original.java test_annotation_meta_modified
 output=$(echo "$input" | ./nameCollector --csv)
 
 expected="Name,Type,Category,File,Position,Language,Stereotype
-Retention,,annotation,test_annotation_meta_original.java|test_annotation_meta_modified.java,1:2,Java,
 Mark|Tag,,annotation,test_annotation_meta_original.java|test_annotation_meta_modified.java,2:12,Java,"
 
 if [[ "$output" != "$expected" ]]; then
