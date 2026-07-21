@@ -31,11 +31,11 @@ expected="Foo is a class in Java file: test_function.java:1:14
 log is a void function in Java file: test_function.java:2:10
 add is a public static int function in Java file: test_function.java:3:23
 compute is a public static final int function in Java file: test_function.java:4:29
-T is a template-parameter in Java file: test_function.java:5:6
+T is a generic-parameter in Java file: test_function.java:5:6
 identity is a <T> T function in Java file: test_function.java:5:11
-U is a template-parameter in Java file: test_function.java:6:13
+U is a generic-parameter in Java file: test_function.java:6:13
 foo is a public <U> U function in Java file: test_function.java:6:18
-V is a template-parameter in Java file: test_function.java:7:6
+V is a generic-parameter in Java file: test_function.java:7:6
 doubleValue is a <V extends Number> double function in Java file: test_function.java:7:31
 computeAbstractly is a abstract int function in Java file: test_function.java:8:18
 computeDefaultly is a default int function in Java file: test_function.java:9:17

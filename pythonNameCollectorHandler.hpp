@@ -320,7 +320,7 @@ public:
 
                 if (category == "parameter") {
                     scopeStack.back().names.insert(content);
-                    if (isTemplateParameter()) category = "template-parameter";
+                    if (isGenericParameter()) category = "generic-parameter";
                 }
                 if (category == "decl") { //Need additional checks
                     category = "global";
@@ -609,10 +609,10 @@ private:
         return false;
     }
 
-    bool isTemplateParameter() const {
+    bool isGenericParameter() const {
         int i=elementStack.size()-1;
         while (i > 0) {
-            if (elementStack[i] == "template" || elementStack[i] == "generic_parameter_list") return true;
+            if (elementStack[i] == "generic_parameter_list") return true;
             --i;
         }
         return false;

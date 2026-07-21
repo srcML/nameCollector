@@ -19,7 +19,7 @@ output=$(echo "$input" | ./nameCollector --csv)
 
 expected="Name,Type,Category,File,Position,Language,Stereotype
 Converter,,class,test_function_generic_return_original.java|test_function_generic_return_modified.java,1:14,Java,
-T,,template-parameter,test_function_generic_return_original.java|test_function_generic_return_modified.java,2:2,Java,
+T,,generic-parameter,test_function_generic_return_original.java|test_function_generic_return_modified.java,2:2,Java,
 transform|convert,<T> T,function,test_function_generic_return_original.java|test_function_generic_return_modified.java,2:7,Java,
 input,T,parameter,test_function_generic_return_original.java|test_function_generic_return_modified.java,2:19|2:17,Java,"
 

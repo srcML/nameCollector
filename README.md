@@ -44,7 +44,7 @@ Example:
 | namespace       | User defined namespace in C++, C#, Java (package), Python (import aliases) |
 | parameter       | Name of a parameter |
 | function-parameter  | Name of a parameter, that is a function | 
-| template-parameter  | Name of a template parameter |
+| generic-parameter  | Name of a generic parameter |
 | property        | Property name in C# |W
 | event           | Event name in C# |
 | annotation      | Name of an annotation in Java |

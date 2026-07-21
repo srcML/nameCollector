@@ -41,7 +41,7 @@ const std::unordered_set<std::string> IDENTIFIER_TYPES = {
     "macro",                  //Macro name C, C++
     "namespace",              //User defined namespace C++, C#
     "parameter",              //Name of a parameter
-    "template-parameter",     //Name of template paramter <typename T> C++
+    "generic-parameter",      //Name of generic paramter
     "function-parameter",     //Name of a parameter, that is a function void *f()
     "property",               //Name of a property C#
     "event",                  //Name of an event C#
