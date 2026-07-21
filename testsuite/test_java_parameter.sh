@@ -2,7 +2,7 @@
 
 # tests the collection of locals in Java
 
-cat <<EOF > test_local.java
+cat <<EOF > test_parameter.java
 class C {
     void m(int x, String s) {
         try {} 
@@ -15,23 +15,23 @@ class C {
 }
 EOF
 
-input=$(srcml test_local.java --position)
+input=$(srcml test_parameter.java --position)
 output=$(echo "$input" | ./nameCollector )
-expected="C is a class in Java file: test_local.java:1:7
-m is a void function in Java file: test_local.java:2:10
-x is a int parameter in Java file: test_local.java:2:16
-s is a String parameter in Java file: test_local.java:2:26
-e is a Exception parameter in Java file: test_local.java:4:26
-n is a void function in Java file: test_local.java:6:10
-args is a String... parameter in Java file: test_local.java:6:22
-C is a constructor in Java file: test_local.java:7:5
-x is a int parameter in Java file: test_local.java:7:11
-multiply is a MathOperation field in Java file: test_local.java:8:19
-a is a parameter in Java file: test_local.java:8:31
-b is a parameter in Java file: test_local.java:8:34
-multiply2 is a MathOperation field in Java file: test_local.java:9:19
-c is a int parameter in Java file: test_local.java:9:36
-d is a int parameter in Java file: test_local.java:9:43"
+expected="C is a class in Java file: test_parameter.java:1:7
+m is a void function in Java file: test_parameter.java:2:10
+x is a int parameter in Java file: test_parameter.java:2:16
+s is a String parameter in Java file: test_parameter.java:2:26
+e is a Exception parameter in Java file: test_parameter.java:4:26
+n is a void function in Java file: test_parameter.java:6:10
+args is a String... parameter in Java file: test_parameter.java:6:22
+C is a constructor in Java file: test_parameter.java:7:5
+x is a int parameter in Java file: test_parameter.java:7:11
+multiply is a MathOperation field in Java file: test_parameter.java:8:19
+a is a parameter in Java file: test_parameter.java:8:31
+b is a parameter in Java file: test_parameter.java:8:34
+multiply2 is a MathOperation field in Java file: test_parameter.java:9:19
+c is a int parameter in Java file: test_parameter.java:9:36
+d is a int parameter in Java file: test_parameter.java:9:43"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_java_local output did not match expected!"

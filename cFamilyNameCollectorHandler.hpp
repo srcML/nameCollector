@@ -374,7 +374,10 @@ public:
                     }
                     else if ((category == "function") && elementStack.size() >= 4 && elementStack[elementStack.size()-4] == "property") {
                         type = ""; //Deal with functions `get`, `set`, etc. in properties
-                    } 
+                    }
+                    else if (category == "parameter" && typeStack.size() >= 1 && typeStack.back().associatedTag != "decl") {
+                        type = "";
+                    }
                     else {
                         //Deal with typedefs with structs etc.
                         if (typeStack.size() >= 1 && typeStack[typeStack.size()-1].associatedTag == "typedef") {
