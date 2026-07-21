@@ -3,7 +3,7 @@
 cat <<EOF > test_template_parameter.java 
 class Box<A> { }
 class Pair<B, C> { }
-class Node<D extends Comparable<D>> { }
+class Node<D extends Comparable<D>> { } //TODO currently wrong, the second <D> should be an argument but is parameter
 interface Repository<E> { }
 interface Map<F, G> { }
 enum Result<H> { }

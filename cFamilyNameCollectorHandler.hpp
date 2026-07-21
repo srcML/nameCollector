@@ -580,7 +580,7 @@ private:
             --i;
         }
         if (srcFileLanguage == "Java") {
-            if (elementStack.size() >= 5 && elementStack[elementStack.size()-5] == "class" && elementStack[elementStack.size()-4] == "name" && elementStack[elementStack.size()-3] == "parameter_list" && elementStack[elementStack.size()-2] == "parameter")
+            if (elementStack.size() >= 5 && (isStruct(elementStack[elementStack.size()-5])) && elementStack[elementStack.size()-4] == "name" && elementStack[elementStack.size()-3] == "parameter_list" && elementStack[elementStack.size()-2] == "parameter")
                 return true;
         }
         return false;
