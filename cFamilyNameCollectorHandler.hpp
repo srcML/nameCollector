@@ -337,6 +337,8 @@ public:
                 if (category == "function_decl") {
                     if (elementStack.size() >= 3 && elementStack[elementStack.size()-3] == "parameter")
                         category = "function-parameter";
+                    else if (elementStack.size() >= 3 && elementStack[elementStack.size()-3] == "typedef")
+                        category = "typedef";
                     else
                         category = "function";
                 }
@@ -404,6 +406,9 @@ public:
                 }
                 else if (category == "generic-parameter" && srcFileLanguage == "C++" && typeStack.size() >= 1 && typeStack.back().associatedTag == "parameter") {
                     type = typeStack.back().type;
+                }
+                if (elementStack.size() >= 3 && elementStack[elementStack.size()-2] == "function_decl" && elementStack[elementStack.size()-3] == "typedef") {
+                    type += " function";
                 }
 
                 std::string stereotype = (isStereotypableCategory(category) && !stereotypeStack.empty() ?

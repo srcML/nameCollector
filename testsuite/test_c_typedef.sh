@@ -58,7 +58,7 @@ RED is a field in C file: test_typedef.c:17:5
 GREEN is a field in C file: test_typedef.c:18:5
 BLUE is a field in C file: test_typedef.c:19:5
 ColorEnum is a enum typedef in C file: test_typedef.c:20:3
-functionPointer is a int function in C file: test_typedef.c:22:15
+functionPointer is a int function typedef in C file: test_typedef.c:22:15
 characterArrayPtr is a char* typedef in C file: test_typedef.c:24:15
 add is a int function in C file: test_typedef.c:26:5
 x is a int parameter in C file: test_typedef.c:26:13
