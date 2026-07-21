@@ -402,6 +402,9 @@ public:
                         }
                     }
                 }
+                else if (category == "generic-parameter" && srcFileLanguage == "C++" && typeStack.size() >= 1 && typeStack.back().associatedTag == "parameter") {
+                    type = typeStack.back().type;
+                }
 
                 std::string stereotype = (isStereotypableCategory(category) && !stereotypeStack.empty() ?
                                           stereotypeStack[stereotypeStack.size() - 1] : "");

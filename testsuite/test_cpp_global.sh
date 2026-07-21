@@ -55,7 +55,7 @@ globalPtr is a int * global in C++ file: test_global.cpp:11:6
 MyClass is a class in C++ file: test_global.cpp:13:7
 field is a int field in C++ file: test_global.cpp:14:9
 globalMyClassObj is a MyClass global in C++ file: test_global.cpp:16:9
-T is a generic-parameter in C++ file: test_global.cpp:17:19
+T is a typename generic-parameter in C++ file: test_global.cpp:17:19
 globalTemplateVar is a T global in C++ file: test_global.cpp:18:3
 MyCatsInitials is a namespace in C++ file: test_global.cpp:20:11
 murphy is a char global in C++ file: test_global.cpp:21:10

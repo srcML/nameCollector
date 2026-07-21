@@ -60,7 +60,7 @@ lable is a char parameter in C++ file: test_parameter.cpp:6:44
 duplicate is a void function in C++ file: test_parameter.cpp:8:6
 src is a std::vector<int> parameter in C++ file: test_parameter.cpp:8:33
 copy is a std::vector<int> parameter in C++ file: test_parameter.cpp:8:55
-T is a generic-parameter in C++ file: test_parameter.cpp:10:19
+T is a typename generic-parameter in C++ file: test_parameter.cpp:10:19
 print is a T function in C++ file: test_parameter.cpp:11:3
 templateTypeByReference is a T & parameter in C++ file: test_parameter.cpp:11:12
 printPosition is a void function in C++ file: test_parameter.cpp:13:6
