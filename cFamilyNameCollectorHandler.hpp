@@ -343,6 +343,7 @@ public:
                 if (category == "destructor_decl")  category = "destructor";
                 if (category == "annotation_defn")  category = "annotation";
                 if (category == "package")          category = "namespace";
+                if (category == "delegate")         category = "typedef";
                 if (category == "function_decl") {
                     if (elementStack.size() >= 3 && elementStack[elementStack.size()-3] == "parameter")
                         category = "function-parameter";
@@ -416,7 +417,11 @@ public:
                 else if (category == "generic-parameter" && srcFileLanguage == "C++" && typeStack.size() >= 1 && typeStack.back().associatedTag == "parameter") {
                     type = typeStack.back().type;
                 }
+
                 if (elementStack.size() >= 3 && elementStack[elementStack.size()-2] == "function_decl" && elementStack[elementStack.size()-3] == "typedef") {
+                    type += " function";
+                }
+                else if (srcFileLanguage == "C#" && category == "typedef" && elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "delegate") {
                     type += " function";
                 }
 

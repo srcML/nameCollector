@@ -78,6 +78,7 @@ const std::unordered_set<std::string> USER_DEFINED_TAGS = {
     "namespace",   //C++, C# only
     "package",     //Java only
     "event",       //C# only
+    "delegate",    //C# only
     "property",    //C# only
     "abstract",    //Java only
     "interface",   //Java only
