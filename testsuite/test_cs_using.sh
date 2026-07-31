@@ -6,12 +6,14 @@ cat <<EOF > test_using.cs
 using ProjectId = System.Int32;
 global using Point2D = System.ValueTuple<double, double>;
 using System;
+using ProjectIO = System.IO;
 EOF
 
 input=$(srcml test_using.cs --position)
 output=$(echo "$input" | ./nameCollector )
-expected="ProjectID is a System.Int32 typedef in C# file: test_using.cs:1:7
-Point2d is a System.ValueTuple<double, double> typedef in C# file: test_using.cs:2:14"
+expected="ProjectId is a System.Int32 typedef in C# file: test_using.cs:1:7
+Point2d is a System.ValueTuple<double, double> typedef in C# file: test_using.cs:2:14
+ProjectIO is a System.IO typedef in C# file: test_using.cs:4:7"
 
 if [[ "$output" != "$expected" ]]; then
     echo "Test test_cs_using failed!" 

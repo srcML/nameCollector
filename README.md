@@ -49,6 +49,8 @@ Example:
 | event           | Event name in C# |
 | annotation      | Name of an annotation in Java |
 
+## C# notes:
+In C#, the using statement can allow aliasing both types and namespaces. Static analysis cannot easily differentiate between the two, so nameCollector will collect all using aliases as a `typedef`.
 
 ## Python notes:
 In Python, globals, locals, and fields are collected at their first appearance. If a name is assigned more than once within a scope, only the first use of the name is collected.  

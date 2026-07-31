@@ -135,7 +135,7 @@ public:
         std::string back = "";
         if (!elementStack.empty()) back = elementStack.back();
 
-        const std::string localName = localname;
+        std::string localName = localname;
 
         // record diff elements on stack, ignore otherwise
         if (URI == DIFF_NAMESPACE) {
@@ -165,6 +165,10 @@ public:
                 }
             }
             elementStack.push_back(add_generic ? "generic_parameter_list" : localName);
+        } else if (localName == "expr" && srcFileLanguage == "C#" && elementStack.size() >= 2 && elementStack[elementStack.size()-1] == "init" && elementStack[elementStack.size()-2] == "using") {
+            // If this is the expression in the init of a C# using statement, treat it like a type instead
+            elementStack.push_back("type");
+            localName = "type";
         } else { // All other tags
             elementStack.push_back(localName);
         }
@@ -207,14 +211,14 @@ public:
             }
         }
 
-        if (std::string(localname) == "index") {
+        if (localName == "index") {
             ++inIndexCount;
             collectContent = false;
         }
         
         //Need to collect some type info for struct and anonymous struct
         // struct { } x;      // x has type struct
-        if (isStruct(localname) && (srcFileLanguage == "C++" || srcFileLanguage == "C")) {
+        if (isStruct(localName) && (srcFileLanguage == "C++" || srcFileLanguage == "C")) {
             typeInfo insertType;
             insertType.associatedTag = localName; //struct, class, enum, union
             insertType.gatherContent = true;
@@ -291,7 +295,12 @@ public:
         std::string category;
         bool isComplexName = false;
 
-        const std::string localName = localname;
+        std::string localName = localname;
+
+        // If this is the expression in the init of a C# using statement, treat it like a type instead
+        if (localName == "expr" && srcFileLanguage == "C#" && elementStack.size() >= 3 && elementStack[elementStack.size()-2] == "init" && elementStack[elementStack.size()-3] == "using") {
+            localName = "type";
+        }
 
         // remove diff element from stack, ignore otherwise
         if (URI == DIFF_NAMESPACE) {
@@ -468,7 +477,7 @@ public:
         }
         
         // if ending the init of a using, it is a typedef
-        if (std::string(localname) == "init" && elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "using") {
+        if (localName == "init" && elementStack.size() >= 2 && elementStack[elementStack.size()-2] == "using") {
             if (outputCSV) {
                 *outPtr << identifier(typeAfterNameContent, "typedef", typeAfterNamePosition, "", srcFileName, srcFileLanguage, typeStack[typeStack.size()-1].type);
             } else {
